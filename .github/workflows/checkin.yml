@@ -15,6 +15,9 @@ jobs:
 
     - name: "npm run test"
       run: npm run test
+      
+    - name: "TEST ACTION"
+      using: ibakshay/action-template@v1-release
 
     - name: "check for uncommitted changes"
       # Ensure no changes, but ignore node_modules dir since dev/fresh ci deps installed.
