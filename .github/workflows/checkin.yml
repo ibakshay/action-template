@@ -18,8 +18,8 @@ jobs:
       
     - name: "TEST ACTION"
       uses: ibakshay/action-template@v1-release
-      with:
-        myInput: "Akshay is a champion"
+     # with:
+      #  myInput: "Akshay is a champion"
         
 
     - name: "check for uncommitted changes"
