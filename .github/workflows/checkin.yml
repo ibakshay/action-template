@@ -17,7 +17,7 @@ jobs:
       run: npm run test
       
     - name: "TEST ACTION"
-      uses: ibakshay/action-template@v1-release
+      uses: ibakshay/action-template@master
      # with:
       #  myInput: "Akshay is a champion"
         
