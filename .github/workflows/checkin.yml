@@ -17,9 +17,9 @@ jobs:
       run: npm run test
       
     - name: "TEST ACTION"
-      uses: ibakshay/action-template@v1-release
-     # with:
-      #  myInput: "Akshay is a champion"
+      uses: ibakshay/action-template@master
+      with:
+        myInput: "Akshay is a champion"
         
 
     - name: "check for uncommitted changes"
