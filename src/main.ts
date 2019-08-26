@@ -4,7 +4,7 @@ import * as github from '@actions/github'
 async function run() {
   try {
     const myInput = core.getInput('myInput');
-    console.log(`Hello ${myInput}`);
+    console.log(`My input is  ${myInput}`);
 
     // This should be a token with access to your repository scoped in as a secret.
     const myToken = core.getInput('myToken');
@@ -16,7 +16,7 @@ async function run() {
       issue_number: github.context.issue.number,
       body: 'Thanl you for creating the issue'
     }
-    console.log('Thank you for creating the issue')
+    console.error('Thank you for creating the issue')
     const responseToIssue = await octokit.issues.createComment(args)
 
 
