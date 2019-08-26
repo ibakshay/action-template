@@ -1,20 +1,11 @@
-name: "PR Checks"
+name: "Issue Created"
 on: [issues]
 
 jobs:
-  check_pr:
+  issue_created:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-
-    - name: "npm ci"
-      run: npm ci
-
-    - name: "npm run build"
-      run: npm run build
-
-    - name: "npm run test"
-      run: npm run test
       
     - name: "TEST ACTION"
       uses: ibakshay/action-template@dev
