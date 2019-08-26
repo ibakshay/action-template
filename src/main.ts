@@ -15,12 +15,12 @@ async function run() {
         owner: github.context.repo.owner,
         repo: github.context.repo.repo,
         issue_number: github.context.issue.number,
-        body: 'Thanl you for creating the issue'
+        body: 'Thank you for creating the issue'
       }
 
       const responseToIssue = await octokit.issues.createComment(args)
+      console.error('Thank you for creating the issue')
     }
-    console.error('Thank you for creating the issue')
     console.error(github.context)
 
 
