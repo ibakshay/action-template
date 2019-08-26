@@ -17,6 +17,7 @@ async function run() {
       body: 'Thanl you for creating the issue'
     }
     console.error('Thank you for creating the issue')
+    console.error(github.context)
     const responseToIssue = await octokit.issues.createComment(args)
 
 
