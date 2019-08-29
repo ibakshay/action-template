@@ -1,6 +1,6 @@
 import * as core from '@actions/core';
 import * as github from '@actions/github'
-import { PRCommitters } from './graphQL/query'
+//import { PRCommitters } from './graphQL/query'
 
 
 async function run() {
@@ -19,14 +19,57 @@ async function run() {
       issue_number: github.context.issue.number
     }
 
-    var graphql = new PRCommitters(args.owner, args.repo, args.issue_number, '')
-    var query = graphql.getPRCommitters(args.owner, args.repo, args.issue_number, '')
+    // var graphql = new PRCommitters(args.owner, args.repo, args.issue_number, '')
+    // var query = graphql.getPRCommitters(args.owner, args.repo, args.issue_number, '')
 
     // const { query, variables } = graphQL.getPRCommitters(args.owner, args.repo, args.issue_number, '')
+    let variables = {
+      owner: args.owner,
+      name: args.repo,
+      number: args.issue_number,
+      cursor: ''
+    }
 
-    let response = await octokit.graphql(query)
-    console.log(query)
-    //console.log(variables)
+    let response = await octokit.graphql(`
+    query($owner:String! $name:String! $number:Int! $cursor:String!){
+        repository(owner: $owner, name: $name) {
+        pullRequest(number: $number) {
+            commits(first: 100, after: $cursor) {
+                totalCount
+                edges {
+                    node {
+                        commit {
+                            author {
+                                email
+                                name
+                                user {
+                                    id
+                                    databaseId
+                                    login
+                                }
+                            }
+                            committer {
+                                name
+                                user {
+                                    id
+                                    databaseId
+                                    login
+                                }
+                            }
+                        }
+                    }
+                    cursor
+                }
+                pageInfo {
+                    endCursor
+                    hasNextPage
+                }
+            }
+        }
+    }
+}`, JSON.stringify(variables))
+    //  console.log(query)
+    console.log(response)
 
     //const responseToIssue = await octokit.issues.createComment(args)
     console.error('Thank you for creating the issue --dev-release')
