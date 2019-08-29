@@ -1,6 +1,6 @@
 import * as core from '@actions/core';
 import * as github from '@actions/github'
-const graphQL = require('./graphql/query.ts')
+const graphQL = require('./graphql/query')
 
 async function run() {
   try {
