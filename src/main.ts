@@ -75,7 +75,7 @@ async function run() {
       cursor: ''
     })
     //  console.log(query)
-    console.log(response)
+    console.log(response.repository.pullRequest.commits)
 
     //const responseToIssue = await octokit.issues.createComment(args)
     //  console.error('Thank you for creating the issue --dev-release')
