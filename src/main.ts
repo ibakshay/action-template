@@ -29,7 +29,7 @@ async function run() {
       number: args.issue_number,
       cursor: ''
     }
-    console.error(github.context)
+    //console.error(github.context)
 
     let response = await octokit.graphql(`
     query($owner:String! $name:String! $number:Int! $cursor:String!){
@@ -78,7 +78,7 @@ async function run() {
     console.log(response)
 
     //const responseToIssue = await octokit.issues.createComment(args)
-    console.error('Thank you for creating the issue --dev-release')
+    //  console.error('Thank you for creating the issue --dev-release')
     //}
 
 
