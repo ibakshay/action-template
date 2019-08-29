@@ -68,7 +68,12 @@ async function run() {
             }
         }
     }
-}`.replace(/ /g, ''), JSON.stringify(variables))
+}`.replace(/ /g, ''), {
+      owner: args.owner,
+      name: args.repo,
+      number: args.issue_number,
+      cursor: ''
+    })
     //  console.log(query)
     console.log(response)
 
