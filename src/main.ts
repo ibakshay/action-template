@@ -1,5 +1,6 @@
 import * as core from '@actions/core';
 import * as github from '@actions/github'
+const graphQL = require('./graphql/query.ts')
 
 async function run() {
   try {
@@ -14,11 +15,16 @@ async function run() {
     const args = {
       owner: github.context.repo.owner,
       repo: github.context.repo.repo,
-      issue_number: github.context.issue.number,
-      body: 'Thank you for creating the issue'
+      issue_number: github.context.issue.number
     }
 
-    const responseToIssue = await octokit.issues.createComment(args)
+    const { query, variables } = graphQL.getPRCommitters(args.owner, args.repo, args.issue_number, '')
+
+    let response = await octokit.graphql(query, variables)
+    console.log(query)
+    console.log(variables)
+
+    //const responseToIssue = await octokit.issues.createComment(args)
     console.error('Thank you for creating the issue --dev-release')
     //}
     console.error(github.context)
