@@ -30,6 +30,13 @@ async function run() {
       cursor: ''
     }
     //console.error(github.context)
+    interface committersDetails {
+      name: string,
+      id: number
+    }
+
+    let committers: committersDetails[] = []
+    const extractUserFromCommit = (commit) => commit.author.user || commit.committer.user || commit.author || commit.committer
 
     let response = await octokit.graphql(`
     query($owner:String! $name:String! $number:Int! $cursor:String!){
@@ -75,7 +82,27 @@ async function run() {
       cursor: ''
     })
     //  console.log(query)
-    console.log(response.repository.pullRequest.commits)
+    response.repository.pullRequest.commits.edges.forEach(edge => {
+      let committer = extractUserFromCommit(edge.node.commit)
+      let user = {
+        name: committer.login || committer.name,
+        id: committer.databaseId || ''
+      }
+      try {
+        if (committers.length === 0 || committers.map((c) => {
+          return c.name
+        }).indexOf(user.name) < 0) {
+          committers.push(user)
+        }
+      }
+
+      catch (e) {
+        throw new Error(e)
+      }
+
+    });
+
+    console.log(committers)
 
     //const responseToIssue = await octokit.issues.createComment(args)
     //  console.error('Thank you for creating the issue --dev-release')
