@@ -101,7 +101,9 @@ async function run() {
     }
     let signedContributors
     try {
-      signedContributors = await octokit.repos.getContents(args2)
+      signedContributors = await octokit.repos.getContents(args2).then(({ data }) => {
+        data.content
+      })
     } catch (e) {
       throw new Error("error reading contributor file: " + e);
     }
@@ -112,7 +114,7 @@ async function run() {
     // } catch (err) {
     //   throw new Error("CLA file not found.");
     // }
-    console.log("The contributors are :" + JSON.stringify(signedContributors.data))
+    console.log("The contributors are :" + JSON.stringify(signedContributors))
 
   } catch (error) {
     core.setFailed(error.message);
