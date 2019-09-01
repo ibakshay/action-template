@@ -103,7 +103,7 @@ async function run() {
     try {
       result = await octokit.repos.getContents(args2)
       content = Buffer.from(result.data.content, 'base64').toString()
-      console.log(JSON.parse(content))
+      console.log(JSON.parse(content.contributors.push({ "name": "willwill" }, { "id": 65437 })))
     } catch (e) {
       throw new Error("error reading contributor file: " + e);
     }
