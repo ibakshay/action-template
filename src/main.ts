@@ -14,19 +14,11 @@ async function run() {
     const octokit = new github.GitHub(myToken);
     console.log(github.context.payload.pull_request!.head)
 
-    const args = {
+    const args1 = {
       owner: github.context.repo.owner,
       repo: github.context.repo.repo,
       issue_number: github.context.issue.number
     }
-    let variables = {
-      owner: args.owner,
-      name: args.repo,
-      number: args.issue_number,
-      cursor: ''
-    }
-
-
 
     /* Graphql start for getting committers */
     interface committersDetails {
@@ -73,9 +65,9 @@ async function run() {
         }
     }
 }`.replace(/ /g, ''), {
-      owner: args.owner,
-      name: args.repo,
-      number: args.issue_number,
+      owner: args1.owner,
+      name: args1.repo,
+      number: args1.issue_number,
       cursor: ''
     })
     //  console.log(query)
@@ -101,14 +93,26 @@ async function run() {
 
     console.log(committers)
     /* Graphql end for getting committers */
-    let pathToCla = './cla.json'
-    let file
-    try {
-      file = fs.readFileSync(pathToCla, 'utf8');
-    } catch (err) {
-      throw new Error("CLA file not found.");
+    const args2 = {
+      owner: github.context.repo.owner,
+      repo: github.context.repo.repo,
+      path: './cla.json',
+      ref: 'master'
     }
-    console.log("The contributors are :" + file)
+    let signedContributors
+    try {
+      signedContributors = await octokit.repos.getContents(args2)
+    } catch (e) {
+      throw new Error("error reading contributor file: " + e);
+    }
+    // let pathToCla = './cla.json'
+    // let file
+    // try {
+    //   file = fs.readFileSync(pathToCla, 'utf8');
+    // } catch (err) {
+    //   throw new Error("CLA file not found.");
+    // }
+    console.log("The contributors are :" + signedContributors)
 
   } catch (error) {
     core.setFailed(error.message);
