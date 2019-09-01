@@ -100,7 +100,7 @@ async function run() {
 
     console.log(committers)
     /* Graphql end for getting committers */
-    let pathToCla = '../cla.json'
+    let pathToCla = './cla.json'
     let file
     try {
       file = fs.readFileSync(pathToCla, 'utf8');
