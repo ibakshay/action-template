@@ -112,7 +112,7 @@ async function run() {
     // } catch (err) {
     //   throw new Error("CLA file not found.");
     // }
-    console.log("The contributors are :" + JSON.parse(signedContributors.data))
+    console.log("The contributors are :" + JSON.stringify(signedContributors.data))
 
   } catch (error) {
     core.setFailed(error.message);
