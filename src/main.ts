@@ -111,7 +111,10 @@ async function run() {
       throw new Error("error reading contributor file: " + e)
     }
     let updateFile, contentBinary
-    contentBinary = Buffer.from(content).toString('base64')
+    contentBinary = {
+      "name": "Ibakshay"
+    }
+    contentBinary = Buffer.from(contentBinary).toString('base64')
     const args3 = {
       owner: github.context.repo.owner,
       repo: github.context.repo.repo,
