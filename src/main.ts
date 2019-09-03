@@ -110,8 +110,13 @@ async function run() {
     } catch (e) {
       throw new Error("error reading contributor file: " + e)
     }
+    let testJSON = {
+      name: "akshay",
+      id: 2344
+    }
     let updateFile, contentBinary
-    contentBinary = Buffer.from("hello I am the champion").toString('base64')
+    contentBinary = JSON.stringify(testJSON)
+    contentBinary = Buffer.from(contentBinary).toString('base64')
     console.log(contentBinary)
     const args3 = {
       owner: github.context.repo.owner,
