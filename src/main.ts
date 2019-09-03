@@ -115,8 +115,7 @@ async function run() {
       id: 2344
     }
     let updateFile, contentBinary
-    contentBinary = JSON.stringify(testJSON)
-    contentBinary = Buffer.from(contentBinary).toString('base64')
+    contentBinary = Buffer.from(JSON.stringify(testJSON)).toString('base64')
     console.log(contentBinary)
     const args3 = {
       owner: github.context.repo.owner,
