@@ -122,7 +122,7 @@ async function run() {
       ref: 'master',
       sha: result.data.sha,
       message: 'test commit',
-      content: contentBinary
+      content: contentString
     }
 
     try {
