@@ -111,7 +111,7 @@ async function run() {
       throw new Error("error reading contributor file: " + e)
     }
     let updateFile, contentBinary
-    contentBinary = {
+    content = {
       "name": "Ibakshay"
     }
     contentBinary = Buffer.from(content).toString('base64')
