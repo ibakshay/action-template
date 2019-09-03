@@ -12,7 +12,7 @@ async function run() {
     // This should be a token with access to your repository scoped in as a secret.
     const myToken = core.getInput('myToken');
     const octokit = new github.GitHub(myToken);
-    console.log(github.context.payload)
+    //console.log(github.context.payload)
 
     const args1 = {
       owner: github.context.repo.owner,
@@ -99,21 +99,16 @@ async function run() {
       path: 'cla.json',
       ref: 'master'
     }
+
     let result, content
     try {
       result = await octokit.repos.getContents(args2)
+      console.log(result)
       content = Buffer.from(result.data.content, 'base64').toString()
-      console.log(JSON.parse(content))
+      console.log(content)
     } catch (e) {
       throw new Error("error reading contributor file: " + e);
     }
-    // let pathToCla = './cla.json'
-    // let file
-    // try {
-    //   file = fs.readFileSync(pathToCla, 'utf8');
-    // } catch (err) {
-    //   throw new Error("CLA file not found.");
-    // }
   } catch (error) {
     core.setFailed(error.message);
   }
@@ -121,3 +116,10 @@ async function run() {
 }
 
 run();
+    // let pathToCla = './cla.json'
+    // let file
+    // try {
+    //   file = fs.readFileSync(pathToCla, 'utf8');
+    // } catch (err) {
+    //   throw new Error("CLA file not found.");
+    // }
