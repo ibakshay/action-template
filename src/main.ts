@@ -114,7 +114,7 @@ async function run() {
     contentBinary = {
       "name": "Ibakshay"
     }
-    contentBinary = Buffer.from(contentBinary, 'base64').toString()
+    //contentBinary = Buffer.from(contentBinary, 'base64').toString()
     console.log(contentBinary)
     const args3 = {
       owner: github.context.repo.owner,
