@@ -109,7 +109,8 @@ async function run() {
     } catch (e) {
       throw new Error("error reading contributor file: " + e)
     }
-
+    let updateFile, contentBinary
+    contentBinary = Buffer.from(content).toString('base64')
     const args3 = {
       owner: github.context.repo.owner,
       repo: github.context.repo.repo,
@@ -119,7 +120,7 @@ async function run() {
       message: 'test commit',
       content: content
     }
-    let updateFile
+
     try {
       updateFile = await octokit.repos.createOrUpdateFile(args3)
     } catch (e) {
