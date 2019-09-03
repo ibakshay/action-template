@@ -107,7 +107,23 @@ async function run() {
       content = Buffer.from(result.data.content, 'base64').toString()
       console.log(content)
     } catch (e) {
-      throw new Error("error reading contributor file: " + e);
+      throw new Error("error reading contributor file: " + e)
+    }
+
+    const args3 = {
+      owner: github.context.repo.owner,
+      repo: github.context.repo.repo,
+      path: 'cla.json',
+      ref: 'master',
+      sha: result.data.sha,
+      message: 'test commit',
+      content: content
+    }
+    let updateFile
+    try {
+      updateFile = await octokit.repos.createOrUpdateFile(args3)
+    } catch (e) {
+      throw new Error("error updating  contributor file: " + e)
     }
   } catch (error) {
     core.setFailed(error.message);
