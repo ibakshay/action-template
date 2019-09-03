@@ -104,8 +104,7 @@ async function run() {
     try {
       result = await octokit.repos.getContents(args2)
       //console.log(result)
-      content = Buffer.from(result.data.content, 'base64').toString()
-      //content = JSON.parse(content)
+      content = Buffer.from(result.data.content, 'base64')
       console.log(content)
     } catch (e) {
       throw new Error("error reading contributor file: " + e)
@@ -115,7 +114,8 @@ async function run() {
       id: 2344
     }
     let updateFile, contentBinary
-    contentBinary = Buffer.from(JSON.stringify(testJSON)).toString('base64')
+    let testString = JSON.stringify(testJSON)
+    contentBinary = Buffer.from(JSON.stringify(testString)).toString('base64')
     console.log(contentBinary)
     const args3 = {
       owner: github.context.repo.owner,
