@@ -12,7 +12,7 @@ async function run() {
     // This should be a token with access to your repository scoped in as a secret.
     const myToken = core.getInput('myToken');
     const octokit = new github.GitHub(myToken);
-    // console.log(github.context.payload.pull_request!.head)
+    console.log(github.context.payload)
 
     const args1 = {
       owner: github.context.repo.owner,
