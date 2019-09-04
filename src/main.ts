@@ -70,7 +70,6 @@ async function run() {
       number: args1.issue_number,
       cursor: ''
     })
-    //  console.log(query)
     response.repository.pullRequest.commits.edges.forEach(edge => {
       let committer = extractUserFromCommit(edge.node.commit)
       let user = {
@@ -114,9 +113,8 @@ async function run() {
       id: 2344
     }
     let updateFile, contentBinary
-    let contentString = JSON.stringify(content)
+    let contentString = JSON.stringify(testJSON)
     contentBinary = Buffer.from(contentString).toString('base64')
-    console.log(contentBinary)
     const args3 = {
       owner: github.context.repo.owner,
       repo: github.context.repo.repo,
