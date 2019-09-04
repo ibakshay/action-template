@@ -7,7 +7,7 @@ const io = require('@actions/io')
 async function run() {
   try {
     const myInput = core.getInput('myInput');
-    console.log(`The path to CLA is   ${myInput}`);
+    //console.log(`The path to CLA is   ${myInput}`);
 
     // This should be a token with access to your repository scoped in as a secret.
     const myToken = core.getInput('myToken');
@@ -104,7 +104,7 @@ async function run() {
     try {
       result = await octokit.repos.getContents(args2)
       //console.log(result)
-      content = Buffer.from(result.data.content, 'base64').toString
+      content = Buffer.from(result.data.content, 'base64').toString()
       console.log(JSON.parse(content))
     } catch (e) {
       throw new Error("error reading contributor file: " + e)
