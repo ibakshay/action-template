@@ -33,7 +33,7 @@ async function run() {
     // }
 
     const clas = await getclas()
-    clas.forEach(element => {
+    clas.contributors.forEach(element => {
       console.log(element.name + "id is " + element.id)
     })
 
