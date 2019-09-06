@@ -33,7 +33,9 @@ async function run() {
     // }
 
     const clas = await getclas()
-    console.log("My name is " + clas.contributors)
+    clas.forEach(element => {
+      console.log(element.name + "id is " + element.id)
+    })
 
     // let testJSON = {
     //   name: "akshay",
