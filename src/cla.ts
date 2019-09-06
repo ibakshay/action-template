@@ -23,6 +23,7 @@ export async function getclas() {
         console.log("Object: --->" + clas)
         return clas
     } catch (err) {
+        console.log(err)
         core.debug(err.message)
 
     }
