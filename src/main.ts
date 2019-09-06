@@ -88,7 +88,7 @@ async function run() {
     //       }
 
     //     })
-    const committers = getCommitters()
+    const committers = await getCommitters()
     console.log(committers)
     /* Graphql end for getting committers */
     const args2 = {
