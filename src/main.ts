@@ -34,7 +34,7 @@ async function run() {
     // }
 
     const clas = await getclas()
-    console.log(clas)
+    //console.log(clas)
 
     // let testJSON = {
     //   name: "akshay",

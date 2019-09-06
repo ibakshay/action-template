@@ -17,7 +17,9 @@ export default async function () {
             ref: branch
         })
         clas = Buffer.from(result.data.content, 'base64').toString()
+        console.log("stringy: --->" + clas)
         clas = JSON.parse(clas)
+        console.log("Object: --->" + clas)
         return clas
     } catch (err) {
         core.debug(err.message)
