@@ -67,7 +67,6 @@ export default async function getCommitters() {
                 committers.push(user)
             }
         })
-        console.log(committers)
         return committers
 
     } catch (e) {

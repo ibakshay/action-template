@@ -1,0 +1,28 @@
+import getCommitters from './graphql'
+import octokit from './octokit'
+import * as core from '@actions/core'
+import { context } from '@actions/github'
+
+
+export default async function () {
+    //getting the path of the cla from the user
+    const pathToCla = core.getInput('pathtocla')
+    const branch = core.getInput('branch')
+    let result, clas
+    try {
+        result = await octokit.repos.getContents({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            path: pathToCla,
+            ref: branch
+        })
+        clas = Buffer.from(result.data.content, 'base64').toString()
+        clas = JSON.parse(clas)
+        return clas
+    } catch (err) {
+        core.debug(err.message)
+
+    }
+
+
+}
