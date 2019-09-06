@@ -14,8 +14,8 @@ async function run() {
     // This should be a token with access to your repository scoped in as a secret.
     //const myToken = core.getInput('myToken')
 
-    const committers = await getCommitters()
-    console.debug(committers)
+    // const committers = await getCommitters()
+    // console.debug(committers)
     // const args2 = {
     //   owner: github.context.repo.owner,
     //   repo: github.context.repo.repo,
