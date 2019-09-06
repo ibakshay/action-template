@@ -61,17 +61,14 @@ export default async function getCommitters() {
                 name: committer.login || committer.name,
                 id: committer.databaseId || ''
             }
-            console.log("committers are " + committers)
             if (committers.length === 0 || committers.map((c) => {
                 return c.name
             }).indexOf(user.name) < 0) {
                 committers.push(user)
             }
-
-            return committers
-
-
         })
+        console.log(committers)
+        return committers
 
     } catch (e) {
         console.log('graphql call to get the committers details failed:' + e)
