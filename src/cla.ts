@@ -20,7 +20,6 @@ export async function getclas() {
         clas = Buffer.from(result.data.content, 'base64').toString()
         console.log("stringy: --->" + clas)
         clas = JSON.parse(clas)
-        console.log("Object: --->" + clas)
         return clas
     } catch (err) {
         console.log(err)
