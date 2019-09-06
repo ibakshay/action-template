@@ -1,19 +1,17 @@
 import * as core from '@actions/core';
 import * as github from '@actions/github'
-const fs = require('fs')
 const io = require('@actions/io')
+import octokit from './octokit'
 
 
 async function run() {
   try {
-    const myInput = core.getInput('myInput');
+    core.debug('CLA Assistant GitHub Action is running')
+    const myInput = core.getInput('myInput')
     //console.log(`The path to CLA is   ${myInput}`);
 
     // This should be a token with access to your repository scoped in as a secret.
-    const myToken = core.getInput('myToken');
-    const octokit = new github.GitHub(myToken);
-    //console.log(github.context.payload)
-
+    const myToken = core.getInput('myToken')
     const args1 = {
       owner: github.context.repo.owner,
       repo: github.context.repo.repo,
