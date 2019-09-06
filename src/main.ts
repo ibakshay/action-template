@@ -3,8 +3,7 @@ import * as github from '@actions/github'
 const io = require('@actions/io')
 import octokit from './octokit'
 import getCommitters from './graphql'
-import getclas from './cla'
-import { getEnabledCategories } from 'trace_events'
+import { getclas } from './cla'
 
 
 async function run() {

@@ -4,7 +4,8 @@ import * as core from '@actions/core'
 import { context } from '@actions/github'
 
 
-export default async function getclas() {
+export async function getclas() {
+    console.log('hello from cla')
     //getting the path of the cla from the user
     const pathToCla = core.getInput('pathtocla')
     const branch = core.getInput('branch')
