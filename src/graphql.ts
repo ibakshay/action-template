@@ -60,7 +60,7 @@ export default async function getCommitters() {
                 name: committer.login || committer.name,
                 id: committer.databaseId || ''
             }
-            console.log(response)
+            console.log(committer)
             if (committers.length === 0 || committers.map((c) => {
                 return c.name
             }).indexOf(user.name) < 0) {
