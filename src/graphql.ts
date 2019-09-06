@@ -11,7 +11,7 @@ interface CommittersDetails {
 
 export default async function getCommitters() {
     try {
-        let committers: CommittersDetails[]
+        let committers: CommittersDetails[] = []
         let response = await octokit.graphql(`
         query($owner:String! $name:String! $number:Int! $cursor:String!){
             repository(owner: $owner, name: $name) {
