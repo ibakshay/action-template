@@ -33,7 +33,7 @@ async function run() {
     // }
 
     const clas = await getclas()
-    //console.log(clas)
+    console.log("My name is " + clas.name)
 
     // let testJSON = {
     //   name: "akshay",
