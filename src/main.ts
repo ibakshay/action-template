@@ -1,5 +1,5 @@
 import * as core from '@actions/core'
-import * as github from '@actions/github'
+import { context } from '@actions/github'
 const io = require('@actions/io')
 import octokit from './octokit'
 import getCommitters from './graphql'
@@ -12,10 +12,7 @@ async function run() {
     const myInput = core.getInput('myInput')
 
     const clas = await getclas()
-    clas.contributors.push({ "name": "Vandana", "id": 12345 })
-    clas.contributors.forEach(element => {
-      console.log(element.name + "id is " + element.id)
-    })
+
 
     // let testJSON = {
     //   name: "akshay",

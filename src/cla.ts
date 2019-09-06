@@ -20,6 +20,22 @@ export async function getclas() {
         clas = Buffer.from(result.data.content, 'base64').toString()
         console.log("stringy: --->" + clas)
         clas = JSON.parse(clas)
+
+        clas.contributors.push({ "name": "Vandana", "id": 12345 })
+        clas.contributors.forEach(element => {
+            console.log(element.name + "id is " + element.id)
+        })
+        let contentString = JSON.stringify(clas)
+        let contentBinary = Buffer.from(contentString).toString('base64')
+        await octokit.repos.createOrUpdateFile({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            path: pathToCla,
+            sha: result.data.sha,
+            message: 'test commit',
+            content: contentBinary,
+            branch: branch
+        })
         return clas
     } catch (err) {
         console.log(err)
