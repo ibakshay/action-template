@@ -39,7 +39,7 @@ export async function getclas() {
         return clas
     } catch (err) {
         console.log(err)
-        core.debug(err.message)
+        throw new Error(err);
 
     }
 
