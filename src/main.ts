@@ -8,7 +8,7 @@ import { getclas } from './cla'
 
 async function run() {
   try {
-    core.debug('CLA Assistant GitHub Action is running')
+    console.log('CLA Assistant GitHub Action is running')
     const myInput = core.getInput('myInput')
 
     const clas = await getclas()
