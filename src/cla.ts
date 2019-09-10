@@ -18,7 +18,7 @@ export async function getclas() {
             owner: context.repo.owner,
             repo: context.repo.repo,
             path: pathToCla,
-            ref: branch
+            ref: 'test-cla'
         })
 
     } catch (err) {
