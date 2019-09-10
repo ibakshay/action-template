@@ -13,29 +13,6 @@ async function run() {
 
     const clas = await getclas()
 
-
-    // let testJSON = {
-    //   name: "akshay",
-    //   id: 2344
-    // }
-    // let updateFile, contentBinary
-    // let contentString = JSON.stringify(testJSON)
-    // contentBinary = Buffer.from(contentString).toString('base64')
-    // const args3 = {
-    //   owner: github.context.repo.owner,
-    //   repo: github.context.repo.repo,
-    //   path: 'cla.json',
-    //   ref: 'master',
-    //   sha: result.data.sha,
-    //   message: 'test commit',
-    //   content: contentBinary
-    // }
-
-    // try {
-    //   updateFile = await octokit.repos.createOrUpdateFile(args3)
-    // } catch (e) {
-    //   throw new Error("error updating  contributor file: " + e)
-    // }
   } catch (error) {
     core.setFailed(error.message);
   }

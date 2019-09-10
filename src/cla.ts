@@ -22,7 +22,9 @@ export async function getclas() {
         })
 
     } catch (err) {
+        core.setFailed(err.message)
         throw new Error("The JSON format is wrong" + err)
+
     }
     clas = Buffer.from(result.data.content, 'base64').toString()
     console.log("stringy: --->" + clas)
@@ -47,6 +49,7 @@ export async function getclas() {
 
 
     } catch (err) {
+        core.setFailed(err.message)
         throw new Error("error will updating the JSON file" + err)
     }
     return clas
