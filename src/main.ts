@@ -10,7 +10,7 @@ async function run() {
   try {
     console.log('CLA Assistant GitHub Action is running')
     const myInput = core.getInput('myInput')
-    core.setFailed('Testing build failure')
+    //core.setFailed('Testing build failure')
 
     const clas = await getclas()
 
