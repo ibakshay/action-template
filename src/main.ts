@@ -12,7 +12,7 @@ async function run() {
     const myInput = core.getInput('myInput')
     core.setFailed('Testing build failure')
 
-    // const clas = await getclas()
+    const clas = await getclas()
 
   } catch (error) {
     core.setFailed(error.message)
