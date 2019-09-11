@@ -6,7 +6,7 @@ import mongoose = require('mongoose');
 async function run() {
   try {
     console.log("CLA Assistant lite action is running")
-    mongoose.connect('mongodb://cla:AwS9DZkHb9rMBMqd@ds061076.mlab.com:27481/cla-assistant-lite-test', { useNewUrlParser: true })
+    mongoose.connect('mongodb://cla:AwS9DZkHb9rMBMqd@ds227481.mlab.com:27481/cla-assistant-lite-test', { useNewUrlParser: true })
     const Schema = mongoose.Schema
     const cla = new Schema({
       username: { type: String, required: true, unique: true },
