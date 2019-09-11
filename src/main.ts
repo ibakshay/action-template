@@ -1,5 +1,5 @@
 import * as core from '@actions/core';
-import * as mongoose from 'mongoose'
+import mongoose = require('mongoose');
 
 
 
