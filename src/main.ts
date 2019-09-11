@@ -15,7 +15,7 @@ async function run() {
       userid: { type: Number, required: false, unique: false }
     })
     const newModel = mongoose.model('clas', cla)
-    const newDocument = newModel({ username: 'ibakshay', userid: 13945 })
+    const newDocument = newModel({ username: 'becky', userid: 13945 })
     newDocument.save()
     return
 
