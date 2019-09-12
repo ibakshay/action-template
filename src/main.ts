@@ -15,7 +15,7 @@ async function run() {
       owner: github.context.repo.owner,
       repo: github.context.repo.repo,
       issue_number: github.context.issue.number,
-      body: `Thank you for your submission, we really appreciate it. Like many open source projects, we ask that you sign our Contributor License Agreement before we can accept your contribution. You can respond with   ${+1}  to this comment for signing the CLA`
+      body: `Thank you for your submission, we really appreciate it. Like many open source projects, we ask that you sign our Contributor License Agreement before we can accept your contribution. You can respond with  +1  to this comment for signing the CLA`
     }
 
     const responseToIssue = await octokit.issues.createComment(args)
