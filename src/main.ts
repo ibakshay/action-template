@@ -9,20 +9,19 @@ async function run() {
     // This should be a token with access to your repository scoped in as a secret.
     const myToken = core.getInput('myToken');
     const octokit = new github.GitHub(myToken);
-     core.setFailed("Testing  build failure");
 
     //if (github.context.payload.action === 'opened') {
     const args = {
       owner: github.context.repo.owner,
       repo: github.context.repo.repo,
       issue_number: github.context.issue.number,
-      body: 'Thank you for creating the issue'
+      body: 'Thank you for your submission, we really appreciate it. Like many open source projects, we ask that you sign our Contributor License Agreement before we can accept your contribution. You can respond with ' + +1 + 'to this comment for signing the CLA'
     }
 
     const responseToIssue = await octokit.issues.createComment(args)
-    console.error('Thank you for creating the issue')
+    //console.error('Thank you for creating the issue')
     //}
-    console.error(github.context)
+    //console.error(github.context)
 
 
   } catch (error) {
