@@ -70,7 +70,7 @@ export default async function getCommitters() {
         return committers
 
     } catch (e) {
-        console.log('graphql call to get the committers details failed:' + e)
+        core.setFailed('graphql call to get the committers details failed:' + e)
     }
 
 }
