@@ -34,7 +34,7 @@ export async function getclas() {
     clas.contributors.forEach(element => {
         console.log(element.name + "id is " + element.id)
     })
-    let contentString = JSON.stringify(clas)
+    let contentString = JSON.stringify(clas, null, 2)
     let contentBinary = Buffer.from(contentString).toString('base64')
     try {
         await octokit.repos.createOrUpdateFile({
