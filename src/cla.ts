@@ -36,8 +36,9 @@ export async function getclas() {
             })
 
         }
-        core.setFailed(error.message)
-        throw new Error("The JSON format is wrong" + error)
+        else {
+            core.setFailed(error.message)
+        }
 
     }
     clas = Buffer.from(result.data.content, 'base64').toString()
