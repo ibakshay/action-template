@@ -44,6 +44,9 @@ export async function getclas() {
         }
 
     }
+    const committers = getCommitters
+    console.log(committers)
+
     clas = Buffer.from(result.data.content, 'base64').toString()
     console.log("stringy: --->" + clas)
     clas = JSON.parse(clas)
