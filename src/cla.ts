@@ -48,8 +48,8 @@ export async function getclas() {
     console.log("stringy: --->" + clas)
     clas = JSON.parse(clas)
 
-    clas.contributors.push({ "name": "Vandana", "id": 12345 })
-    clas.contributors.forEach(element => {
+    clas.contributorsSignedCLA.push({ "name": "Vandana", "id": 12345 })
+    clas.contributorsSignedCLA.forEach(element => {
         console.log(element.name + "id is " + element.id)
     })
     let contentString = JSON.stringify(clas, null, 2)
