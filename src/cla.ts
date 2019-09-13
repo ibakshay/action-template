@@ -9,7 +9,7 @@ export async function getclas() {
     //getting the path of the cla from the user
     const pathToCla = core.getInput('pathtocla')
     if (!pathToCla || pathToCla == '') {
-        throw new Error('Path to CLA file is not specified')
+        core.setFailed('Path to CLA file is not specified')
     }
     const branch = core.getInput('branch')
     let result, clas
@@ -21,9 +21,23 @@ export async function getclas() {
             ref: branch
         })
 
-    } catch (err) {
-        core.setFailed(err.message)
-        throw new Error("The JSON format is wrong" + err)
+    } catch (error) {
+        if (error.status === 404) {
+            const initialContent = { contributorsSignedCLA: [] }
+            const initalContentString = JSON.stringify(initialContent, null, 2)
+            const initalContentBinary = Buffer.from(initalContentString).toString('base64')
+            await octokit.repos.createFile({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                path: pathToCla,
+                message: 'creating signed Contributors file',
+                content: initalContentBinary,
+                branch: branch
+            })
+
+        }
+        core.setFailed(error.message)
+        throw new Error("The JSON format is wrong" + error)
 
     }
     clas = Buffer.from(result.data.content, 'base64').toString()
