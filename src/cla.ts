@@ -26,7 +26,7 @@ export async function getclas() {
             const initialContent = { contributorsSignedCLA: [] }
             const initalContentString = JSON.stringify(initialContent, null, 2)
             const initalContentBinary = Buffer.from(initalContentString).toString('base64')
-            await octokit.repos.createFile({
+            const response = octokit.repos.createFile({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 path: pathToCla,
@@ -34,7 +34,10 @@ export async function getclas() {
                 content: initalContentBinary,
                 branch: branch
             })
-
+            if (response) {
+                return response
+            }
+            core.setFailed('error occured when creating the signed contributors file ' + error)
         }
         else {
             core.setFailed(error.message)
