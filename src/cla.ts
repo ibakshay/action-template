@@ -26,7 +26,7 @@ export async function getclas() {
             const initialContent = { contributorsSignedCLA: [] }
             const initalContentString = JSON.stringify(initialContent, null, 2)
             const initalContentBinary = Buffer.from(initalContentString).toString('base64')
-            const response = octokit.repos.createFile({
+            const response = octokit.repos.createOrUpdateFile({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 path: pathToCla,
