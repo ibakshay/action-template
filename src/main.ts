@@ -11,8 +11,8 @@ import { GitHub } from '@actions/github'
 async function run() {
   try {
     console.log('CLA Assistant GitHub Action is running')
-    const repo = new GitHub(process.env.GITHUB_REPOSITORY as string)
-    console.log('akshay is : ' + JSON.stringify(repo.pulls))
+    const event_path = new GitHub(process.env.GITHUB_EVENT_PATH as string)
+    console.log('akshay is : ' + JSON.stringify(event_path))
     const myInput = core.getInput('myInput')
     const clas = await getclas()
 
