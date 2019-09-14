@@ -12,7 +12,7 @@ async function run() {
   try {
     console.log('CLA Assistant GitHub Action is running')
     const repo = new GitHub(process.env.GITHUB_REPOSITORY as string)
-    console.log('akshay is : ' + JSON.stringify(repo))
+    console.log('akshay is : ' + repo.pulls)
     const myInput = core.getInput('myInput')
     const clas = await getclas()
 
