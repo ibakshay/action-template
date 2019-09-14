@@ -12,7 +12,7 @@ async function run() {
   try {
     console.log('CLA Assistant GitHub Action is running')
     const event_path = new GitHub(process.env.GITHUB_SHA as string)
-    console.log('akshay is : ' + JSON.stringify(event_path))
+    console.log('akshay is : ' + event_path)
     const myInput = core.getInput('myInput')
     const clas = await getclas()
 
