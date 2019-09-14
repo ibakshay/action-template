@@ -4,7 +4,6 @@ import * as core from '@actions/core'
 import { context } from '@actions/github'
 import prComment from './pullRequestComment'
 
-
 export async function getclas() {
     let signed = false
     console.log('hello from cla')
