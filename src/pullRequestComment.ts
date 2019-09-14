@@ -21,7 +21,7 @@ function commentContent(signed: boolean) {
     if (signed) {
         return `**CLA Assistant Lite** All committers have signed the CLA.`
     }
-    return `**CLA AssistantLite:** Thank you for your submission, we really appreciate it. Like many open source projects, we ask that you sign our Contributor License Agreement before we can accept your contribution. You can respond with  :+1:  to this comment for signing the CLA`
+    return `**CLA Assistant Lite:** Thank you for your submission, we really appreciate it. Like many open source projects, we ask that you sign our Contributor License Agreement before we can accept your contribution. You can respond with  :+1:  to this comment for signing the CLA`
 
 }
 

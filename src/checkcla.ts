@@ -37,7 +37,7 @@ export async function getclas() {
                 content: initalContentBinary,
                 branch: branch
             })
-            if (response) {
+            if (!response) {
                 core.setFailed('error occured when creating the signed contributors file ' + error)
             }
 
