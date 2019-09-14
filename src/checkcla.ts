@@ -2,9 +2,11 @@ import getCommitters from './graphql'
 import octokit from './octokit'
 import * as core from '@actions/core'
 import { context } from '@actions/github'
+import prComment from './pullRequestComment'
 
 
 export async function getclas() {
+    let signed = false
     console.log('hello from cla')
     //getting the path of the cla from the user
     const pathToCla = core.getInput('pathtocla')
@@ -23,10 +25,11 @@ export async function getclas() {
 
     } catch (error) {
         if (error.status === 404) {
+            prComment(signed)
             const initialContent = { contributorsSignedCLA: [] }
             const initalContentString = JSON.stringify(initialContent, null, 2)
             const initalContentBinary = Buffer.from(initalContentString).toString('base64')
-            const response = octokit.repos.createOrUpdateFile({
+            const response = await octokit.repos.createOrUpdateFile({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 path: pathToCla,
@@ -35,9 +38,9 @@ export async function getclas() {
                 branch: branch
             })
             if (response) {
-                return response
+                core.setFailed('error occured when creating the signed contributors file ' + error)
             }
-            core.setFailed('error occured when creating the signed contributors file ' + error)
+
         }
         else {
             core.setFailed(error.message)
