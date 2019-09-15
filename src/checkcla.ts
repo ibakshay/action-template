@@ -14,6 +14,8 @@ export async function getclas() {
     }
     const branch = core.getInput('branch')
     let result, clas
+    const committers = await getCommitters()
+    console.log(committers)
     try {
         result = await octokit.repos.getContents({
             owner: context.repo.owner,
@@ -47,8 +49,6 @@ export async function getclas() {
         }
 
     }
-    const committers = await getCommitters()
-    console.log(committers)
 
     clas = Buffer.from(result.data.content, 'base64').toString()
     console.log("stringy: --->" + clas)
