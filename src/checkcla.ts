@@ -14,7 +14,7 @@ export async function getclas() {
     }
     const branch = core.getInput('branch')
     let result, clas
-    const committers = await getCommitters()
+    const committers = getCommitters()
     console.log(committers)
     try {
         result = await octokit.repos.getContents({
