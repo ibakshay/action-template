@@ -8,9 +8,9 @@ export async function getclas() {
     let signed = false
     console.log('hello from cla')
     //getting the path of the cla from the user
-    const pathToCla = core.getInput('pathtocla')
-    if (!pathToCla || pathToCla == '') {
-        core.setFailed('Path to CLA file is not specified')
+    const pathToClaSignatures = core.getInput('pathtoclasignatures')
+    if (!pathToClaSignatures || pathToClaSignatures == '') {
+        core.setFailed('Path to CLA file is not specified')  // keep default path
     }
     const branch = core.getInput('branch')
     let result, clas
@@ -18,7 +18,7 @@ export async function getclas() {
         result = await octokit.repos.getContents({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            path: pathToCla,
+            path: pathToClaSignatures,
             ref: branch
         })
 
@@ -31,7 +31,7 @@ export async function getclas() {
             const response = await octokit.repos.createOrUpdateFile({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                path: pathToCla,
+                path: pathToClaSignatures,
                 message: 'creating signed Contributors file',
                 content: initalContentBinary,
                 branch: branch
@@ -64,7 +64,7 @@ export async function getclas() {
         await octokit.repos.createOrUpdateFile({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            path: pathToCla,
+            path: pathToClaSignatures,
             sha: result.data.sha,
             message: 'test commit',
             content: contentBinary,
