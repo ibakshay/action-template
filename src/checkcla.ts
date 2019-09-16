@@ -66,7 +66,7 @@ export async function getclas() {
     clas = Buffer.from(result.data.content, 'base64').toString()
     //console.log("stringy: --->" + clas)
     clas = JSON.parse(clas)
-    let unsignedCommitters: CommittersDetails[] = checkCommittersCLA(committers, clas)
+    let unsignedCommitters: CommittersDetails[] = checkCommittersCLA(committers, clas.contributorsSignedCLA)
     console.log('unsigned contributors are: ' + JSON.stringify(unsignedCommitters))
 
     //clas.contributorsSignedCLA.push({ "name": "Vandana", "id": 12345 })
