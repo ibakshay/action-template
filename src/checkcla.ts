@@ -40,7 +40,7 @@ export async function getclas() {
     } catch (error) {
         if (error.status === 404) {
             prComment(signed)
-            const initialContent = { contributorsSignedCLA: [] }
+            const initialContent = { signedContributors: [] }
             const initalContentString = JSON.stringify(initialContent, null, 2)
             const initalContentBinary = Buffer.from(initalContentString).toString('base64')
             const response = await octokit.repos.createOrUpdateFile({
@@ -64,16 +64,15 @@ export async function getclas() {
     }
 
     clas = Buffer.from(result.data.content, 'base64').toString()
-    //console.log("stringy: --->" + clas)
     clas = JSON.parse(clas)
-    let unsignedCommitters: CommittersDetails[] = checkCommittersCLA(committers, clas.contributorsSignedCLA)
+    let unsignedCommitters: CommittersDetails[] = checkCommittersCLA(committers, clas.signedContributors)
     console.log('unsigned contributors are: ' + JSON.stringify(unsignedCommitters))
 
-    //clas.contributorsSignedCLA.push({ "name": "Vandana", "id": 12345 })
-    // clas.contributorsSignedCLA.forEach(element => {
+    clas.signedContributors.push(unsignedCommitters)
+    // clas.signedContributors.forEach(element => {
     //     console.log(element.name + "id is " + element.id)
     // })
-    let contentString = JSON.stringify(clas, null, 2)
+    let contentString = JSON.stringify(clas, null, 4)
     let contentBinary = Buffer.from(contentString).toString('base64')
     try {
         await octokit.repos.createOrUpdateFile({
