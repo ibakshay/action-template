@@ -4,7 +4,8 @@ import { context } from '@actions/github'
 
 interface CommittersDetails {
     name: string,
-    id: number
+    id: number,
+    pullRequestNo: number
 }
 
 
@@ -60,7 +61,7 @@ export default async function getCommitters() {
             let user = {
                 name: committer.login || committer.name,
                 id: committer.databaseId || '',
-                prNo: context.issue.number
+                pullRequestNo: context.issue.number
             }
             if (committers.length === 0 || committers.map((c) => {
                 return c.name

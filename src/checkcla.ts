@@ -8,11 +8,14 @@ import { cpus } from 'os'
 
 interface CommittersDetails {
     name: string,
-    id: number
+    id: number,
+    pullRequestNo: number
 }
 
-
-
+function checkCommittersCLA(committers: CommittersDetails[], clas: CommittersDetails[]): CommittersDetails[] {
+    const unsignedContributors = _.differenceBy(committers, clas, 'id')
+    return unsignedContributors
+}
 export async function getclas() {
     let signed = false
     console.log('hello from cla')
@@ -23,8 +26,7 @@ export async function getclas() {
     }
     const branch = core.getInput('branch')
     let result, clas
-    const committerIds = []
-    const committers = await getCommitters()
+    const committers = await getCommitters() as CommittersDetails[]
 
     console.log(committers)
     try {
@@ -65,7 +67,7 @@ export async function getclas() {
     console.log("stringy: --->" + clas)
     clas = JSON.parse(clas)
 
-    clas.contributorsSignedCLA.push({ "name": "Vandana", "id": 12345 })
+    //clas.contributorsSignedCLA.push({ "name": "Vandana", "id": 12345 })
     // clas.contributorsSignedCLA.forEach(element => {
     //     console.log(element.name + "id is " + element.id)
     // })
@@ -81,9 +83,11 @@ export async function getclas() {
             content: contentBinary,
             branch: branch
         })
+        const unsignedCommitters: CommittersDetails[] = checkCommittersCLA(committers, clas)
+        console.log(unsignedCommitters)
+    }
 
-
-    } catch (err) {
+    catch (err) {
         core.setFailed(err.message)
         throw new Error("error will updating the JSON file" + err)
     }
