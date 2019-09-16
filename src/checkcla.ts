@@ -28,7 +28,7 @@ export async function getclas() {
     let result, clas
     const committers = await getCommitters() as CommittersDetails[]
 
-    // console.log(committers)
+    console.log(committers)
     try {
         result = await octokit.repos.getContents({
             owner: context.repo.owner,
