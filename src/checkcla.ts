@@ -68,11 +68,11 @@ export async function getclas() {
     let unsignedCommitters: CommittersDetails[] = checkCommittersCLA(committers, clas.signedContributors)
     console.log('unsigned contributors are: ' + JSON.stringify(unsignedCommitters))
 
-    clas.signedContributors.push(unsignedCommitters)
+    clas.signedContributors.push(...unsignedCommitters)
     // clas.signedContributors.forEach(element => {
     //     console.log(element.name + "id is " + element.id)
     // })
-    let contentString = JSON.stringify(clas, null, 4)
+    let contentString = JSON.stringify(clas, null, 2)
     let contentBinary = Buffer.from(contentString).toString('base64')
     try {
         await octokit.repos.createOrUpdateFile({
