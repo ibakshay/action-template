@@ -3,6 +3,15 @@ import octokit from './octokit'
 import * as core from '@actions/core'
 import { context } from '@actions/github'
 import prComment from './pullRequestComment'
+import _ from 'lodash'
+import { cpus } from 'os'
+
+interface CommittersDetails {
+    name: string,
+    id: number
+}
+
+
 
 export async function getclas() {
     let signed = false
@@ -14,7 +23,9 @@ export async function getclas() {
     }
     const branch = core.getInput('branch')
     let result, clas
+    const committerIds = []
     const committers = await getCommitters()
+
     console.log(committers)
     try {
         result = await octokit.repos.getContents({
@@ -55,9 +66,9 @@ export async function getclas() {
     clas = JSON.parse(clas)
 
     clas.contributorsSignedCLA.push({ "name": "Vandana", "id": 12345 })
-    clas.contributorsSignedCLA.forEach(element => {
-        console.log(element.name + "id is " + element.id)
-    })
+    // clas.contributorsSignedCLA.forEach(element => {
+    //     console.log(element.name + "id is " + element.id)
+    // })
     let contentString = JSON.stringify(clas, null, 2)
     let contentBinary = Buffer.from(contentString).toString('base64')
     try {

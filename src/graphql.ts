@@ -59,7 +59,8 @@ export default async function getCommitters() {
             let committer = extractUserFromCommit(edge.node.commit)
             let user = {
                 name: committer.login || committer.name,
-                id: committer.databaseId || ''
+                id: committer.databaseId || '',
+                prNo: context.issue.number
             }
             if (committers.length === 0 || committers.map((c) => {
                 return c.name
