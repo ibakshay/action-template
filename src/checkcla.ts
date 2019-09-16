@@ -28,7 +28,7 @@ export async function getclas() {
     let result, clas
     const committers = await getCommitters() as CommittersDetails[]
 
-    console.log(committers)
+    // console.log(committers)
     try {
         result = await octokit.repos.getContents({
             owner: context.repo.owner,
@@ -64,8 +64,10 @@ export async function getclas() {
     }
 
     clas = Buffer.from(result.data.content, 'base64').toString()
-    console.log("stringy: --->" + clas)
+    //console.log("stringy: --->" + clas)
     clas = JSON.parse(clas)
+    const unsignedCommitters: CommittersDetails[] = checkCommittersCLA(committers, clas)
+    console.log('unsigned contributors are: ' + unsignedCommitters)
 
     //clas.contributorsSignedCLA.push({ "name": "Vandana", "id": 12345 })
     // clas.contributorsSignedCLA.forEach(element => {
@@ -83,8 +85,7 @@ export async function getclas() {
             content: contentBinary,
             branch: branch
         })
-        const unsignedCommitters: CommittersDetails[] = checkCommittersCLA(committers, clas)
-        console.log(unsignedCommitters)
+
     }
 
     catch (err) {
