@@ -29,9 +29,15 @@ async function getComment() {
 
 }
 
-function commentContent(signed: boolean) {
+function commentContent(signed: boolean, commiterMap?: CommitterMap) {
     if (signed) {
         return `**CLA Assistant Lite** All committers have signed the CLA.`
+    }
+
+    let committersCount = 1
+    if (commiterMap && commiterMap.signed && commiterMap.notSigned) {
+        committersCount = commiterMap.signed.length + commiterMap.notSigned.length
+        console.log("The no of Committers are" + committersCount)
     }
     return `**CLA Assistant Lite:** Thank you for your submission, we really appreciate it. Like many open source projects, we ask that you sign our Contributor License Agreement before we can accept your contribution. You can respond with  :+1:  to this comment for signing the CLA`
 
@@ -42,7 +48,7 @@ export default async function prComment(signed: boolean, commiterMap?: Committer
     try {
         console.log(JSON.stringify(commiterMap))
         const prComment = await getComment()
-        const body = commentContent(signed)
+        const body = commentContent(signed, commiterMap)
         if (!signed && !prComment) {
             return octokit.issues.createComment({
                 owner: context.repo.owner,
