@@ -21,7 +21,6 @@ interface CommitterMap {
 
 function checkCommittersCLA(committers: CommittersDetails[], clas: CommittersDetails[]): CommittersDetails[] {
     const unsignedContributors = _.differenceBy(committers, clas, 'id')
-    //const intersection = array1.filter(element => array2.includes(element));
     const signedContributors = committers.filter(signedCommitter => clas.some(cla => signedCommitter.id === cla.id))
     console.log("signed committers are :" + JSON.stringify(signedContributors))
     return unsignedContributors
@@ -75,10 +74,14 @@ export async function getclas() {
     }
     clas = Buffer.from(result.data.content, 'base64').toString()
     clas = JSON.parse(clas)
-    let unsignedCommitters: CommittersDetails[] = checkCommittersCLA(committers, clas.signedContributors)
+    //let unsignedCommitters: CommittersDetails[] = checkCommittersCLA(committers, clas.signedContributors)
+    //committerMap.notSigned = _.differenceBy(committers, clas, 'id')
+    committerMap.notSigned = committers.filter(committer => !clas.signedContributors.some(cla => committer.id === cla.id))
+    committerMap.signed = committers.filter(committer => clas.signedContributors.some(cla => committer.id === cla.id))
     committers.map((committer) => { if (!committer.id) { committerMap.unknown!.push(committer) } })
     console.log('unsigned contributors are: ' + JSON.stringify(committerMap.notSigned))
-    clas.signedContributors.push(...unsignedCommitters)
+    console.log('unsigned contributors are: ' + JSON.stringify(committerMap.signed))
+    clas.signedContributors.push(...committerMap.notSigned)
     let contentString = JSON.stringify(clas, null, 2)
     let contentBinary = Buffer.from(contentString).toString('base64')
     try {
