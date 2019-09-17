@@ -1,6 +1,7 @@
 import octokit from './octokit'
 import * as core from '@actions/core'
 import { context } from '@actions/github'
+import { pathToCLADocument } from './url'
 
 interface CommittersDetails {
     name: string,
@@ -37,8 +38,11 @@ function commentContent(signed: boolean, commiterMap?: CommitterMap) {
     let committersCount = 1
     if (commiterMap && commiterMap.signed && commiterMap.notSigned) {
         committersCount = commiterMap.signed.length + commiterMap.notSigned.length
-        console.log("The no of Committers are" + committersCount)
     }
+    let you = (committersCount > 1 ? 'you all' : 'you')
+    let text = `**CLA Assistant Lite:** <br/>Thank you for your submission, we really appreciate it. Like many open source projects, we ask that ${you} sign our [Contributor License Agreement](pathToCLADocument) before we can accept your contribution.<br/>`
+    console.log(text)
+
     return `**CLA Assistant Lite:** Thank you for your submission, we really appreciate it. Like many open source projects, we ask that you sign our Contributor License Agreement before we can accept your contribution. You can respond with  :+1:  to this comment for signing the CLA`
 
 }
