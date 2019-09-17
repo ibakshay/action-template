@@ -81,8 +81,7 @@ export async function getclas() {
     console.log('unsigned contributors are: ' + JSON.stringify(committerMap.notSigned))
     console.log('signed contributors are: ' + JSON.stringify(committerMap.signed))
     if (committerMap.notSigned.length === 0) {
-
-        signed
+        signed = true
         console.log('can you see me ? : ' + signed)
     }
     await prComment(signed, committerMap)
