@@ -27,7 +27,7 @@ function checkCommittersCLA(committers: CommittersDetails[], clas: CommittersDet
 }
 export async function getclas() {
     const committerMap: CommitterMap = {}
-    let signed = false
+    let signed: boolean = false
     console.log('hello from cla')
     //getting the path of the cla from the user
     const pathToClaSignatures = core.getInput('pathtoclasignatures')
@@ -80,7 +80,11 @@ export async function getclas() {
     committers.map((committer) => { if (!committer.id) { committerMap.unknown!.push(committer) } })
     console.log('unsigned contributors are: ' + JSON.stringify(committerMap.notSigned))
     console.log('signed contributors are: ' + JSON.stringify(committerMap.signed))
-    if (committerMap.notSigned.length === 0) { signed }
+    if (committerMap.notSigned.length === 0) {
+
+        signed
+        console.log('can you see me ? : ' + signed)
+    }
     await prComment(signed, committerMap)
     clas.signedContributors.push(...committerMap.notSigned)
     let contentString = JSON.stringify(clas, null, 2)
