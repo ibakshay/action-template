@@ -58,9 +58,6 @@ function commentContent(signed: boolean, committerMap?: CommitterMap) {
 
     }
 
-    if (committersCount)
-        console.log(text)
-
     return text
 
 }
