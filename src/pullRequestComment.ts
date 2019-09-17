@@ -2,6 +2,18 @@ import octokit from './octokit'
 import * as core from '@actions/core'
 import { context } from '@actions/github'
 
+interface CommittersDetails {
+    name: string,
+    id: number,
+    pullRequestNo: number
+}
+
+interface CommitterMap {
+    signed?: CommittersDetails[],
+    notSigned?: CommittersDetails[],
+    unknown?: CommittersDetails[]
+}
+
 async function getComment() {
     try {
         const response = await octokit.issues.listComments({
@@ -26,7 +38,7 @@ function commentContent(signed: boolean) {
 }
 
 
-export default async function prComment(signed: boolean) {
+export default async function prComment(signed: boolean, commiterMap?: CommitterMap) {
     try {
         const prComment = await getComment()
         const body = commentContent(signed)
