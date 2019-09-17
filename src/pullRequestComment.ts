@@ -34,7 +34,7 @@ function commentContent(signed: boolean, committerMap: CommitterMap) {
     if (signed) {
         return `**CLA Assistant Lite** All committers have signed the CLA.`
     }
-    console.log(JSON.stringify("I am in commentContent" + committerMap))
+    console.log(JSON.stringify("I am in commentContent" + JSON.stringify(committerMap)))
     let committersCount = 1
     if (committerMap && committerMap.signed && committerMap.notSigned) {
         committersCount = committerMap.signed.length + committerMap.notSigned.length
