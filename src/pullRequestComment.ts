@@ -34,6 +34,7 @@ function commentContent(signed: boolean, committerMap: CommitterMap) {
     if (signed) {
         return `**CLA Assistant Lite** All committers have signed the CLA.`
     }
+    console.log(JSON.stringify("I am in commentContent" + committerMap))
     let committersCount = 1
     if (committerMap && committerMap.signed && committerMap.notSigned) {
         committersCount = committerMap.signed.length + committerMap.notSigned.length
@@ -65,7 +66,7 @@ function commentContent(signed: boolean, committerMap: CommitterMap) {
 
 export default async function prComment(signed: boolean, committerMap: CommitterMap) {
     try {
-        console.log(JSON.stringify(committerMap))
+
         const prComment = await getComment()
         const body = commentContent(signed, committerMap)
         if (!signed && !prComment) {

@@ -35,7 +35,6 @@ function checkCommittersCLA(committers: CommittersDetails[], clas: CommittersDet
 export async function getclas() {
 
     let signed: boolean = false
-    console.log('hello from cla')
     //getting the path of the cla from the user
     const pathToClaSignatures = core.getInput('pathtoclasignatures')
     if (!pathToClaSignatures || pathToClaSignatures == '') {
@@ -44,8 +43,6 @@ export async function getclas() {
     const branch = core.getInput('branch')
     let result, clas
     const committers = await getCommitters() as CommittersDetails[]
-
-    console.log(committers)
     try {
         result = await octokit.repos.getContents({
             owner: context.repo.owner,
