@@ -86,6 +86,7 @@ export async function getclas() {
     clas.signedContributors.push(...committerMap.notSigned)
     let contentString = JSON.stringify(clas, null, 2)
     let contentBinary = Buffer.from(contentString).toString('base64')
+    console.log(pathToClaSignatures)
     try {
         await octokit.repos.createOrUpdateFile({
             owner: context.repo.owner,
