@@ -30,6 +30,7 @@ async function getComment() {
 }
 
 function commentContent(signed: boolean) {
+    console.log('Am I printing ?' + signed)
     if (signed) {
         console.log('Am I printing ?')
         return `**CLA Assistant Lite** All committers have signed the CLA.`

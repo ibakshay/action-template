@@ -79,7 +79,7 @@ export async function getclas() {
     committerMap.signed = committers.filter(committer => clas.signedContributors.some(cla => committer.id === cla.id))
     committers.map((committer) => { if (!committer.id) { committerMap.unknown!.push(committer) } })
     console.log('unsigned contributors are: ' + JSON.stringify(committerMap.notSigned))
-    console.log('unsigned contributors are: ' + JSON.stringify(committerMap.signed))
+    console.log('signed contributors are: ' + JSON.stringify(committerMap.signed))
     if (committerMap.notSigned.length === 0) { signed }
     await prComment(signed, committerMap)
     clas.signedContributors.push(...committerMap.notSigned)
