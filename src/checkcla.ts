@@ -56,8 +56,7 @@ export async function getclas() {
 
     } catch (error) {
         if (error.status === 404) {
-            committerMap = prepareCommiterMap(committers, clas)
-            prComment(signed, committerMap)
+            committerMap.notSigned = committers
             const initialContent = { signedContributors: [] }
             const initalContentString = JSON.stringify(initialContent, null, 2)
             const initalContentBinary = Buffer.from(initalContentString).toString('base64')
