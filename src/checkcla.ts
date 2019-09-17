@@ -11,12 +11,20 @@ interface CommittersDetails {
     id: number,
     pullRequestNo: number
 }
+// userMap 
+interface CommitterMap {
+    signed?: CommittersDetails[],
+    notSigned?: CommittersDetails[],
+    unknown?: CommittersDetails[]
+}
+
 
 function checkCommittersCLA(committers: CommittersDetails[], clas: CommittersDetails[]): CommittersDetails[] {
     const unsignedContributors = _.differenceBy(committers, clas, 'id')
     return unsignedContributors
 }
 export async function getclas() {
+    const committerMap: CommitterMap = {}
     let signed = false
     console.log('hello from cla')
     //getting the path of the cla from the user
@@ -65,13 +73,10 @@ export async function getclas() {
 
     clas = Buffer.from(result.data.content, 'base64').toString()
     clas = JSON.parse(clas)
-    let unsignedCommitters: CommittersDetails[] = checkCommittersCLA(committers, clas.signedContributors)
-    console.log('unsigned contributors are: ' + JSON.stringify(unsignedCommitters))
-
-    clas.signedContributors.push(...unsignedCommitters)
-    // clas.signedContributors.forEach(element => {
-    //     console.log(element.name + "id is " + element.id)
-    // })
+    // let unsignedCommitters: CommittersDetails[] = checkCommittersCLA(committers, clas.signedContributors)
+    committerMap.notSigned = checkCommittersCLA(committers, clas.signedContributors)
+    console.log('unsigned contributors are: ' + JSON.stringify(committerMap.notSigned))
+    clas.signedContributors.push(...committerMap.notSigned)
     let contentString = JSON.stringify(clas, null, 2)
     let contentBinary = Buffer.from(contentString).toString('base64')
     try {
