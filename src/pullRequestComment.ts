@@ -30,7 +30,7 @@ async function getComment() {
 
 }
 
-function commentContent(signed: boolean, committerMap?: CommitterMap) {
+function commentContent(signed: boolean, committerMap: CommitterMap) {
     if (signed) {
         return `**CLA Assistant Lite** All committers have signed the CLA.`
     }
@@ -63,7 +63,7 @@ function commentContent(signed: boolean, committerMap?: CommitterMap) {
 }
 
 
-export default async function prComment(signed: boolean, committerMap?: CommitterMap) {
+export default async function prComment(signed: boolean, committerMap: CommitterMap) {
     try {
         console.log(JSON.stringify(committerMap))
         const prComment = await getComment()

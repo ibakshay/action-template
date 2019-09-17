@@ -17,8 +17,15 @@ interface CommitterMap {
     notSigned?: CommittersDetails[],
     unknown?: CommittersDetails[]
 }
+let committerMap: CommitterMap = {}
 
+function prepareCommiterMap(committers: CommittersDetails[], clas): CommitterMap {
+    committerMap.notSigned = committers.filter(committer => !clas.signedContributors.some(cla => committer.id === cla.id))
+    committerMap.signed = committers.filter(committer => clas.signedContributors.some(cla => committer.id === cla.id))
+    committers.map((committer) => { if (!committer.id) { committerMap.unknown!.push(committer) } })
+    return committerMap
 
+}
 function checkCommittersCLA(committers: CommittersDetails[], clas: CommittersDetails[]): CommittersDetails[] {
     const unsignedContributors = _.differenceBy(committers, clas, 'id')
     const signedContributors = committers.filter(signedCommitter => clas.some(cla => signedCommitter.id === cla.id))
@@ -26,7 +33,7 @@ function checkCommittersCLA(committers: CommittersDetails[], clas: CommittersDet
     return unsignedContributors
 }
 export async function getclas() {
-    const committerMap: CommitterMap = {}
+
     let signed: boolean = false
     console.log('hello from cla')
     //getting the path of the cla from the user
@@ -49,7 +56,8 @@ export async function getclas() {
 
     } catch (error) {
         if (error.status === 404) {
-            prComment(signed)
+            committerMap = prepareCommiterMap(committers, clas)
+            prComment(signed, committerMap)
             const initialContent = { signedContributors: [] }
             const initalContentString = JSON.stringify(initialContent, null, 2)
             const initalContentBinary = Buffer.from(initalContentString).toString('base64')
