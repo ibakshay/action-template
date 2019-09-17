@@ -34,8 +34,6 @@ function commentContent(signed: boolean, committerMap?: CommitterMap) {
     if (signed) {
         return `**CLA Assistant Lite** All committers have signed the CLA.`
     }
-    console.log("I am from prComment and path to cla is :" + pathToCLADocument())
-
     let committersCount = 1
     if (committerMap && committerMap.signed && committerMap.notSigned) {
         committersCount = committerMap.signed.length + committerMap.notSigned.length
