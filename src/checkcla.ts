@@ -23,7 +23,7 @@ function checkCommittersCLA(committers: CommittersDetails[], clas: CommittersDet
     const unsignedContributors = _.differenceBy(committers, clas, 'id')
     //const intersection = array1.filter(element => array2.includes(element));
     const signedContributors = committers.filter(signedCommitter => clas.some(cla => signedCommitter.id === cla.id))
-    console.log("signed committers are :" + signedContributors)
+    console.log("signed committers are :" + JSON.stringify(signedContributors))
     return unsignedContributors
 }
 export async function getclas() {
