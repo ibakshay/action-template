@@ -54,7 +54,8 @@ export async function getclas() {
     } catch (error) {
         if (error.status === 404) {
             committerMap.notSigned = committers
-            console.log(JSON.stringify(committerMap.notSigned))
+            committerMap.signed = []
+            committerMap.unknown = []
             prComment(signed, committerMap)
             const initialContent = { signedContributors: [] }
             const initalContentString = JSON.stringify(initialContent, null, 2)
