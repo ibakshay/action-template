@@ -5,17 +5,7 @@ import { context } from '@actions/github'
 import prComment from './pullRequestComment'
 import { CommitterMap, CommittersDetails } from './interfaces'
 
-// interface CommittersDetails {
-//     name: string,
-//     id: number,
-//     pullRequestNo: number
-// }
-// // userMap 
-// interface CommitterMap {
-//     signed?: CommittersDetails[],
-//     notSigned?: CommittersDetails[],
-//     unknown?: CommittersDetails[]
-// }
+
 let committerMap: CommitterMap = {}
 
 function prepareCommiterMap(committers: CommittersDetails[], clas): CommitterMap {

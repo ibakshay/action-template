@@ -3,12 +3,6 @@ import * as core from '@actions/core';
 import { context } from '@actions/github'
 import { CommittersDetails } from './interfaces'
 
-// interface CommittersDetails {
-//     name: string,
-//     id: number,
-//     pullRequestNo: number
-// }
-
 
 
 export default async function getCommitters() {

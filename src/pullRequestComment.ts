@@ -4,18 +4,6 @@ import { context } from '@actions/github'
 import { pathToCLADocument } from './url'
 import { CommitterMap, CommittersDetails } from './interfaces'
 
-// interface CommittersDetails {
-//     name: string,
-//     id: number,
-//     pullRequestNo: number
-// }
-
-// interface CommitterMap {
-//     signed?: CommittersDetails[],
-//     notSigned?: CommittersDetails[],
-//     unknown?: CommittersDetails[]
-// }
-
 async function getComment() {
     try {
         const response = await octokit.issues.listComments({
