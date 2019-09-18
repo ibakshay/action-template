@@ -3,20 +3,19 @@ import octokit from './octokit'
 import * as core from '@actions/core'
 import { context } from '@actions/github'
 import prComment from './pullRequestComment'
-import _ from 'lodash'
-import { cpus } from 'os'
+import { CommitterMap, CommittersDetails } from './interfaces'
 
-interface CommittersDetails {
-    name: string,
-    id: number,
-    pullRequestNo: number
-}
-// userMap 
-interface CommitterMap {
-    signed?: CommittersDetails[],
-    notSigned?: CommittersDetails[],
-    unknown?: CommittersDetails[]
-}
+// interface CommittersDetails {
+//     name: string,
+//     id: number,
+//     pullRequestNo: number
+// }
+// // userMap 
+// interface CommitterMap {
+//     signed?: CommittersDetails[],
+//     notSigned?: CommittersDetails[],
+//     unknown?: CommittersDetails[]
+// }
 let committerMap: CommitterMap = {}
 
 function prepareCommiterMap(committers: CommittersDetails[], clas): CommitterMap {
@@ -25,12 +24,6 @@ function prepareCommiterMap(committers: CommittersDetails[], clas): CommitterMap
     committers.map((committer) => { if (!committer.id) { committerMap.unknown!.push(committer) } })
     return committerMap
 
-}
-function checkCommittersCLA(committers: CommittersDetails[], clas: CommittersDetails[]): CommittersDetails[] {
-    const unsignedContributors = _.differenceBy(committers, clas, 'id')
-    const signedContributors = committers.filter(signedCommitter => clas.some(cla => signedCommitter.id === cla.id))
-    console.log("signed committers are :" + JSON.stringify(signedContributors))
-    return unsignedContributors
 }
 export async function getclas() {
 
@@ -55,7 +48,7 @@ export async function getclas() {
         if (error.status === 404) {
             committerMap.notSigned = committers
             committerMap.signed = []
-            committerMap.unknown = []
+            committers.map((committer) => { if (!committer.id) { committerMap.unknown!.push(committer) } })
             prComment(signed, committerMap)
             const initialContent = { signedContributors: [] }
             const initalContentString = JSON.stringify(initialContent, null, 2)

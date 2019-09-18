@@ -2,18 +2,19 @@ import octokit from './octokit'
 import * as core from '@actions/core'
 import { context } from '@actions/github'
 import { pathToCLADocument } from './url'
+import { CommitterMap, CommittersDetails } from './interfaces'
 
-interface CommittersDetails {
-    name: string,
-    id: number,
-    pullRequestNo: number
-}
+// interface CommittersDetails {
+//     name: string,
+//     id: number,
+//     pullRequestNo: number
+// }
 
-interface CommitterMap {
-    signed?: CommittersDetails[],
-    notSigned?: CommittersDetails[],
-    unknown?: CommittersDetails[]
-}
+// interface CommitterMap {
+//     signed?: CommittersDetails[],
+//     notSigned?: CommittersDetails[],
+//     unknown?: CommittersDetails[]
+// }
 
 async function getComment() {
     try {
@@ -34,7 +35,6 @@ function commentContent(signed: boolean, committerMap: CommitterMap) {
     if (signed) {
         return `**CLA Assistant Lite** All committers have signed the CLA.`
     }
-    console.log("I am in commentContent" + JSON.stringify(committerMap))
     let committersCount = 1
     if (committerMap && committerMap.signed && committerMap.notSigned) {
         committersCount = committerMap.signed.length + committerMap.notSigned.length
