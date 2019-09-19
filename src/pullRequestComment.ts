@@ -65,6 +65,15 @@ export default async function prComment(signed: boolean, committerMap: Committer
                 body: body
             })
         }
+        else if (prComment && prComment.id) {
+            return octokit.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: prComment.id,
+                body: body
+            })
+
+        }
 
     } catch (e) {
         core.setFailed('Error occured when creating or editing the comments of the pull request: ' + e.message)
