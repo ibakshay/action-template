@@ -16,7 +16,7 @@ function prepareCommiterMap(committers: CommittersDetails[], clas): CommitterMap
 
 }
 
-async function createOrUpdateFile(pathToClaSignatures, sha, contentBinary, branch) {
+async function updateFile(pathToClaSignatures, sha, contentBinary, branch) {
     /* TODO: add dynamic  Message content  */
     await octokit.repos.createOrUpdateFile({
         owner: context.repo.owner,
@@ -73,14 +73,6 @@ export async function getclas() {
             const initalContentString = JSON.stringify(initialContent, null, 2)
             const initalContentBinary = Buffer.from(initalContentString).toString('base64')
             const response = await createFile(pathToClaSignatures, initalContentBinary, branch)
-            // const response = await octokit.repos.createOrUpdateFile({
-            //     owner: context.repo.owner,
-            //     repo: context.repo.repo,
-            //     path: pathToClaSignatures,
-            //     message: 'creating signed Contributors file',
-            //     content: initalContentBinary,
-            //     branch: branch
-            // })
             if (response) {
                 return
             }
@@ -103,24 +95,14 @@ export async function getclas() {
         signed = true
     }
     try {
-        await prComment(signed, committerMap)
+        //await prComment(signed, committerMap)
         /* pushing the unsigned contributors to the CLA Json File */
         clas.signedContributors.push(...committerMap.notSigned)
         let contentString = JSON.stringify(clas, null, 2)
         let contentBinary = Buffer.from(contentString).toString('base64')
-        await createOrUpdateFile(pathToClaSignatures, sha, contentBinary, branch)
-
-
-        // await octokit.repos.createOrUpdateFile({
-        //     owner: context.repo.owner,
-        //     repo: context.repo.repo,
-        //     path: pathToClaSignatures,
-        //     sha: result.data.sha,
-        //     message: 'test commit',
-        //     content: contentBinary,
-        //     branch: branch
-        // })
-
+        // await updateFile(pathToClaSignatures, sha, contentBinary, branch)
+        /* Parallel GitHub Api call for updating both the prComment and the Signature File and then wait for both the promises to be resolved */
+        const promise = Promise.all([prComment(signed, committerMap), updateFile(pathToClaSignatures, sha, contentBinary, branch)])
     }
 
     catch (err) {
