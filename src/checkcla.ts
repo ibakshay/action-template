@@ -95,14 +95,18 @@ export async function getclas() {
         signed = true
     }
     try {
-        //await prComment(signed, committerMap)
         /* pushing the unsigned contributors to the CLA Json File */
         clas.signedContributors.push(...committerMap.notSigned)
         let contentString = JSON.stringify(clas, null, 2)
         let contentBinary = Buffer.from(contentString).toString('base64')
-        // await updateFile(pathToClaSignatures, sha, contentBinary, branch)
         /* Parallel GitHub Api call for updating both the prComment and the Signature File and then wait for both the promises to be resolved */
         const promise = Promise.all([prComment(signed, committerMap), updateFile(pathToClaSignatures, sha, contentBinary, branch)])
+        if (committerMap.notSigned) {
+            committerMap.notSigned.forEach(unsignedCommitter => {
+                console.log(committerMap.notSigned)
+            });
+            core.setFailed("The above contributors has not signed the CLA")
+        }
     }
 
     catch (err) {
