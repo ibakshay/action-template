@@ -29,9 +29,9 @@ async function createOrUpdateFile(pathToClaSignatures, sha, contentBinary, branc
     })
 }
 
-async function createFile(pathToClaSignatures, contentBinary, branch) {
+async function createFile(pathToClaSignatures, contentBinary, branch): Promise<object> {
     /* TODO: add dynamic  Message content  */
-    await octokit.repos.createOrUpdateFile({
+    let response = await octokit.repos.createOrUpdateFile({
         owner: context.repo.owner,
         repo: context.repo.repo,
         path: pathToClaSignatures,
@@ -39,6 +39,7 @@ async function createFile(pathToClaSignatures, contentBinary, branch) {
         content: contentBinary,
         branch: branch
     })
+    return response
 
 
 }
@@ -80,7 +81,7 @@ export async function getclas() {
             //     content: initalContentBinary,
             //     branch: branch
             // })
-            if (response !== undefined) {
+            if (response) {
                 return
             }
             core.setFailed('error occured when creating the signed contributors file ' + error)
