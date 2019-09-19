@@ -15,6 +15,20 @@ function prepareCommiterMap(committers: CommittersDetails[], clas): CommitterMap
     return committerMap
 
 }
+
+async function createOrUpdateFile(pathToClaSignatures, sha, contentBinary, branch) {
+    await octokit.repos.createOrUpdateFile({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        path: pathToClaSignatures,
+        sha: sha,
+        message: 'test commit',
+        content: contentBinary,
+        branch: branch
+    })
+
+
+}
 export async function getclas() {
 
     let signed: boolean = false
@@ -24,7 +38,7 @@ export async function getclas() {
         core.setFailed('Path to CLA file is not specified')  // keep default path
     }
     const branch = core.getInput('branch')
-    let result, clas
+    let result, clas, sha
     const committers = await getCommitters() as CommittersDetails[]
     try {
         result = await octokit.repos.getContents({
@@ -33,6 +47,7 @@ export async function getclas() {
             path: pathToClaSignatures,
             ref: branch
         })
+        sha = result.data.sha
 
     } catch (error) {
         if (error.status === 404) {
@@ -72,20 +87,23 @@ export async function getclas() {
     if (committerMap.notSigned.length === 0) {
         signed = true
     }
-    await prComment(signed, committerMap)
-    clas.signedContributors.push(...committerMap.notSigned)
-    let contentString = JSON.stringify(clas, null, 2)
-    let contentBinary = Buffer.from(contentString).toString('base64')
     try {
-        await octokit.repos.createOrUpdateFile({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            path: pathToClaSignatures,
-            sha: result.data.sha,
-            message: 'test commit',
-            content: contentBinary,
-            branch: branch
-        })
+        await prComment(signed, committerMap)
+        /* pushing the unsigned contributors to the CLA Json File */
+        clas.signedContributors.push(...committerMap.notSigned)
+        let contentString = JSON.stringify(clas, null, 2)
+        let contentBinary = Buffer.from(contentString).toString('base64')
+        await createOrUpdateFile(pathToClaSignatures, sha, contentBinary, branch)
+
+        // await octokit.repos.createOrUpdateFile({
+        //     owner: context.repo.owner,
+        //     repo: context.repo.repo,
+        //     path: pathToClaSignatures,
+        //     sha: result.data.sha,
+        //     message: 'test commit',
+        //     content: contentBinary,
+        //     branch: branch
+        // })
 
     }
 
