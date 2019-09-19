@@ -103,9 +103,7 @@ export async function getclas() {
         const promise = Promise.all([prComment(signed, committerMap), updateFile(pathToClaSignatures, sha, contentBinary, branch)])
         console.log("am i printing " + JSON.stringify(committerMap.notSigned))
         if (committerMap.notSigned !== undefined || committerMap.notSigned) {
-            committerMap.notSigned.forEach(unsignedCommitter => {
-                console.log(committerMap.notSigned)
-            });
+            console.log("am i printing inside the block" + JSON.stringify(committerMap.notSigned))
             core.setFailed("The above contributors has not signed the CLA")
         }
     }
