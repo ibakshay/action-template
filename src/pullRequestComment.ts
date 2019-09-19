@@ -45,8 +45,6 @@ function commentContent(signed: boolean, committerMap: CommitterMap) {
         text += ' You need a GitHub account to be able to sign the CLA. If you have already a GitHub account, please [add the email address used for this commit to your account](https://help.github.com/articles/why-are-my-commits-linked-to-the-wrong-user/#commits-are-not-linked-to-any-user).<br/>'
 
     }
-    console.log(text)
-
     return text
 
 }

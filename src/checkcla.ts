@@ -102,7 +102,7 @@ export async function getclas() {
         /* Parallel GitHub Api call for updating both the prComment and the Signature File and then wait for both the promises to be resolved */
         const promise = Promise.all([prComment(signed, committerMap), updateFile(pathToClaSignatures, sha, contentBinary, branch)])
         console.log("am i printing " + committerMap.notSigned)
-        if (committerMap.notSigned) {
+        if (committerMap.notSigned === undefined || committerMap.notSigned.length === 0) {
             committerMap.notSigned.forEach(unsignedCommitter => {
                 console.log(committerMap.notSigned)
             });
