@@ -17,6 +17,7 @@ function prepareCommiterMap(committers: CommittersDetails[], clas): CommitterMap
 }
 
 async function createOrUpdateFile(pathToClaSignatures, sha, contentBinary, branch) {
+    /* TODO: add dynamic  Message content  */
     await octokit.repos.createOrUpdateFile({
         owner: context.repo.owner,
         repo: context.repo.repo,
@@ -58,15 +59,16 @@ export async function getclas() {
             const initialContent = { signedContributors: [] }
             const initalContentString = JSON.stringify(initialContent, null, 2)
             const initalContentBinary = Buffer.from(initalContentString).toString('base64')
-            const response = await octokit.repos.createOrUpdateFile({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                path: pathToClaSignatures,
-                message: 'creating signed Contributors file',
-                content: initalContentBinary,
-                branch: branch
-            })
-            if (response) {
+            const response = await createOrUpdateFile(pathToClaSignatures, sha, initalContentBinary, branch)
+            // const response = await octokit.repos.createOrUpdateFile({
+            //     owner: context.repo.owner,
+            //     repo: context.repo.repo,
+            //     path: pathToClaSignatures,
+            //     message: 'creating signed Contributors file',
+            //     content: initalContentBinary,
+            //     branch: branch
+            // })
+            if (response !== undefined) {
                 return
             }
             core.setFailed('error occured when creating the signed contributors file ' + error)
