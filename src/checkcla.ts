@@ -27,6 +27,18 @@ async function createOrUpdateFile(pathToClaSignatures, sha, contentBinary, branc
         content: contentBinary,
         branch: branch
     })
+}
+
+async function createFile(pathToClaSignatures, contentBinary, branch) {
+    /* TODO: add dynamic  Message content  */
+    await octokit.repos.createOrUpdateFile({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        path: pathToClaSignatures,
+        message: 'Creating file for storing CLA Signatures',
+        content: contentBinary,
+        branch: branch
+    })
 
 
 }
@@ -59,7 +71,7 @@ export async function getclas() {
             const initialContent = { signedContributors: [] }
             const initalContentString = JSON.stringify(initialContent, null, 2)
             const initalContentBinary = Buffer.from(initalContentString).toString('base64')
-            const response = await createOrUpdateFile(pathToClaSignatures, sha, initalContentBinary, branch)
+            const response = await createFile(pathToClaSignatures, initalContentBinary, branch)
             // const response = await octokit.repos.createOrUpdateFile({
             //     owner: context.repo.owner,
             //     repo: context.repo.repo,
@@ -96,6 +108,7 @@ export async function getclas() {
         let contentString = JSON.stringify(clas, null, 2)
         let contentBinary = Buffer.from(contentString).toString('base64')
         await createOrUpdateFile(pathToClaSignatures, sha, contentBinary, branch)
+
 
         // await octokit.repos.createOrUpdateFile({
         //     owner: context.repo.owner,
