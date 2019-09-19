@@ -11,7 +11,7 @@ import { GitHub } from '@actions/github'
 async function run() {
   try {
     console.log('CLA Assistant GitHub Action is running')
-    console.log('the pull request no is  ' + context.issue.number)
+    console.log('the contect is ' + context)
     //const myInput = core.getInput('myInput')
     const clas = await getclas()
 
