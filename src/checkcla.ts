@@ -68,13 +68,14 @@ export async function getclas() {
             committerMap.notSigned = committers
             committerMap.signed = []
             committers.map((committer) => { if (!committer.id) { committerMap.unknown!.push(committer) } })
-            prComment(signed, committerMap)
+
             const initialContent = { signedContributors: [] }
             const initalContentString = JSON.stringify(initialContent, null, 2)
             const initalContentBinary = Buffer.from(initalContentString).toString('base64')
-            const response = await createFile(pathToClaSignatures, initalContentBinary, branch)
-            if (response) {
-                return
+            // const response = await createFile(pathToClaSignatures, initalContentBinary, branch)
+            const promise = Promise.all([createFile(pathToClaSignatures, initalContentBinary, branch), prComment(signed, committerMap)])
+            if (promise) {
+                core.setFailed(`committers of ${context.issue.number}  has to sign the CLA`)
             }
             core.setFailed('error occured when creating the signed contributors file ' + error)
 
@@ -107,8 +108,7 @@ export async function getclas() {
             return
         }
         else {
-            console.log("am i printing inside the block" + JSON.stringify(committerMap.notSigned))
-            core.setFailed("The above contributors has not signed the CLA")
+            core.setFailed(`committers of ${context.issue.number}  has to sign the CLA`)
         }
     }
 
