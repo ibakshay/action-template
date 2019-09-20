@@ -4,6 +4,26 @@ import { context } from '@actions/github'
 import { pathToCLADocument } from './url'
 import { CommitterMap, CommittersDetails } from './interfaces'
 
+
+function addLabel() {
+    return octokit.issues.addLabels({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        issue_number: context.issue.number,
+        labels: ['CLA Not Signed']
+    })
+}
+
+function updateLabel() {
+    return octokit.issues.updateLabel({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        current_name: 'CLA Not Signed',
+        name: ':smiley: CLA signed '
+    })
+}
+
+
 async function getComment() {
     try {
         const response = await octokit.issues.listComments({
@@ -19,17 +39,9 @@ async function getComment() {
 
 }
 
-function addLabels() {
-    return octokit.issues.addLabels({
-        owner: context.repo.owner,
-        repo: context.repo.repo,
-        issue_number: context.issue.number,
-        labels: ['CLA Not Signed'],
-    })
-}
-
 function commentContent(signed: boolean, committerMap: CommitterMap) {
     if (signed) {
+        updateLabel()
         return `**CLA Assistant Lite** All committers have signed the CLA.`
     }
     let committersCount = 1
@@ -65,7 +77,7 @@ export default async function prComment(signed: boolean, committerMap: Committer
         const prComment = await getComment()
         const body = commentContent(signed, committerMap)
         if (!signed && !prComment) {
-            addLabels()
+            addLabel()
             return octokit.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
