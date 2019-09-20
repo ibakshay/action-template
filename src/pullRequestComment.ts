@@ -3,7 +3,7 @@ import * as core from '@actions/core'
 import { context } from '@actions/github'
 import { pathToCLADocument } from './url'
 import { CommitterMap, CommittersDetails, LabelName } from './interfaces'
-let labelName: LabelName
+
 function addLabel() {
     return octokit.issues.addLabels({
         owner: context.repo.owner,
@@ -68,6 +68,7 @@ async function getComment() {
 }
 
 function commentContent(signed: boolean, committerMap: CommitterMap) {
+    const labelName = {} as LabelName
     if (signed) {
         labelName.current_name = 'CLA signed :smiley:'
         updateLabel(signed, labelName)
