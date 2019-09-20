@@ -24,27 +24,29 @@ async function updateLabel(signed: boolean, labelName: LabelName) {
             return
         }
 
-        if (signed) {
-            labelName = {
-                current_name: 'CLA Not Signed :worried:',
-                name: 'CLA signed :smiley:'
+    } catch (error) {
+        if (error.status === 404) {
+            if (signed) {
+                labelName = {
+                    current_name: 'CLA Not Signed :worried:',
+                    name: 'CLA signed :smiley:'
+                }
             }
-        }
-        else {
-            labelName = {
-                current_name: 'CLA signed :smiley:',
-                name: 'CLA Not Signed :worried:'
+            else {
+                labelName = {
+                    current_name: 'CLA signed :smiley:',
+                    name: 'CLA Not Signed :worried:'
+                }
             }
-        }
-        return octokit.issues.updateLabel({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            current_name: labelName.current_name,
-            name: labelName.name
-        })
+            return octokit.issues.updateLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                current_name: labelName.current_name,
+                name: labelName.name
+            })
 
-    } catch (e) {
-        core.setFailed("error when creating a label :" + e)
+        }
+        core.setFailed("error when creating a label :" + error)
 
     }
 
