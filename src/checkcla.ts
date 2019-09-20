@@ -6,7 +6,7 @@ import prComment from './pullRequestComment'
 import { CommitterMap, CommittersDetails } from './interfaces'
 
 
-let committerMap: CommitterMap
+let committerMap: CommitterMap = {}
 
 function prepareCommiterMap(committers: CommittersDetails[], clas): CommitterMap {
     committerMap.notSigned = committers.filter(committer => !clas.signedContributors.some(cla => committer.id === cla.id))
