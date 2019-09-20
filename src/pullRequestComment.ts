@@ -19,6 +19,15 @@ async function getComment() {
 
 }
 
+function addLabels() {
+    return octokit.issues.addLabels({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        issue_number: context.issue.number,
+        labels: ['CLA Not Signed'],
+    })
+}
+
 function commentContent(signed: boolean, committerMap: CommitterMap) {
     if (signed) {
         return `**CLA Assistant Lite** All committers have signed the CLA.`
@@ -56,6 +65,7 @@ export default async function prComment(signed: boolean, committerMap: Committer
         const prComment = await getComment()
         const body = commentContent(signed, committerMap)
         if (!signed && !prComment) {
+            addLabels()
             return octokit.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
