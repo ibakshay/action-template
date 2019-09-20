@@ -75,7 +75,8 @@ export async function getclas() {
             // const response = await createFile(pathToClaSignatures, initalContentBinary, branch)
             const promise = Promise.all([createFile(pathToClaSignatures, initalContentBinary, branch), prComment(signed, committerMap)])
             if (promise) {
-                core.setFailed(`committers of ${context.issue.number}  has to sign the CLA`)
+                core.setFailed(`committers of pull request ${context.issue.number}  has to sign the CLA`)
+                return
             }
             core.setFailed('error occured when creating the signed contributors file ' + error)
 
