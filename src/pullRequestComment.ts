@@ -10,7 +10,7 @@ function addLabel() {
         owner: context.repo.owner,
         repo: context.repo.repo,
         issue_number: context.issue.number,
-        labels: ['CLA Not Signed']
+        labels: ['CLA Not Signed :worried:']
     })
 }
 
@@ -19,7 +19,7 @@ function updateLabel() {
         owner: context.repo.owner,
         repo: context.repo.repo,
         current_name: 'CLA Not Signed',
-        name: ':smiley: CLA signed '
+        name: 'CLA signed :smiley: '
     })
 }
 
