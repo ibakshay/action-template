@@ -9,3 +9,8 @@ export interface CommittersDetails {
     id: number,
     pullRequestNo: number
 }
+
+export interface LabelName {
+    current_name: string,
+    name: string
+}

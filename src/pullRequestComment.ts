@@ -2,7 +2,7 @@ import octokit from './octokit'
 import * as core from '@actions/core'
 import { context } from '@actions/github'
 import { pathToCLADocument } from './url'
-import { CommitterMap, CommittersDetails } from './interfaces'
+import { CommitterMap, CommittersDetails, LabelName } from './interfaces'
 
 
 function addLabel() {
@@ -14,12 +14,25 @@ function addLabel() {
     })
 }
 
-function updateLabel() {
+function updateLabel(signed: boolean) {
+    let labelName: LabelName
+    if (signed) {
+        labelName = {
+            current_name: 'CLA Not Signed :worried:',
+            name: 'CLA signed :smiley:'
+        }
+    }
+    else {
+        labelName = {
+            current_name: 'CLA signed :smiley:',
+            name: 'CLA Not Signed :worried:'
+        }
+    }
     return octokit.issues.updateLabel({
         owner: context.repo.owner,
         repo: context.repo.repo,
-        current_name: 'CLA Not Signed',
-        name: 'CLA signed :smiley: '
+        current_name: labelName.current_name,
+        name: labelName.name
     })
 }
 
@@ -41,9 +54,10 @@ async function getComment() {
 
 function commentContent(signed: boolean, committerMap: CommitterMap) {
     if (signed) {
-        updateLabel()
+        updateLabel(signed)
         return `**CLA Assistant Lite** All committers have signed the CLA.`
     }
+    updateLabel(signed)
     let committersCount = 1
     if (committerMap && committerMap.signed && committerMap.notSigned) {
         committersCount = committerMap.signed.length + committerMap.notSigned.length
