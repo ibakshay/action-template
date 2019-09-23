@@ -73,12 +73,12 @@ function commentContent(signed: boolean, committerMap: CommitterMap) {
     const labelName = {} as LabelName
     if (signed) {
         labelName.current_name = 'CLA signed :smiley:'
-        updateLabel(signed, labelName)
+        //updateLabel(signed, labelName)
         return `**CLA Assistant Lite** All committers have signed the CLA.`
     }
     /* TODO: Unhandled Promise Rejection  */
     labelName.current_name = 'CLA Not Signed :worried:'
-    updateLabel(signed, labelName)
+    //updateLabel(signed, labelName)
     let committersCount = 1
     if (committerMap && committerMap.signed && committerMap.notSigned) {
         committersCount = committerMap.signed.length + committerMap.notSigned.length
@@ -112,7 +112,7 @@ export default async function prComment(signed: boolean, committerMap: Committer
         const prComment = await getComment()
         const body = commentContent(signed, committerMap)
         if (!signed && !prComment) {
-            addLabel()
+            // addLabel()
             return octokit.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
