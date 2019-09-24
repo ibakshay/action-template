@@ -8,7 +8,7 @@ async function run() {
 
     // This should be a token with access to your repository scoped in as a secret.
     const myToken = core.getInput('myToken');
-    const octokit = new github.GitHub(process.env.testtoken as string);
+    const octokit = new github.GitHub(process.env.GITHUB_TOKEN as string);
 
     //if (github.context.payload.action === 'opened') {
     const args = {
