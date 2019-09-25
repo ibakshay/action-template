@@ -88,10 +88,10 @@ function commentContent(signed: boolean, committerMap: CommitterMap) {
     if (committersCount > 1 && committerMap && committerMap.signed && committerMap.notSigned) {
         text += `**${committerMap.signed.length}** out of **${committerMap.signed.length + committerMap.notSigned.length}** committers have signed the CLA. <br/>`
         committerMap.signed.forEach((signedCommitter) => {
-            text += `<br/>:white_check_mark: ${signedCommitter.name}`
+            text += `<br/>:white_check_mark: @${signedCommitter.name}`
         })
         committerMap.notSigned.forEach((unsignedCommitter) => {
-            text += `<br/>:x: ${unsignedCommitter.name}`
+            text += `<br/>:x: @${unsignedCommitter.name}`
         })
         text += '<br/>'
     }
