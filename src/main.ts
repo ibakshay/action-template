@@ -8,7 +8,7 @@ async function run() {
 
     // This should be a token with access to your repository scoped in as a secret.
     const myToken = core.getInput('myToken');
-    const octokit = new github.GitHub(process.env.GITHUB_TOKEN as string);
+    const octokit = new github.GitHub(myToken);
 
     //if (github.context.payload.action === 'opened') {
     const args = {
@@ -19,9 +19,8 @@ async function run() {
     }
 
     const responseToIssue = await octokit.issues.createComment(args)
-    //console.error('Thank you for creating the issue')
-    //}
-    //console.error(github.context)
+    const rateLimit = await octokit.rateLimit.get()
+    console.log(rateLimit)
 
 
   } catch (error) {
