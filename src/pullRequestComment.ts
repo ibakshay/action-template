@@ -110,7 +110,7 @@ export default async function prComment(signed: boolean, committerMap: Committer
     try {
 
         const prComment = await getComment()
-        console.log('The comment response is ' + prComment)
+        console.log('The comment response is ' + JSON.stringify(prComment))
         const body = commentContent(signed, committerMap)
         if (!signed && !prComment) {
             // addLabel()
