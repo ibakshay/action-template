@@ -107,7 +107,7 @@ function commentContent(signed: boolean, committerMap: CommitterMap) {
 }
 
 
-export default async function prComment(signed: boolean, committerMap: CommitterMap) {
+export default async function prComment(signed: boolean, committerMap: CommitterMap, committers) {
     try {
 
         const prComment = await getComment()
@@ -125,6 +125,8 @@ export default async function prComment(signed: boolean, committerMap: Committer
                 id: reactedCommitter.user.id
             })
         })
+        //Check if the reactions are only from the contributors
+        reactedCommitters = committers.filter(committer => reactedCommitters.some(cla => committer.id === cla.id))
 
         console.log("the reacted users are: " + JSON.stringify(reactedCommitters))
         console.log(`The comment response is ${JSON.stringify(prComment)}  and the comment id is ${commentId}`)
