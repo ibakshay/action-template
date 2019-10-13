@@ -7,7 +7,7 @@ export interface CommitterMap {
 export interface CommittersDetails {
     name: string,
     id: number,
-    pullRequestNo: number
+    pullRequestNo?: number
 }
 
 export interface LabelName {

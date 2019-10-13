@@ -3,6 +3,7 @@ import * as core from '@actions/core'
 import { context } from '@actions/github'
 import { pathToCLADocument } from './url'
 import { CommitterMap, CommittersDetails, LabelName } from './interfaces'
+import { userInfo } from 'os'
 
 function addLabel() {
     return octokit.issues.addLabels({
@@ -84,7 +85,7 @@ function commentContent(signed: boolean, committerMap: CommitterMap) {
         committersCount = committerMap.signed.length + committerMap.notSigned.length
     }
     let you = (committersCount > 1 ? 'you all' : 'you')
-    let text = `**CLA Assistant Lite:** <br/>Thank you for your submission, we really appreciate it. Like many open source projects, we ask that ${you} sign our [Contributor License Agreement](${pathToCLADocument()}) before we can accept your contribution. You can sign the CLA by reacting with :+1: <br/>`
+    let text = `**CLA Assistant Lite:** <br/>Thank you for your submission, we really appreciate it. Like many open source projects, we ask that ${you} sign our [Contributor License Agreement](${pathToCLADocument()}) before we can accept your contribution. You can sign the CLA by reacting to this comment with :+1: <br/>`
     if (committersCount > 1 && committerMap && committerMap.signed && committerMap.notSigned) {
         text += `**${committerMap.signed.length}** out of **${committerMap.signed.length + committerMap.notSigned.length}** committers have signed the CLA. <br/>`
         committerMap.signed.forEach((signedCommitter) => {
@@ -116,7 +117,16 @@ export default async function prComment(signed: boolean, committerMap: Committer
             repo: context.repo.repo,
             comment_id: commentId
         })
-        console.log(JSON.stringify(response.data))
+        //let reactedCommitters: CommittersDetails[]
+        let reactedCommitters = [] as CommittersDetails[]
+        response.data.map((reactedCommitter) => {
+            reactedCommitters.push({
+                name: reactedCommitter.user.login,
+                id: reactedCommitter.user.id
+            })
+        })
+
+        console.log("the reacted users are " + reactedCommitters)
         console.log(`The comment response is ${JSON.stringify(prComment)}  and the comment id is ${commentId}`)
         const body = commentContent(signed, committerMap)
         if (!signed && !prComment) {
