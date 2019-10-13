@@ -111,6 +111,12 @@ export default async function prComment(signed: boolean, committerMap: Committer
 
         const prComment = await getComment()
         const commentId = prComment!.id
+        const response = await octokit.reactions.listForIssueComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            comment_id: commentId
+        })
+        console.log(JSON.stringify(response.data))
         console.log(`The comment response is ${JSON.stringify(prComment)}  and the comment id is ${commentId}`)
         const body = commentContent(signed, committerMap)
         if (!signed && !prComment) {
