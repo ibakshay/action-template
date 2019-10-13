@@ -84,7 +84,7 @@ function commentContent(signed: boolean, committerMap: CommitterMap) {
         committersCount = committerMap.signed.length + committerMap.notSigned.length
     }
     let you = (committersCount > 1 ? 'you all' : 'you')
-    let text = `**CLA Assistant Lite:** <br/>Thank you for your submission, we really appreciate it. Like many open source projects, we ask that ${you} sign our [Contributor License Agreement](${pathToCLADocument()}) before we can accept your contribution.<br/>`
+    let text = `**CLA Assistant Lite:** <br/>Thank you for your submission, we really appreciate it. Like many open source projects, we ask that ${you} sign our [Contributor License Agreement](${pathToCLADocument()}) before we can accept your contribution. You can sign the CLA ny reacting with :+: <br/>`
     if (committersCount > 1 && committerMap && committerMap.signed && committerMap.notSigned) {
         text += `**${committerMap.signed.length}** out of **${committerMap.signed.length + committerMap.notSigned.length}** committers have signed the CLA. <br/>`
         committerMap.signed.forEach((signedCommitter) => {
