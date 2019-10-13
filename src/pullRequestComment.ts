@@ -126,7 +126,7 @@ export default async function prComment(signed: boolean, committerMap: Committer
             })
         })
         //Check if the reactions are only from the contributors
-        reactedCommitters = committers.filter(committer => reactedCommitters.some(cla => committer.id === cla.id))
+        reactedCommitters = committerMap.notSigned!.filter(committer => reactedCommitters.some(cla => committer.id === cla.id))
 
         console.log("the reacted users are: " + JSON.stringify(reactedCommitters))
         console.log(`The comment response is ${JSON.stringify(prComment)}  and the comment id is ${commentId}`)
