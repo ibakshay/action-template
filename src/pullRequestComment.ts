@@ -146,7 +146,7 @@ export default async function prComment(signed: boolean, committerMap: Committer
             })
         }
         else if (prComment && prComment.id) {
-            await reaction(commentId, committerMap)
+            //await reaction(commentId, committerMap)
             return octokit.issues.updateComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
