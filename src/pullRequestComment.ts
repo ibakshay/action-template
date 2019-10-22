@@ -147,7 +147,7 @@ export default async function prComment(signed: boolean, committerMap: Committer
             })
         }
         else if (prComment && prComment.id) {
-            //await reaction(commentId, committerMap)
+            await reaction(prComment.id, committerMap)
             console.log("---->>>>><<<<<<<<ttatatatttata")
             return octokit.issues.updateComment({
                 owner: context.repo.owner,
