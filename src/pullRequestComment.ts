@@ -133,11 +133,13 @@ export default async function prComment(signed: boolean, committerMap: Committer
     try {
 
         const prComment = await getComment()
+        console.log("---->>>>>prComment")
         const commentId = prComment!.id
 
         const body = commentContent(signed, committerMap)
         if (!prComment) {
             // addLabel()
+            console.log("---->>>>><<<<<<<<prComment")
             return octokit.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -147,6 +149,7 @@ export default async function prComment(signed: boolean, committerMap: Committer
         }
         else if (prComment && prComment.id) {
             //await reaction(commentId, committerMap)
+            console.log("---->>>>><<<<<<<<ttatatatttata")
             return octokit.issues.updateComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
