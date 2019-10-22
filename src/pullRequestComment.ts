@@ -132,10 +132,7 @@ export default async function prComment(signed: boolean, committerMap: Committer
         // console.log("the reacted users are: " + JSON.stringify(reactedCommitters))
         // console.log(`The comment response is ${JSON.stringify(prComment)}  and the comment id is ${commentId}`)
         const body = commentContent(signed, committerMap)
-        console.log(signed + " and " + prComment)
-        console.log(body)
-        if (!signed && !prComment) {
-            console.log("hello")
+        if (!prComment) {
             // addLabel()
             return octokit.issues.createComment({
                 owner: context.repo.owner,
@@ -145,7 +142,6 @@ export default async function prComment(signed: boolean, committerMap: Committer
             })
         }
         else if (prComment && prComment.id) {
-            console.log("blablabla")
             return octokit.issues.updateComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
