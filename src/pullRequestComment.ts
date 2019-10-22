@@ -112,7 +112,7 @@ async function reaction(commentId, committerMap: CommitterMap) {
         repo: context.repo.repo,
         comment_id: commentId
     })
-    console.log("response is " + response)
+    console.log("response is " + JSON.stringify(response))
     let reactedCommitters = [] as CommittersDetails[]
     response.data.map((reactedCommitter) => {
         reactedCommitters.push({

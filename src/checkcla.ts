@@ -72,7 +72,6 @@ export async function getclas() {
             const initialContent = { signedContributors: [] }
             const initalContentString = JSON.stringify(initialContent, null, 2)
             const initalContentBinary = Buffer.from(initalContentString).toString('base64')
-            // const response = await createFile(pathToClaSignatures, initalContentBinary, branch)
             const promise = Promise.all([createFile(pathToClaSignatures, initalContentBinary, branch), prComment(signed, committerMap, committers)])
             if (promise) {
                 core.setFailed(`committers of pull request ${context.issue.number}  has to sign the CLA`)
@@ -102,7 +101,7 @@ export async function getclas() {
         let contentString = JSON.stringify(clas, null, 2)
         let contentBinary = Buffer.from(contentString).toString('base64')
         /* Parallel GitHub Api call for updating both the prComment and the Signature File and then wait for both the promises to be resolved */
-        Promise.all([prComment(signed, committerMap, committers), updateFile(pathToClaSignatures, sha, contentBinary, branch)])
+        const promise = Promise.all([prComment(signed, committerMap, committers), updateFile(pathToClaSignatures, sha, contentBinary, branch)])
         /* return when there are no unsigned committers */
         if (committerMap.notSigned === undefined || committerMap.notSigned.length === 0) {
             console.log("Passed")
