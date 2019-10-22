@@ -156,6 +156,7 @@ export default async function prComment(signed: boolean, committerMap: Committer
                 body: body
             })])
             console.log(values[0])
+            console.log("bumdikibumbum")
 
         }
 
