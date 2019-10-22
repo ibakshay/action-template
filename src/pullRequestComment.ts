@@ -132,6 +132,7 @@ export default async function prComment(signed: boolean, committerMap: Committer
         // console.log("the reacted users are: " + JSON.stringify(reactedCommitters))
         // console.log(`The comment response is ${JSON.stringify(prComment)}  and the comment id is ${commentId}`)
         const body = commentContent(signed, committerMap)
+        console.log(signed + " and " + prComment)
         if (!signed && !prComment) {
             console.log("hello")
             // addLabel()
