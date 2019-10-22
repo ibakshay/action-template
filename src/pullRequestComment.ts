@@ -134,7 +134,6 @@ export default async function prComment(signed: boolean, committerMap: Committer
 
         const prComment = await getComment()
         console.log("---->>>>>prComment")
-        const commentId = prComment!.id
 
         const body = commentContent(signed, committerMap)
         if (!prComment) {
