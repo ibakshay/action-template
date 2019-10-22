@@ -112,24 +112,24 @@ export default async function prComment(signed: boolean, committerMap: Committer
 
         const prComment = await getComment()
         const commentId = prComment!.id
-        const response = await octokit.reactions.listForIssueComment({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            comment_id: commentId
-        })
-        //let reactedCommitters: CommittersDetails[]
-        let reactedCommitters = [] as CommittersDetails[]
-        response.data.map((reactedCommitter) => {
-            reactedCommitters.push({
-                name: reactedCommitter.user.login,
-                id: reactedCommitter.user.id
-            })
-        })
-        //Check if the reactions are only from the contributors
-        reactedCommitters = committerMap.notSigned!.filter(committer => reactedCommitters.some(cla => committer.id === cla.id))
+        // const response = await octokit.reactions.listForIssueComment({
+        //     owner: context.repo.owner,
+        //     repo: context.repo.repo,
+        //     comment_id: commentId
+        // })
+        // //let reactedCommitters: CommittersDetails[]
+        // let reactedCommitters = [] as CommittersDetails[]
+        // response.data.map((reactedCommitter) => {
+        //     reactedCommitters.push({
+        //         name: reactedCommitter.user.login,
+        //         id: reactedCommitter.user.id
+        //     })
+        // })
+        // //Check if the reactions are not in the storage file 
+        // reactedCommitters = committerMap.notSigned!.filter(committer => reactedCommitters.some(cla => committer.id === cla.id))
 
-        console.log("the reacted users are: " + JSON.stringify(reactedCommitters))
-        console.log(`The comment response is ${JSON.stringify(prComment)}  and the comment id is ${commentId}`)
+        // console.log("the reacted users are: " + JSON.stringify(reactedCommitters))
+        // console.log(`The comment response is ${JSON.stringify(prComment)}  and the comment id is ${commentId}`)
         const body = commentContent(signed, committerMap)
         if (!signed && !prComment) {
             // addLabel()
