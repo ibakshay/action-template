@@ -154,7 +154,7 @@ export default async function prComment(signed: boolean, committerMap: Committer
                 repo: context.repo.repo,
                 comment_id: prComment.id,
                 body: body
-            })])
+            })]).then(value => { console.log(value) })
 
         }
 
