@@ -124,7 +124,8 @@ async function reaction(commentId, committerMap: CommitterMap) {
     reactedCommitters = committerMap.notSigned!.filter(committer => reactedCommitters.some(cla => committer.id === cla.id))
 
     console.log("the reacted users are: " + JSON.stringify(reactedCommitters))
-    console.log(`The comment response is ${JSON.stringify(prComment)}  and the comment id is ${commentId}`)
+    console.log(` comment id is ${commentId}`)
+    return "I am doing great"
 
 }
 
