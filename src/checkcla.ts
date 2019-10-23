@@ -107,7 +107,7 @@ export async function getclas() {
         //Promise.all([prComment(signed, committerMap, committers), updateFile(pathToClaSignatures, sha, contentBinary, branch)])
         await updateFile(pathToClaSignatures, sha, contentBinary, branch)
         /* return when there are no unsigned committers */
-        if (committerMap.notSigned === undefined || committerMap.notSigned.length === 0) {
+        if ((committerMap.notSigned === undefined || committerMap.notSigned.length === 0) || prCommentResponse) {
             console.log("Passed")
             return
         }
