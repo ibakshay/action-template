@@ -125,7 +125,7 @@ async function reaction(commentId, committerMap: CommitterMap) {
 
     console.log("the reacted users are: " + JSON.stringify(reactedCommitters))
     console.log(` comment id is ${commentId}`)
-    return "I am doing great"
+    return reactedCommitters
 
 }
 
@@ -157,6 +157,8 @@ export default async function prComment(signed: boolean, committerMap: Committer
                 body: body
             })])
             console.log(values[0])
+            const reactedCommitters = values[0]
+            return reactedCommitters
             console.log("bumdikibumbum")
 
         }
