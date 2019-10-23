@@ -102,7 +102,7 @@ export async function getclas() {
         let contentBinary = Buffer.from(contentString).toString('base64')
         /* Parallel GitHub Api call for updating both the prComment and the Signature File and then wait for both the promises to be resolved */
         const prCommentResponse = await prComment(signed, committerMap, committers)
-        console.log("prCommentResponse is ------> " + prCommentResponse)
+        console.log("prCommentResponse is ------> " + JSON.stringify(prCommentResponse))
         //Promise.all([prComment(signed, committerMap, committers), updateFile(pathToClaSignatures, sha, contentBinary, branch)])
         await updateFile(pathToClaSignatures, sha, contentBinary, branch)
         /* return when there are no unsigned committers */
