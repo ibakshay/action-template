@@ -35,7 +35,7 @@ async function createFile(pathToClaSignatures, contentBinary, branch): Promise<o
         owner: context.repo.owner,
         repo: context.repo.repo,
         path: pathToClaSignatures,
-        message: 'Creating file for storing CLA Signatures',
+        message: '**CLA ASSISTANT ACTION** Creating file for storing CLA Signatures',
         content: contentBinary,
         branch: branch
     })
@@ -104,6 +104,8 @@ export async function getclas() {
         clas.signedContributors.push(...prCommentResponse)
         let contentString = JSON.stringify(clas, null, 2)
         let contentBinary = Buffer.from(contentString).toString('base64')
+        //TODO: dont update the file if the committer DATA is already in the file
+
         //Promise.all([prComment(signed, committerMap, committers), updateFile(pathToClaSignatures, sha, contentBinary, branch)])
         await updateFile(pathToClaSignatures, sha, contentBinary, branch)
         /* return when there are no unsigned committers */

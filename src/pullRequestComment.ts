@@ -138,8 +138,6 @@ export default async function prComment(signed: boolean, committerMap: Committer
 
         const body = commentContent(signed, committerMap)
         if (!prComment) {
-            // addLabel()
-            console.log("---->>>>><<<<<<<<prComment")
             return octokit.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -149,7 +147,7 @@ export default async function prComment(signed: boolean, committerMap: Committer
         }
         else if (prComment && prComment.id) {
             //await reaction(prComment.id, committerMap)
-            console.log("---->>>>><<<<<<<<ttatatatttata")
+            console.log("the comment content is ------>" + signed)
             const values = await Promise.all([reaction(prComment.id, committerMap), octokit.issues.updateComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -159,8 +157,6 @@ export default async function prComment(signed: boolean, committerMap: Committer
             console.log(values[0])
             const reactedCommitters = values[0]
             return reactedCommitters
-            console.log("bumdikibumbum")
-
         }
 
     } catch (e) {
