@@ -75,7 +75,7 @@ function commentContent(signed: boolean, committerMap: CommitterMap) {
     if (signed) {
         labelName.current_name = 'CLA signed :smiley:'
         //updateLabel(signed, labelName)
-        return `**CLA Assistant Lite** All committers have signed the CLA.`
+        return `**CLA Assistant Lite** All committers have signed the CLA. :smiley:`
     }
     /* TODO: Unhandled Promise Rejection  */
     labelName.current_name = 'CLA Not Signed :worried:'
@@ -148,6 +148,7 @@ export default async function prComment(signed: boolean, committerMap: Committer
         }
         else if (prComment && prComment.id) {
             if (signed) {
+                console.log("HELLOW WORLD")
                 return octokit.issues.updateComment({
                     owner: context.repo.owner,
                     repo: context.repo.repo,
