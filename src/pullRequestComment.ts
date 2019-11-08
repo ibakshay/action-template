@@ -106,13 +106,12 @@ function commentContent(signed: boolean, committerMap: CommitterMap) {
 
 }
 
-async function reaction(commentId, committerMap: CommitterMap) {
+async function reaction(commentId, committerMap: CommitterMap, committers) {
     const response = await octokit.reactions.listForIssueComment({
         owner: context.repo.owner,
         repo: context.repo.repo,
         comment_id: commentId
     })
-    console.log("response is " + JSON.stringify(response))
     let reactedCommitters = [] as CommittersDetails[]
     response.data.map((reactedCommitter) => {
         reactedCommitters.push({
@@ -120,8 +119,11 @@ async function reaction(commentId, committerMap: CommitterMap) {
             id: reactedCommitter.user.id
         })
     })
-    //Check if the reactions are not in the storage file 
+    //Check if the reacted committers names are not in the storage file 
     reactedCommitters = committerMap.notSigned!.filter(committer => reactedCommitters.some(cla => committer.id === cla.id))
+    const test = reactedCommitters.some(committer => committers.some(cla => committer.id === cla.id))
+    console.log("test--------------> and the result is " + test)
+
 
     console.log("the reacted users are: " + JSON.stringify(reactedCommitters))
     console.log(` comment id is ${commentId}`)
@@ -148,7 +150,7 @@ export default async function prComment(signed: boolean, committerMap: Committer
         else if (prComment && prComment.id) {
             //await reaction(prComment.id, committerMap)
             console.log("the comment content is ------>" + signed)
-            const values = await Promise.all([reaction(prComment.id, committerMap), octokit.issues.updateComment({
+            const values = await Promise.all([reaction(prComment.id, committerMap, committers), octokit.issues.updateComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 comment_id: prComment.id,
