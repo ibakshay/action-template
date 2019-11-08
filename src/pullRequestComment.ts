@@ -121,7 +121,7 @@ async function reaction(commentId, committerMap: CommitterMap, committers) {
     })
     //Check if the reacted committers names are not in the storage file 
     reactedCommitters = committerMap.notSigned!.filter(committer => reactedCommitters.some(cla => committer.id === cla.id))
-    const test = reactedCommitters.some(committer => committers.some(cla => committer.id === cla.id))
+    const test = committers.some(committer => reactedCommitters.some(cla => committer.id === cla.id))
     console.log("test--------------> and the result is " + test)
 
 
