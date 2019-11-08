@@ -121,13 +121,7 @@ async function reaction(commentId, committerMap: CommitterMap, committers) {
     })
     //checking if the reacted committers are not the signed committers(not in the storage file) and filtering out only the unsigned committers
     reactedCommitters = committerMap.notSigned!.filter(committer => reactedCommitters.some(cla => committer.id === cla.id))
-    //checking if all the unsigned committers have reacted to the PR comment (this is needed for changing the content of the PR comment to "All committers have signed the CLA")
-    const test = committers.some(committer => reactedCommitters.some(cla => committer.id === cla.id))
-    console.log("test--------------> and the result is " + test)
-
-
     console.log("the reacted users are: " + JSON.stringify(reactedCommitters))
-    console.log(` comment id is ${commentId}`)
     return reactedCommitters
 
 }
@@ -158,6 +152,9 @@ export default async function prComment(signed: boolean, committerMap: Committer
 
             }
             const reactedCommitters = await reaction(prComment.id, committerMap, committers)
+            //checking if all the unsigned committers have reacted to the PR comment (this is needed for changing the content of the PR comment to "All committers have signed the CLA")
+            const reactedCommittersFlag = committers.some(committer => reactedCommitters.some(reactedCommitter => committer.id === reactedCommitter.id))
+            console.log("test--------------> and the result is " + reactedCommittersFlag)
             await octokit.issues.updateComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
