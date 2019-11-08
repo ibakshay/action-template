@@ -119,8 +119,9 @@ async function reaction(commentId, committerMap: CommitterMap, committers) {
             id: reactedCommitter.user.id
         })
     })
-    //Check if the reacted committers names are not in the storage file 
+    //checking if the reacted committers are not the signed committers(not in the storage file) and filtering out only the unsigned committers
     reactedCommitters = committerMap.notSigned!.filter(committer => reactedCommitters.some(cla => committer.id === cla.id))
+    //checking if all the unsigned committers have reacted to the PR comment (this is needed for changing the content of the PR comment to "All committers have signed the CLA")
     const test = committers.some(committer => reactedCommitters.some(cla => committer.id === cla.id))
     console.log("test--------------> and the result is " + test)
 
@@ -136,8 +137,6 @@ export default async function prComment(signed: boolean, committerMap: Committer
     try {
 
         const prComment = await getComment()
-        console.log("---->>>>>prComment")
-
         const body = commentContent(signed, committerMap)
         if (!prComment) {
             return octokit.issues.createComment({
@@ -148,16 +147,31 @@ export default async function prComment(signed: boolean, committerMap: Committer
             })
         }
         else if (prComment && prComment.id) {
-            //await reaction(prComment.id, committerMap)
-            console.log("the comment content is ------>" + signed)
-            const values = await Promise.all([reaction(prComment.id, committerMap, committers), octokit.issues.updateComment({
+            if (signed) {
+                return octokit.issues.updateComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    comment_id: prComment.id,
+                    body: body
+                })
+
+            }
+            const reactedCommitters = await reaction(prComment.id, committerMap, committers)
+            await octokit.issues.updateComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 comment_id: prComment.id,
                 body: body
-            })])
-            console.log(values[0])
-            const reactedCommitters = values[0]
+            })
+
+            // const values = await Promise.all([reaction(prComment.id, committerMap, committers), octokit.issues.updateComment({
+            //     owner: context.repo.owner,
+            //     repo: context.repo.repo,
+            //     comment_id: prComment.id,
+            //     body: body
+            // })])
+            //console.log(values[0])
+            //const reactedCommitters = values[0]
             return reactedCommitters
         }
 
