@@ -70,7 +70,7 @@ async function getComment() {
 
 }
 
-function commentContent(signed: boolean, committerMap: CommitterMap) {
+function commentContent(signed: boolean, committerMap: CommitterMap): string {
     const labelName = {} as LabelName
     if (signed) {
         labelName.current_name = 'CLA signed :smiley:'
@@ -120,6 +120,7 @@ async function reaction(commentId, committerMap: CommitterMap, committers) {
         })
     })
     //checking if the reacted committers are not the signed committers(not in the storage file) and filtering out only the unsigned committers
+    //TODO BUG: https://github.com/ibakshay/test-action-workflow/pull/120/checks?check_run_id=297679607
     reactedCommitters = committerMap.notSigned!.filter(committer => reactedCommitters.some(cla => committer.id === cla.id))
     console.log("the reacted users are: " + JSON.stringify(reactedCommitters))
     return reactedCommitters
@@ -131,7 +132,7 @@ export default async function prComment(signed: boolean, committerMap: Committer
     try {
 
         const prComment = await getComment()
-        const body = commentContent(signed, committerMap)
+        let body = commentContent(signed, committerMap)
         if (!prComment) {
             return octokit.issues.createComment({
                 owner: context.repo.owner,
@@ -154,7 +155,10 @@ export default async function prComment(signed: boolean, committerMap: Committer
             const reactedCommitters = await reaction(prComment.id, committerMap, committers)
             //checking if all the unsigned committers have reacted to the PR comment (this is needed for changing the content of the PR comment to "All committers have signed the CLA")
             const reactedCommittersFlag = committers.some(committer => reactedCommitters.some(reactedCommitter => committer.id === reactedCommitter.id))
-            console.log("test--------------> and the result is " + reactedCommittersFlag)
+            if (reactedCommittersFlag) {
+                body = '**CLA Assistant Lite** All committers have signed the CLA. :smiley:'
+            }
+            console.log("reactedCommittersFlag --------->" + reactedCommittersFlag)
             await octokit.issues.updateComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
