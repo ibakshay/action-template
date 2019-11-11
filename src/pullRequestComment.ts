@@ -134,17 +134,18 @@ export default async function prComment(signed: boolean, committerMap: Committer
         const prComment = await getComment()
         let body = commentContent(signed, committerMap)
         if (!prComment) {
-            return octokit.issues.createComment({
+            await octokit.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: context.issue.number,
                 body: body
             })
+            return
         }
         else if (prComment && prComment.id) {
             if (signed) {
                 console.log("HELLOW WORLD")
-                return octokit.issues.updateComment({
+                await octokit.issues.updateComment({
                     owner: context.repo.owner,
                     repo: context.repo.repo,
                     comment_id: prComment.id,
