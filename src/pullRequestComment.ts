@@ -160,7 +160,7 @@ export default async function prComment(signed: boolean, committerMap: Committer
             // if (reactedCommittersFlag) {
             //     body = '**CLA Assistant Lite** All committers have signed the CLA. :smiley:'
             // }
-            console.log("committers ------->" + committers)
+            console.log("committers ------->" + JSON.stringify(committers))
             console.log("reactedCommittersFlag --------->" + reactedCommittersFlag)
             await octokit.issues.updateComment({
                 owner: context.repo.owner,
