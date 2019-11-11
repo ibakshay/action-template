@@ -155,8 +155,10 @@ export default async function prComment(signed: boolean, committerMap: Committer
             }
             const reactedCommitters = await reaction(prComment.id, committerMap, committers)
             //checking if all the unsigned committers have reacted to the PR comment (this is needed for changing the content of the PR comment to "All committers have signed the CLA")
-            const reactedCommittersFlag = committers.some(committer => reactedCommitters.some(reactedCommitter => committer.id === reactedCommitter.id))
+            //const reactedCommittersFlag = committers.some(committer => reactedCommitters.some(reactedCommitter => committer.id === reactedCommitter.id))
             //const reactedCommittersFlag = reactedCommitters.some(committer => committers.some(reactedCommitter => reactedCommitter.id === committer.id))
+            //const result = !requiredfileds.some(i => !results.some(j => j.name === i.name));
+            const reactedCommittersFlag = !committers.some(committer => !reactedCommitters.some(reactedCommitter => reactedCommitter.id === committer.id))
             if (reactedCommittersFlag) {
                 body = '**CLA Assistant Lite** All committers have signed the CLA. :smiley:'
             }

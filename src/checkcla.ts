@@ -101,6 +101,8 @@ export async function getclas() {
         const reactedCommitters: CommittersDetails[] = await prComment(signed, committerMap, committers) as CommittersDetails[]
         //checking if all the unsigned committers have reacted to the PR comment (this is needed for changing the content of the PR comment to "All committers have signed the CLA")
         //const reactedCommittersFlag = committers.some(committer => reactedCommitters.some(reactedCommitter => committer.id === reactedCommitter.id))
+
+        //TODO BUG: https://github.com/ibakshay/test-action-workflow/pull/135/checks?check_run_id=297895714 reactedCommitters is coming as undefined
         console.log("prCommentResponse is ------> " + JSON.stringify(reactedCommitters))
         /* pushing the unsigned contributors to the CLA Json File */
         if (signed) { return }
