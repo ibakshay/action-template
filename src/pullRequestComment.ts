@@ -130,15 +130,13 @@ async function reaction(commentId, committerMap: CommitterMap, committers) {
 
 export default async function prComment(signed: boolean, committerMap: CommitterMap, committers) {
     try {
-
         const prComment = await getComment()
-        let body = commentContent(signed, committerMap)
         if (!prComment) {
             await octokit.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: context.issue.number,
-                body: body
+                body: commentContent(signed, committerMap)
             })
             return
         }
@@ -149,7 +147,7 @@ export default async function prComment(signed: boolean, committerMap: Committer
                     owner: context.repo.owner,
                     repo: context.repo.repo,
                     comment_id: prComment.id,
-                    body: body
+                    body: commentContent(signed, committerMap)
                 })
 
             }
@@ -159,15 +157,15 @@ export default async function prComment(signed: boolean, committerMap: Committer
             //const reactedCommittersFlag = reactedCommitters.some(committer => committers.some(reactedCommitter => reactedCommitter.id === committer.id))
             //const result = !requiredfileds.some(i => !results.some(j => j.name === i.name));
             const reactedCommittersFlag = !committers.some(committer => !reactedCommitters.some(reactedCommitter => reactedCommitter.id === committer.id))
-            if (reactedCommittersFlag) {
-                body = '**CLA Assistant Lite** All committers have signed the CLA. :smiley:'
-            }
+            // if (reactedCommittersFlag) {
+            //     body = '**CLA Assistant Lite** All committers have signed the CLA. :smiley:'
+            // }
             console.log("reactedCommittersFlag --------->" + reactedCommittersFlag)
             await octokit.issues.updateComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 comment_id: prComment.id,
-                body: body
+                body: commentContent(reactedCommittersFlag, committerMap)
             })
 
             // const values = await Promise.all([reaction(prComment.id, committerMap, committers), octokit.issues.updateComment({
