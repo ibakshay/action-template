@@ -156,7 +156,8 @@ export default async function prComment(signed: boolean, committerMap: Committer
             //const reactedCommittersFlag = committers.some(committer => reactedCommitters.some(reactedCommitter => committer.id === reactedCommitter.id))
             //const reactedCommittersFlag = reactedCommitters.some(committer => committers.some(reactedCommitter => reactedCommitter.id === committer.id))
             //const result = !requiredfileds.some(i => !results.some(j => j.name === i.name));
-            const reactedCommittersFlag = !committers.some(committer => !reactedCommitters.some(reactedCommitter => reactedCommitter.id === committer.id))
+            //const reactedCommittersFlag = !committers.some(committer => !reactedCommitters.some(reactedCommitter => reactedCommitter.id === committer.id))
+            const reactedCommittersFlag = committers.every(committer => reactedCommitters.some(reactedCommitter => committer.id === reactedCommitter.id))
             // if (reactedCommittersFlag) {
             //     body = '**CLA Assistant Lite** All committers have signed the CLA. :smiley:'
             // }
