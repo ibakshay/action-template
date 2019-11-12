@@ -4,6 +4,11 @@ export interface CommitterMap {
     unknown?: CommittersDetails[]
 }
 
+export interface ReactedCommitterMap {
+    newSigned?: CommittersDetails[],
+    onlyCommitters?: CommittersDetails[]
+}
+
 export interface CommittersDetails {
     name: string,
     id: number,
