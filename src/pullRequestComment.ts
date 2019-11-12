@@ -2,7 +2,7 @@ import octokit from './octokit'
 import * as core from '@actions/core'
 import { context } from '@actions/github'
 import { pathToCLADocument } from './url'
-import { CommitterMap, CommittersDetails, LabelName } from './interfaces'
+import { CommitterMap, CommittersDetails, ReactedCommitterMap, LabelName } from './interfaces'
 import { userInfo } from 'os'
 
 function addLabel() {
@@ -107,6 +107,7 @@ function commentContent(signed: boolean, committerMap: CommitterMap): string {
 }
 
 async function reaction(commentId, committerMap: CommitterMap, committers) {
+    let reactedCommitterMap: ReactedCommitterMap = {}
     const response = await octokit.reactions.listForIssueComment({
         owner: context.repo.owner,
         repo: context.repo.repo,
@@ -122,9 +123,11 @@ async function reaction(commentId, committerMap: CommitterMap, committers) {
     //checking if the reacted committers are not the signed committers(not in the storage file) and filtering out only the unsigned committers
     //TODO BUG: https://github.com/ibakshay/test-action-workflow/pull/120/checks?check_run_id=297679607
     //TODO BUG: check if the reacted committers are the contributors of the same PR and then check if all the  CONTRIBUTORS have reacted
-    reactedCommitters = committerMap.notSigned!.filter(committer => reactedCommitters.some(cla => committer.id === cla.id))
+    reactedCommitterMap.newSigned = committerMap.notSigned!.filter(committer => reactedCommitters.some(cla => committer.id === cla.id))
+    // committerMap.signed = committers.filter(committer => clas.signedContributors.some(cla => committer.id === cla.id))           
+    reactedCommitterMap.onlyCommitters = committers.filter(committer => reactedCommitters.some(reactedCommitter => committer.id == reactedCommitter.id))
     console.log("the reacted users are: " + JSON.stringify(reactedCommitters))
-    return reactedCommitters
+    return reactedCommitterMap
 
 }
 
@@ -154,11 +157,11 @@ export default async function prComment(signed: boolean, committerMap: Committer
             }
             const reactedCommitters = await reaction(prComment.id, committerMap, committers)
             //checking if all the unsigned committers have reacted to the PR comment (this is needed for changing the content of the PR comment to "All committers have signed the CLA")
-            const reactedCommittersFlag = committers.some(committer => reactedCommitters.some(reactedCommitter => committer.id === reactedCommitter.id))
+            // const reactedCommittersFlag = committers.some(committer => reactedCommitters.newSigned!.some(reactedCommitter => committer.id === reactedCommitter.id))
             //const reactedCommittersFlag = reactedCommitters.some(committer => committers.some(reactedCommitter => reactedCommitter.id === committer.id))
             //const result = !requiredfileds.some(i => !results.some(j => j.name === i.name));
             //const reactedCommittersFlag = !committers.some(committer => !reactedCommitters.some(reactedCommitter => reactedCommitter.id === committer.id))
-            //const reactedCommittersFlag = committers.every(committer => reactedCommitters.some(reactedCommitter => committer.id === reactedCommitter.id))
+            const reactedCommittersFlag = committers.every(committer => reactedCommitters.onlyCommitters!.some(reactedCommitter => committer.id === reactedCommitter.id))
             //const reactedCommittersFlag = reactedCommitters.every(reactedCommitter => committers.some(committer => reactedCommitter.id === committer.id))
             // if (reactedCommittersFlag) {
             //     body = '**CLA Assistant Lite** All committers have signed the CLA. :smiley:'
