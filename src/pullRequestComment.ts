@@ -107,7 +107,7 @@ function commentContent(signed: boolean, committerMap: CommitterMap): string {
 }
 
 async function reaction(commentId, committerMap: CommitterMap, committers) {
-    let reactedCommitterMap: ReactedCommitterMap = {}
+    let reactedCommitterMap = {} as ReactedCommitterMap
     const response = await octokit.reactions.listForIssueComment({
         owner: context.repo.owner,
         repo: context.repo.repo,

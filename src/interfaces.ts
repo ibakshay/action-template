@@ -5,7 +5,7 @@ export interface CommitterMap {
 }
 
 export interface ReactedCommitterMap {
-    newSigned?: CommittersDetails[],
+    newSigned: CommittersDetails[],
     onlyCommitters?: CommittersDetails[]
 }
 

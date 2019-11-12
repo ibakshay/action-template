@@ -3,7 +3,7 @@ import octokit from './octokit'
 import * as core from '@actions/core'
 import { context } from '@actions/github'
 import prComment from './pullRequestComment'
-import { CommitterMap, CommittersDetails } from './interfaces'
+import { CommitterMap, CommittersDetails, ReactedCommitterMap } from './interfaces'
 
 
 let committerMap: CommitterMap = {}
@@ -98,7 +98,7 @@ export async function getclas() {
     try {
 
         /* Parallel GitHub Api call for updating both the prComment and the Signature File and then wait for both the promises to be resolved */
-        const reactedCommitters: CommittersDetails[] = await prComment(signed, committerMap, committers) as CommittersDetails[]
+        const reactedCommitters: ReactedCommitterMap = await prComment(signed, committerMap, committers) as ReactedCommitterMap
         //checking if all the unsigned committers have reacted to the PR comment (this is needed for changing the content of the PR comment to "All committers have signed the CLA")
         //const reactedCommittersFlag = committers.some(committer => reactedCommitters.some(reactedCommitter => committer.id === reactedCommitter.id))
 
@@ -106,7 +106,7 @@ export async function getclas() {
         console.log("prCommentResponse is ------> " + JSON.stringify(reactedCommitters))
         /* pushing the unsigned contributors to the CLA Json File */
         if (signed) { return }
-        clas.signedContributors.push(...reactedCommitters)
+        clas.signedContributors.push(...reactedCommitters.newSigned)
         let contentString = JSON.stringify(clas, null, 2)
         let contentBinary = Buffer.from(contentString).toString('base64')
         //TODO: dont update the file if the committer DATA is already in the file
