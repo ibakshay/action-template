@@ -99,6 +99,7 @@ export async function getclas() {
 
         /* Parallel GitHub Api call for updating both the prComment and the Signature File and then wait for both the promises to be resolved */
         const reactedCommitters: ReactedCommitterMap = await prComment(signed, committerMap, committers) as ReactedCommitterMap
+        const reactedCommittersFlag = committers.every(committer => reactedCommitters.onlyCommitters!.some(reactedCommitter => committer.id === reactedCommitter.id))
         //checking if all the unsigned committers have reacted to the PR comment (this is needed for changing the content of the PR comment to "All committers have signed the CLA")
         //const reactedCommittersFlag = committers.some(committer => reactedCommitters.some(reactedCommitter => committer.id === reactedCommitter.id))
 
@@ -118,7 +119,7 @@ export async function getclas() {
         }
 
         /* return when there are no unsigned committers */
-        if ((committerMap.notSigned === undefined || committerMap.notSigned.length === 0) || reactedCommitters.onlyCommitters) {
+        if ((committerMap.notSigned === undefined || committerMap.notSigned.length === 0) || reactedCommittersFlag) {
             console.log("Passed")
             return
         }
