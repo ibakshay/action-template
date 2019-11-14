@@ -90,18 +90,13 @@ export async function getclas() {
     committerMap.notSigned = committers.filter(committer => !clas.signedContributors.some(cla => committer.id === cla.id))
     committerMap.signed = committers.filter(committer => clas.signedContributors.some(cla => committer.id === cla.id))
     committers.map((committer) => { if (!committer.id) { committerMap.unknown!.push(committer) } })
-    console.log('unsigned contributors are: ' + JSON.stringify(committerMap.notSigned))
-    console.log('signed contributors are: ' + JSON.stringify(committerMap.signed))
+    console.log('unsigned contributors are: ' + JSON.stringify(committerMap.notSigned, null, 2))
+    console.log('signed contributors are: ' + JSON.stringify(committerMap.signed, null, 2))
     if (committerMap.notSigned.length === 0) {
         signed = true
     }
     try {
-
-        /* Parallel GitHub Api call for updating both the prComment and the Signature File and then wait for both the promises to be resolved */
         const reactedCommitters: ReactedCommitterMap = await prComment(signed, committerMap, committers) as ReactedCommitterMap
-
-        //TODO BUG: https://github.com/ibakshay/test-action-workflow/pull/135/checks?check_run_id=297895714 reactedCommitters is coming as undefined
-        console.log("prCommentResponse is ------> " + JSON.stringify(reactedCommitters.newSigned))
         /* pushing the unsigned contributors to the CLA Json File */
         if (signed) { return }
         if (reactedCommitters.newSigned) {

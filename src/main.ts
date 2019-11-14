@@ -14,8 +14,8 @@ async function run() {
     console.log('the PR No is ' + JSON.stringify(context.issue.number))
     //const myInput = core.getInput('myInput')
     const clas = await getclas()
-    const rateLimit = await octokit.rateLimit.get()
-    console.log(JSON.stringify(rateLimit.data.resources, null, 4))
+    // const rateLimit = await octokit.rateLimit.get()
+    // console.log(JSON.stringify(rateLimit.data.resources, null, 4))
 
   } catch (error) {
     core.setFailed(error.message)
