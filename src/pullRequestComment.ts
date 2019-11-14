@@ -126,7 +126,7 @@ async function reaction(commentId, committerMap: CommitterMap, committers) {
     reactedCommitterMap.newSigned = committerMap.notSigned!.filter(committer => reactedCommitters.some(cla => committer.id === cla.id))
     // committerMap.signed = committers.filter(committer => clas.signedContributors.some(cla => committer.id === cla.id))           
     reactedCommitterMap.onlyCommitters = committers.filter(committer => reactedCommitters.some(reactedCommitter => committer.id == reactedCommitter.id))
-    console.log("the reacted users are: " + JSON.stringify(reactedCommitters))
+    //console.log("the reacted users are: " + JSON.stringify(reactedCommitters))
     return reactedCommitterMap
 
 }
@@ -155,24 +155,24 @@ export default async function prComment(signed: boolean, committerMap: Committer
                 })
 
             }
-            const reactedCommitters = await reaction(prComment.id, committerMap, committers)
+            const reactedCommitters: ReactedCommitterMap = await reaction(prComment.id, committerMap, committers)
             //checking if all the unsigned committers have reacted to the PR comment (this is needed for changing the content of the PR comment to "All committers have signed the CLA")
             // const reactedCommittersFlag = committers.some(committer => reactedCommitters.newSigned!.some(reactedCommitter => committer.id === reactedCommitter.id))
             //const reactedCommittersFlag = reactedCommitters.some(committer => committers.some(reactedCommitter => reactedCommitter.id === committer.id))
             //const result = !requiredfileds.some(i => !results.some(j => j.name === i.name));
             //const reactedCommittersFlag = !committers.some(committer => !reactedCommitters.some(reactedCommitter => reactedCommitter.id === committer.id))
-            const reactedCommittersFlag = committers.every(committer => reactedCommitters.onlyCommitters!.some(reactedCommitter => committer.id === reactedCommitter.id))
+            reactedCommitters.allSignedFlag = committers.every(committer => reactedCommitters.onlyCommitters!.some(reactedCommitter => committer.id === reactedCommitter.id))
             //const reactedCommittersFlag = reactedCommitters.every(reactedCommitter => committers.some(committer => reactedCommitter.id === committer.id))
             // if (reactedCommittersFlag) {
             //     body = '**CLA Assistant Lite** All committers have signed the CLA. :smiley:'
             // }
             console.log("committers ------->" + JSON.stringify(committers))
-            console.log("reactedCommittersFlag --------->" + reactedCommittersFlag)
+            console.log("reactedCommittersFlag --------->" + reactedCommitters.allSignedFlag)
             await octokit.issues.updateComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 comment_id: prComment.id,
-                body: commentContent(reactedCommittersFlag, committerMap)
+                body: commentContent(reactedCommitters.allSignedFlag, committerMap)
             })
 
             // const values = await Promise.all([reaction(prComment.id, committerMap, committers), octokit.issues.updateComment({

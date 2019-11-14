@@ -6,7 +6,8 @@ export interface CommitterMap {
 
 export interface ReactedCommitterMap {
     newSigned: CommittersDetails[],
-    onlyCommitters?: CommittersDetails[]
+    onlyCommitters?: CommittersDetails[],
+    allSignedFlag: boolean
 }
 
 export interface CommittersDetails {
