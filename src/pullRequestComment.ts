@@ -144,7 +144,6 @@ export default async function prComment(signed: boolean, committerMap: Committer
         }
         else if (prComment && prComment.id) {
             if (signed) {
-                console.log("HELLOW WORLD")
                 await octokit.issues.updateComment({
                     owner: context.repo.owner,
                     repo: context.repo.repo,
