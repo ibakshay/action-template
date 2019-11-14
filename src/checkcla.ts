@@ -103,18 +103,22 @@ export async function getclas() {
         //const reactedCommittersFlag = committers.some(committer => reactedCommitters.some(reactedCommitter => committer.id === reactedCommitter.id))
 
         //TODO BUG: https://github.com/ibakshay/test-action-workflow/pull/135/checks?check_run_id=297895714 reactedCommitters is coming as undefined
-        console.log("prCommentResponse is ------> " + JSON.stringify(reactedCommitters))
+        console.log("prCommentResponse is ------> " + JSON.stringify(reactedCommitters.newSigned))
         /* pushing the unsigned contributors to the CLA Json File */
         if (signed) { return }
-        clas.signedContributors.push(...reactedCommitters.newSigned)
-        let contentString = JSON.stringify(clas, null, 2)
-        let contentBinary = Buffer.from(contentString).toString('base64')
-        //TODO: dont update the file if the committer DATA is already in the file
+        if (reactedCommitters.newSigned) {
+            clas.signedContributors.push(...reactedCommitters.newSigned)
+            let contentString = JSON.stringify(clas, null, 2)
+            let contentBinary = Buffer.from(contentString).toString('base64')
+            //TODO: dont update the file if the committer DATA is already in the file
 
-        //Promise.all([prComment(signed, committerMap, committers), updateFile(pathToClaSignatures, sha, contentBinary, branch)])
-        await updateFile(pathToClaSignatures, sha, contentBinary, branch)
+            //Promise.all([prComment(signed, committerMap, committers), updateFile(pathToClaSignatures, sha, contentBinary, branch)])
+            await updateFile(pathToClaSignatures, sha, contentBinary, branch)
+
+        }
+
         /* return when there are no unsigned committers */
-        if (committerMap.notSigned === undefined || committerMap.notSigned.length === 0) {
+        if ((committerMap.notSigned === undefined || committerMap.notSigned.length === 0) || reactedCommitters.onlyCommitters) {
             console.log("Passed")
             return
         }
