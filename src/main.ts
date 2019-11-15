@@ -12,6 +12,7 @@ async function run() {
   try {
     console.log('CLA Assistant GitHub Action has started')
     console.log('the PR No is ' + JSON.stringify(context.issue.number))
+    console.log(JSON.stringify(context))
     //const myInput = core.getInput('myInput')
     const clas = await getclas()
     // const rateLimit = await octokit.rateLimit.get()
