@@ -90,8 +90,7 @@ export async function getclas() {
     clas = Buffer.from(result.data.content, 'base64').toString()
     clas = JSON.parse(clas)
     committerMap = prepareCommiterMap(committers, clas) as CommitterMap
-    const test = document.write(committerMap.notSigned!.join(", "))
-    console.log("test------>" + test)
+    //const test = document.write(committerMap.notSigned!.join(", "))
     console.log('unsigned contributors are: ' + JSON.stringify(committerMap.notSigned, null, 2))
     console.log('signed contributors are: ' + JSON.stringify(committerMap.signed, null, 2))
     if (committerMap.notSigned!.length === 0) {
