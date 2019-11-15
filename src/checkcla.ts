@@ -90,6 +90,8 @@ export async function getclas() {
     clas = Buffer.from(result.data.content, 'base64').toString()
     clas = JSON.parse(clas)
     committerMap = prepareCommiterMap(committers, clas) as CommitterMap
+    const test = document.write(committerMap.notSigned!.join(", "))
+    console.log("test------>" + test)
     console.log('unsigned contributors are: ' + JSON.stringify(committerMap.notSigned, null, 2))
     console.log('signed contributors are: ' + JSON.stringify(committerMap.signed, null, 2))
     if (committerMap.notSigned!.length === 0) {
@@ -105,25 +107,23 @@ export async function getclas() {
             let contentString = JSON.stringify(clas, null, 2)
             let contentBinary = Buffer.from(contentString).toString('base64')
             //TODO: dont update the file if the committer DATA is already in the file
-
-            //Promise.all([prComment(signed, committerMap, committers), updateFile(pathToClaSignatures, sha, contentBinary, branch)])
             await updateFile(pathToClaSignatures, sha, contentBinary, branch)
 
         }
 
         /* return when there are no unsigned committers */
         if ((committerMap.notSigned === undefined || committerMap.notSigned.length === 0) || reactedCommitters.allSignedFlag) {
-            console.log("Passed")
+            console.log("All committers have signed the CLA")
             return
         }
         else {
-            core.setFailed(`committers of ${context.issue.number}  has to sign the CLA`)
+            core.setFailed(`committers of Pull Request number ${context.issue.number}  has to sign the CLA`)
         }
     }
 
     catch (err) {
         core.setFailed(err.message)
-        throw new Error("error will updating the JSON file" + err)
+        throw new Error("error while updating the JSON file" + err)
     }
     return clas
 
