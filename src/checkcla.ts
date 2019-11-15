@@ -13,6 +13,8 @@ function prepareCommiterMap(committers: CommittersDetails[], clas): CommitterMap
     committerMap.notSigned = committers.filter(committer => !clas.signedContributors.some(cla => committer.id === cla.id))
     committerMap.signed = committers.filter(committer => clas.signedContributors.some(cla => committer.id === cla.id))
     committers.map((committer) => { if (!committer.id) { committerMap.unknown!.push(committer) } })
+    console.log('unsigned contributors are: ' + JSON.stringify(committerMap.notSigned, null, 2))
+    console.log('signed contributors are: ' + JSON.stringify(committerMap.signed, null, 2))
     return committerMap
 
 }
@@ -90,8 +92,8 @@ export async function getclas() {
     clas = Buffer.from(result.data.content, 'base64').toString()
     clas = JSON.parse(clas)
     prepareCommiterMap(committers, clas) as CommitterMap
-    console.log('unsigned contributors are: ' + JSON.stringify(committerMap.notSigned, null, 2))
-    console.log('signed contributors are: ' + JSON.stringify(committerMap.signed, null, 2))
+    // console.log('unsigned contributors are: ' + JSON.stringify(committerMap.notSigned, null, 2))
+    // console.log('signed contributors are: ' + JSON.stringify(committerMap.signed, null, 2))
     if (committerMap.notSigned!.length === 0) {
         console.log("null check")
         signed = true
