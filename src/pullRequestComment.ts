@@ -2,8 +2,8 @@ import octokit from './octokit'
 import * as core from '@actions/core'
 import { context } from '@actions/github'
 import { pathToCLADocument } from './url'
-import { CommitterMap, CommittersDetails, ReactedCommitterMap, LabelName } from './interfaces'
-import { userInfo } from 'os'
+import reaction from './reaction'
+import { CommitterMap, ReactedCommitterMap, LabelName } from './interfaces'
 
 function addLabel() {
     return octokit.issues.addLabels({
@@ -106,28 +106,28 @@ function commentContent(signed: boolean, committerMap: CommitterMap): string {
 
 }
 
-async function reaction(commentId, committerMap: CommitterMap, committers) {
-    let reactedCommitterMap = {} as ReactedCommitterMap
-    const response = await octokit.reactions.listForIssueComment({
-        owner: context.repo.owner,
-        repo: context.repo.repo,
-        comment_id: commentId
-    })
-    let reactedCommitters = [] as CommittersDetails[]
-    response.data.map((reactedCommitter) => {
-        reactedCommitters.push({
-            name: reactedCommitter.user.login,
-            id: reactedCommitter.user.id
-        })
-    })
-    //checking if the reacted committers are not the signed committers(not in the storage file) and filtering out only the unsigned committers
-    //TODO BUG: https://github.com/ibakshay/test-action-workflow/pull/120/checks?check_run_id=297679607
-    //TODO BUG: check if the reacted committers are the contributors of the same PR and then check if all the  CONTRIBUTORS have reacted
-    reactedCommitterMap.newSigned = committerMap.notSigned!.filter(committer => reactedCommitters.some(cla => committer.id === cla.id))
-    reactedCommitterMap.onlyCommitters = committers.filter(committer => reactedCommitters.some(reactedCommitter => committer.id == reactedCommitter.id))
-    return reactedCommitterMap
+// async function reaction(commentId, committerMap: CommitterMap, committers) {
+//     let reactedCommitterMap = {} as ReactedCommitterMap
+//     const response = await octokit.reactions.listForIssueComment({
+//         owner: context.repo.owner,
+//         repo: context.repo.repo,
+//         comment_id: commentId
+//     })
+//     let reactedCommitters = [] as CommittersDetails[]
+//     response.data.map((reactedCommitter) => {
+//         reactedCommitters.push({
+//             name: reactedCommitter.user.login,
+//             id: reactedCommitter.user.id
+//         })
+//     })
+//     //checking if the reacted committers are not the signed committers(not in the storage file) and filtering out only the unsigned committers
+//     //TODO BUG: https://github.com/ibakshay/test-action-workflow/pull/120/checks?check_run_id=297679607
+//     //TODO BUG: check if the reacted committers are the contributors of the same PR and then check if all the  CONTRIBUTORS have reacted
+//     reactedCommitterMap.newSigned = committerMap.notSigned!.filter(committer => reactedCommitters.some(cla => committer.id === cla.id))
+//     reactedCommitterMap.onlyCommitters = committers.filter(committer => reactedCommitters.some(reactedCommitter => committer.id == reactedCommitter.id))
+//     return reactedCommitterMap
 
-}
+// }
 
 
 export default async function prComment(signed: boolean, committerMap: CommitterMap, committers) {
@@ -152,7 +152,7 @@ export default async function prComment(signed: boolean, committerMap: Committer
                 })
 
             }
-            const reactedCommitters: ReactedCommitterMap = await reaction(prComment.id, committerMap, committers)
+            const reactedCommitters: ReactedCommitterMap = await reaction(prComment.id, committerMap, committers) as ReactedCommitterMap
             //checking if all the unsigned committers have reacted to the PR comment (this is needed for changing the content of the PR comment to "All committers have signed the CLA")
             reactedCommitters.allSignedFlag = committers.every(committer => reactedCommitters.onlyCommitters!.some(reactedCommitter => committer.id === reactedCommitter.id))
 
