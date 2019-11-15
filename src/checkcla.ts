@@ -6,9 +6,10 @@ import prComment from './pullRequestComment'
 import { CommitterMap, CommittersDetails, ReactedCommitterMap } from './interfaces'
 
 
-let committerMap: CommitterMap = {}
+
 
 function prepareCommiterMap(committers: CommittersDetails[], clas): CommitterMap {
+    let committerMap: CommitterMap = {}
     committerMap.notSigned = committers.filter(committer => !clas.signedContributors.some(cla => committer.id === cla.id))
     committerMap.signed = committers.filter(committer => clas.signedContributors.some(cla => committer.id === cla.id))
     committers.map((committer) => { if (!committer.id) { committerMap.unknown!.push(committer) } })
@@ -44,6 +45,7 @@ async function createFile(pathToClaSignatures, contentBinary, branch): Promise<o
 
 }
 export async function getclas() {
+    let committerMap = {} as CommitterMap
 
     let signed: boolean = false
     //getting the path of the cla from the user
@@ -87,12 +89,11 @@ export async function getclas() {
     }
     clas = Buffer.from(result.data.content, 'base64').toString()
     clas = JSON.parse(clas)
-    committerMap.notSigned = committers.filter(committer => !clas.signedContributors.some(cla => committer.id === cla.id))
-    committerMap.signed = committers.filter(committer => clas.signedContributors.some(cla => committer.id === cla.id))
-    committers.map((committer) => { if (!committer.id) { committerMap.unknown!.push(committer) } })
+    prepareCommiterMap(committers, clas) as CommitterMap
     console.log('unsigned contributors are: ' + JSON.stringify(committerMap.notSigned, null, 2))
     console.log('signed contributors are: ' + JSON.stringify(committerMap.signed, null, 2))
-    if (committerMap.notSigned.length === 0) {
+    if (committerMap.notSigned!.length === 0) {
+        console.log("null check")
         signed = true
     }
     try {

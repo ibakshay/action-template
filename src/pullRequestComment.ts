@@ -106,29 +106,6 @@ function commentContent(signed: boolean, committerMap: CommitterMap): string {
 
 }
 
-// async function reaction(commentId, committerMap: CommitterMap, committers) {
-//     let reactedCommitterMap = {} as ReactedCommitterMap
-//     const response = await octokit.reactions.listForIssueComment({
-//         owner: context.repo.owner,
-//         repo: context.repo.repo,
-//         comment_id: commentId
-//     })
-//     let reactedCommitters = [] as CommittersDetails[]
-//     response.data.map((reactedCommitter) => {
-//         reactedCommitters.push({
-//             name: reactedCommitter.user.login,
-//             id: reactedCommitter.user.id
-//         })
-//     })
-//     //checking if the reacted committers are not the signed committers(not in the storage file) and filtering out only the unsigned committers
-//     //TODO BUG: https://github.com/ibakshay/test-action-workflow/pull/120/checks?check_run_id=297679607
-//     //TODO BUG: check if the reacted committers are the contributors of the same PR and then check if all the  CONTRIBUTORS have reacted
-//     reactedCommitterMap.newSigned = committerMap.notSigned!.filter(committer => reactedCommitters.some(cla => committer.id === cla.id))
-//     reactedCommitterMap.onlyCommitters = committers.filter(committer => reactedCommitters.some(reactedCommitter => committer.id == reactedCommitter.id))
-//     return reactedCommitterMap
-
-// }
-
 
 export default async function prComment(signed: boolean, committerMap: CommitterMap, committers) {
     try {
