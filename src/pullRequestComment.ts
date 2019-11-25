@@ -132,6 +132,9 @@ export default async function prComment(signed: boolean, committerMap: Committer
             const reactedCommitters: ReactedCommitterMap = await reaction(prComment.id, committerMap, committers) as ReactedCommitterMap
             //checking if all the unsigned committers have reacted to the PR comment (this is needed for changing the content of the PR comment to "All committers have signed the CLA")
             reactedCommitters.allSignedFlag = committers.every(committer => reactedCommitters.onlyCommitters!.some(reactedCommitter => committer.id === reactedCommitter.id))
+            if (committerMap.signed) {
+                committerMap.signed.push(...reactedCommitters.newSigned)
+            }
 
             await octokit.issues.updateComment({
                 owner: context.repo.owner,
@@ -139,7 +142,6 @@ export default async function prComment(signed: boolean, committerMap: Committer
                 comment_id: prComment.id,
                 body: commentContent(reactedCommitters.allSignedFlag, committerMap)
             })
-
             return reactedCommitters
         }
 
