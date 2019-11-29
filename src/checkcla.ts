@@ -94,7 +94,6 @@ export async function getclas() {
     console.log('unsigned contributors are: ' + JSON.stringify(committerMap.notSigned, null, 2))
     console.log('signed contributors are: ' + JSON.stringify(committerMap.signed, null, 2))
     if (committerMap.notSigned!.length === 0) {
-        console.log("null check")
         signed = true
     }
     try {
@@ -105,7 +104,7 @@ export async function getclas() {
             clas.signedContributors.push(...reactedCommitters.newSigned)
             let contentString = JSON.stringify(clas, null, 2)
             let contentBinary = Buffer.from(contentString).toString('base64')
-            //TODO: dont update the file if the committer DATA is already in the file
+
             await updateFile(pathToClaSignatures, sha, contentBinary, branch)
 
         }
