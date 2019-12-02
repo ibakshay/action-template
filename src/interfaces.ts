@@ -10,6 +10,12 @@ export interface ReactedCommitterMap {
     allSignedFlag: boolean
 }
 
+export interface ReactedCommitterMap2 {
+    newSigned: CommittersDetails[],
+    onlyCommitters?: CommittersDetails[],
+    allSignedFlag: boolean
+} 
+
 export interface CommittersDetails {
     name: string,
     id: number,

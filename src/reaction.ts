@@ -1,11 +1,12 @@
 import octokit from './octokit'
 import * as core from '@actions/core';
 import { context } from '@actions/github'
-import { CommitterMap, CommittersDetails, ReactedCommitterMap } from './interfaces'
+import { CommitterMap, CommittersDetails, ReactedCommitterMap, ReactedCommitterMap2 } from './interfaces'
 
 
 export default async function reaction(commentId, committerMap: CommitterMap, committers) {
     let reactedCommitterMap = {} as ReactedCommitterMap
+    let reactedCommitterMap2 = {} as ReactedCommitterMap2
     const response = await octokit.reactions.listForIssueComment({
         owner: context.repo.owner,
         repo: context.repo.repo,
@@ -20,10 +21,21 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
         })
     })
     //checking if the reacted committers are not the signed committers(not in the storage file) and filtering only the unsigned committers
-    // reactedCommitterMap.newSigned = committerMap.notSigned!.filter(committer => reactedCommitters!.some(cla => committer.id === cla.id))
-    // console.log("the first reacted Committers are " + JSON.stringify(reactedCommitterMap, null, 2))
-    reactedCommitterMap.newSigned = reactedCommitters.filter(reactedCommitter => committerMap.notSigned!.some(notSignedCommitter => reactedCommitter.id === notSignedCommitter.id))
-    console.log("the second reacted Committers are " + JSON.stringify(reactedCommitterMap, null, 2))
+    reactedCommitterMap.newSigned = committerMap.notSigned!.filter(committer => reactedCommitters!.some(cla => committer.id === cla.id))
+    console.log("the first reacted Committers are " + JSON.stringify(reactedCommitterMap, null, 2))
+    // reactedCommitterMap.newSigned = reactedCommitters.filter(reactedCommitter => committerMap.notSigned!.some(notSignedCommitter => reactedCommitter.id === notSignedCommitter.id))
+    // console.log("the first  reacted Committers are " + JSON.stringify(reactedCommitterMap, null, 2))
+    reactedCommitterMap2 = reactedCommitterMap
+
+
+    reactedCommitters.forEach((reactedCommitter) => {
+        committerMap.notSigned!.map((notSignedCommitter) => {
+            if (notSignedCommitter.id === reactedCommitter.id) {
+                reactedCommitterMap2.newSigned.push(notSignedCommitter)
+            }
+        })
+    })
+    console.log("the Mapped reacted Committers are " + JSON.stringify(reactedCommitterMap2, null, 2))
 
     //checking if the reacted users are only the contributors who has committed in the same PR (This is needed for the PR Comment and changing the status to success when all the contributors has reacted to the PR)
     reactedCommitterMap.onlyCommitters = committers.filter(committer => reactedCommitters.some(reactedCommitter => committer.id == reactedCommitter.id))
