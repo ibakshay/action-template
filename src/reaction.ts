@@ -27,13 +27,13 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
     //reactedCommitterMap2 = reactedCommitterMap
 
 
-    // reactedCommitters.forEach((reactedCommitter) => {
-    //     committerMap.notSigned!.forEach((notSignedCommitter) => {
-    //         if (notSignedCommitter.id === reactedCommitter.id) {
-    //             reactedCommitterMap.newSigned.push(notSignedCommitter)
-    //         }
-    //     })
-    // })
+    reactedCommitters.forEach((reactedCommitter) => {
+        committerMap.notSigned!.forEach((notSignedCommitter) => {
+            if (notSignedCommitter.id === reactedCommitter.id) {
+                reactedCommitterMap.newSigned.push(notSignedCommitter)
+            }
+        })
+    })
     //console.log("the Mapped reacted Committers are " + JSON.stringify(reactedCommitterMap2, null, 2))
 
     //checking if the reacted users are only the contributors who has committed in the same PR (This is needed for the PR Comment and changing the status to success when all the contributors has reacted to the PR)
