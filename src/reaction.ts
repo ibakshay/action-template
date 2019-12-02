@@ -21,20 +21,20 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
             createdAt: reactedCommitter.created_at
         })
     })
-    //checking if the reacted committers are not the signed committers(not in the storage file) and filtering only the unsigned committers
-    // reactedCommitterMap.newSigned = reactedCommitters.filter(reactedCommitter => committerMap.notSigned!.some(notSignedCommitter => reactedCommitter.id === notSignedCommitter.id))
-    // console.log("the first  reacted Committers are " + JSON.stringify(reactedCommitterMap, null, 2))
+    // checking if the reacted committers are not the signed committers(not in the storage file) and filtering only the unsigned committers
+    reactedCommitterMap.newSigned = reactedCommitters.filter(reactedCommitter => committerMap.notSigned!.some(notSignedCommitter => reactedCommitter.id === notSignedCommitter.id))
+    console.log("the first  reacted Committers are " + JSON.stringify(reactedCommitterMap, null, 2))
     //reactedCommitterMap2 = reactedCommitterMap
 
 
-    reactedCommitters.forEach((reactedCommitter) => {
-        committerMap.notSigned!.map((notSignedCommitter) => {
-            if (notSignedCommitter.id === reactedCommitter.id) {
-                reactedCommitterMap.newSigned.push(notSignedCommitter)
-            }
-        })
-    })
-    console.log("the Mapped reacted Committers are " + JSON.stringify(reactedCommitterMap2, null, 2))
+    // reactedCommitters.forEach((reactedCommitter) => {
+    //     committerMap.notSigned!.forEach((notSignedCommitter) => {
+    //         if (notSignedCommitter.id === reactedCommitter.id) {
+    //             reactedCommitterMap.newSigned.push(notSignedCommitter)
+    //         }
+    //     })
+    // })
+    //console.log("the Mapped reacted Committers are " + JSON.stringify(reactedCommitterMap2, null, 2))
 
     //checking if the reacted users are only the contributors who has committed in the same PR (This is needed for the PR Comment and changing the status to success when all the contributors has reacted to the PR)
     reactedCommitterMap.onlyCommitters = committers.filter(committer => reactedCommitters.some(reactedCommitter => committer.id == reactedCommitter.id))
