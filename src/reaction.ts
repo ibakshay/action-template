@@ -34,7 +34,7 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
                     ...reactedCommitter,
                     createdAt: notSignedCommitter.createdAt
                 }
-                console.log("akshay is great " + reactedCommitter)
+                console.log("akshay is great " + JSON.stringify(reactedCommitter))
 
             }
             //reactedCommitterMap.newSigned.push(reactedCommitter)
