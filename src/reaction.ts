@@ -32,7 +32,7 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
             if (notSignedCommitter.id === reactedCommitter.id) {
                 reactedCommitter = {
                     ...reactedCommitter,
-                    createdAt: notSignedCommitter.createdAt
+                    pullRequestNo: notSignedCommitter.pullRequestNo
                 }
                 console.log("akshay is great " + JSON.stringify(reactedCommitter, null, 2))
 
