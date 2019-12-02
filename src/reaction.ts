@@ -30,9 +30,10 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
     committerMap.notSigned!.forEach((notSignedCommitter) => {
         reactedCommitters!.map((reactedCommitter) => {
             if (notSignedCommitter.id === reactedCommitter.id) {
-                console.log("not signed committers ----> " + JSON.stringify(notSignedCommitter, null, 2))
-                console.log("reactedCommitter committers ----> " + JSON.stringify(reactedCommitter, null, 2))
+
             }
+            console.log("not signed committers ----> " + JSON.stringify(notSignedCommitter, null, 2))
+            console.log("reactedCommitter committers ----> " + JSON.stringify(reactedCommitter, null, 2))
         })
     })
     // console.log("the Mapped reacted Committers are " + JSON.stringify(reactedCommitterMap, null, 2))
