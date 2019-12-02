@@ -5,6 +5,7 @@ import { CommitterMap, CommittersDetails, ReactedCommitterMap, ReactedCommitterM
 
 
 export default async function reaction(commentId, committerMap: CommitterMap, committers) {
+    console.log("In Reaction file")
     let reactedCommitterMap = {} as ReactedCommitterMap
     let reactedCommitterMap2 = {} as ReactedCommitterMap2
     const response = await octokit.reactions.listForIssueComment({
