@@ -36,7 +36,7 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
                 }
 
             }
-            reactedCommitterMap.newSigned.push(reactedCommitter)
+            // reactedCommitterMap.newSigned.push(reactedCommitter)
             console.log("AKSHAY IS GREAT  ----> " + JSON.stringify(reactedCommitterMap, null, 2))
 
         })
