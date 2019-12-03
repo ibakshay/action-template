@@ -6,6 +6,7 @@ import { CommitterMap, CommittersDetails, ReactedCommitterMap } from './interfac
 
 export default async function reaction(commentId, committerMap: CommitterMap, committers) {
     let reactedCommitterMap = {} as ReactedCommitterMap
+    let bufferCommitters = [] as CommittersDetails[]
     const response = await octokit.reactions.listForIssueComment({
         owner: context.repo.owner,
         repo: context.repo.repo,
@@ -20,9 +21,23 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
     })
     //checking if the reacted committers are not the signed committers(not in the storage file) and filtering only the unsigned committers
     reactedCommitterMap.newSigned = reactedCommitters.filter(reactedCommitter => committerMap.notSigned!.some(notSignedCommitter => reactedCommitter.id === notSignedCommitter.id))
+    //bufferCommitters = reactedCommitterMap.newSigned
+
+    reactedCommitters.forEach(reactedCommitter => {
+        committerMap.notSigned!.forEach(notSignedCommitter => {
+            if (reactedCommitter.id === notSignedCommitter.id) {
+                reactedCommitter = {
+                    ...reactedCommitter,
+                    pullRequestNo: notSignedCommitter.pullRequestNo
+                }
+            }
+
+        })
+    })
+    console.log('reacted committers map is ' + JSON.stringify(reactedCommitters, null, 2))
     //checking if the reacted users are only the contributors who has committed in the same PR (This is needed for the PR Comment and changing the status to success when all the contributors has reacted to the PR)
     reactedCommitterMap.onlyCommitters = committers.filter(committer => reactedCommitters.some(reactedCommitter => committer.id == reactedCommitter.id))
-    console.log('reacted committers map is ' + JSON.stringify(reactedCommitterMap))
+    console.log('reacted committers map is ' + JSON.stringify(reactedCommitterMap, null, 2))
     return reactedCommitterMap
 
 }
