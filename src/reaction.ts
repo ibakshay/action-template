@@ -31,9 +31,10 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
                 createdAt: notSignedCommitter.createdAt
             }
         }
+        return reactedCommitter.id === notSignedCommitter.id
 
     }
-    //reactedCommitterMap.newSigned = reactedCommitters.filter(reactedCommitter => committerMap.notSigned!.some(notSignedCommitter => addPullRequestNo(reactedCommitter, notSignedCommitter)))
+    reactedCommitterMap.newSigned = reactedCommitters.filter(reactedCommitter => committerMap.notSigned!.some(notSignedCommitter => addPullRequestNo(reactedCommitter, notSignedCommitter)))
     console.log("the first  reacted Committers are " + JSON.stringify(reactedCommitterMap, null, 2))
     //reactedCommitterMap2 = reactedCommitterMap
 
