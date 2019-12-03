@@ -59,18 +59,18 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
 
 
     // }
-    reactedCommitterMap.newSigned = _.merge(reactedCommitters, _.map(committerMap.notSigned, function (obj) {
-        return _.pick(obj, 'id', 'pullRequestNo')
-    }))
     console.log("the first  reacted Committers are " + JSON.stringify(bufferCommitters, null, 2))
 
     // reactedCommitterMap.newSigned = committerMap.notSigned!.filter(notSignedCommitter => reactedCommitters.filter(reactedCommitter => addPullRequestNo(reactedCommitter, notSignedCommitter)))
     //reactedCommitterMap.newSigned = reactedCommitters.filter(reactedCommitter => committerMap.notSigned!.filter(notSignedCommitter => addPullRequestNo(reactedCommitter, notSignedCommitter)))
-    reactedCommitterMap.newSigned = committerMap.notSigned!.filter(committer => reactedCommitters.some(cla => committer.id === cla.id))
+    bufferCommitters = committerMap.notSigned!.filter(committer => reactedCommitters.some(cla => committer.id === cla.id))
     //testFoo(reactedCommitters, bufferCommitter)
     // var result = _.merge( arr1, _.map( arr2, function( obj ) {
     //     return _.pick( obj, 'id', 'eyeColour' );
     // }));
+    reactedCommitterMap.newSigned = _.merge(bufferCommitters, _.map(committerMap.notSigned, function (obj) {
+        return _.pick(obj, 'id', 'pullRequestNo')
+    }))
 
 
 
