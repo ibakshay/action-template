@@ -31,6 +31,7 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
                     ...reactedCommitter,
                     pullRequestNo: notSignedCommitter.pullRequestNo
                 }
+                console.log('Becky  map is ' + JSON.stringify(reactedCommitter, null, 2))
             }
 
         })
