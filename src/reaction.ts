@@ -14,7 +14,7 @@ import { CommitterMap, CommittersDetails, ReactedCommitterMap, ReactedCommitterM
 //   }
 
 function testFoo(reactedCommitters, committerMap) {
-    var akshay = id => committerMap.notSigned.find(notSignedCommitter => id === notSignedCommitter.id)
+    var akshay = id => committerMap.find(notSignedCommitter => id === notSignedCommitter.id)
     reactedCommitters.forEach(reactedCommitter => {
         var becky = akshay(reactedCommitter.id)
         var { pullRequestNo } = becky
@@ -27,7 +27,7 @@ function testFoo(reactedCommitters, committerMap) {
 export default async function reaction(commentId, committerMap: CommitterMap, committers) {
     console.log("In Reaction file")
     let reactedCommitterMap = {} as ReactedCommitterMap
-    let reactedCommitterMap2 = {} as ReactedCommitterMap2
+    let bufferCommitter = [] as CommittersDetails[]
     const response = await octokit.reactions.listForIssueComment({
         owner: context.repo.owner,
         repo: context.repo.repo,
@@ -61,7 +61,8 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
 
     // reactedCommitterMap.newSigned = committerMap.notSigned!.filter(notSignedCommitter => reactedCommitters.filter(reactedCommitter => addPullRequestNo(reactedCommitter, notSignedCommitter)))
     //reactedCommitterMap.newSigned = reactedCommitters.filter(reactedCommitter => committerMap.notSigned!.filter(notSignedCommitter => addPullRequestNo(reactedCommitter, notSignedCommitter)))
-    testFoo(reactedCommitters, committerMap)
+    bufferCommitter = committerMap.notSigned!.filter(committer => reactedCommitters.some(cla => committer.id === cla.id))
+    testFoo(reactedCommitters, bufferCommitter)
     console.log("the first  reacted Committers are " + JSON.stringify(reactedCommitters, null, 2))
     reactedCommitterMap.newSigned = reactedCommitters.filter(reactedCommitter => committerMap.notSigned!.some(notSignedCommitter => reactedCommitter.id === notSignedCommitter.id))
     console.log("the first  reacted Committers are " + JSON.stringify(reactedCommitterMap, null, 2))
