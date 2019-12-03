@@ -32,9 +32,9 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
 
             }
             console.log("tictic" + JSON.stringify(reactedCommitter))
-            return reactedCommitter
         }
         console.log("blabla" + JSON.stringify(reactedCommitter))
+        return reactedCommitter
 
 
     }
