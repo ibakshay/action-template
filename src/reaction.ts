@@ -23,7 +23,7 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
     })
     // checking if the reacted committers are not the signed committers(not in the storage file) and filtering only the unsigned committers
 
-    //reactedCommitterMap.newSigned = reactedCommitters.filter(reactedCommitter => committerMap.notSigned!.some(notSignedCommitter => reactedCommitter.id === notSignedCommitter.id))
+    reactedCommitterMap.newSigned = reactedCommitters.filter(reactedCommitter => committerMap.notSigned!.some(notSignedCommitter => reactedCommitter.id === notSignedCommitter.id))
     function addPullRequestNo(reactedCommitter, notSignedCommitter) {
         if (reactedCommitter.id === notSignedCommitter.id) {
             reactedCommitter = {
@@ -33,7 +33,7 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
         }
 
     }
-    reactedCommitterMap.newSigned = reactedCommitters.filter(reactedCommitter => committerMap.notSigned!.some(notSignedCommitter => addPullRequestNo(reactedCommitter, notSignedCommitter)))
+    //reactedCommitterMap.newSigned = reactedCommitters.filter(reactedCommitter => committerMap.notSigned!.some(notSignedCommitter => addPullRequestNo(reactedCommitter, notSignedCommitter)))
     console.log("the first  reacted Committers are " + JSON.stringify(reactedCommitterMap, null, 2))
     //reactedCommitterMap2 = reactedCommitterMap
 
