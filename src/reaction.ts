@@ -23,17 +23,19 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
     })
     // checking if the reacted committers are not the signed committers(not in the storage file) and filtering only the unsigned committers
 
-    reactedCommitterMap.newSigned = reactedCommitters.filter(reactedCommitter => committerMap.notSigned!.some(notSignedCommitter => reactedCommitter.id === notSignedCommitter.id))
+    //reactedCommitterMap.newSigned = reactedCommitters.filter(reactedCommitter => committerMap.notSigned!.some(notSignedCommitter => reactedCommitter.id === notSignedCommitter.id))
     function addPullRequestNo(reactedCommitter, notSignedCommitter) {
         if (reactedCommitter.id === notSignedCommitter.id) {
             reactedCommitter = {
                 ...reactedCommitter,
                 pullRequestNo: notSignedCommitter.pullRequestNo
+
             }
             console.log("tictic" + JSON.stringify(reactedCommitter))
+            return reactedCommitter
         }
         console.log("blabla" + JSON.stringify(reactedCommitter))
-        return reactedCommitter
+
 
     }
     reactedCommitterMap.newSigned = reactedCommitters.filter(reactedCommitter => committerMap.notSigned!.filter(notSignedCommitter => addPullRequestNo(reactedCommitter, notSignedCommitter)))
