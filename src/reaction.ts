@@ -28,7 +28,7 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
         if (reactedCommitter.id === notSignedCommitter.id) {
             reactedCommitter = {
                 ...reactedCommitter,
-                createdAt: notSignedCommitter.createdAt
+                pullRequestNo: notSignedCommitter.pullRequestNo
             }
         }
         return reactedCommitter.id === notSignedCommitter.id
