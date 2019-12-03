@@ -3,6 +3,26 @@ import * as core from '@actions/core';
 import { context } from '@actions/github'
 import { CommitterMap, CommittersDetails, ReactedCommitterMap, ReactedCommitterMap2 } from './interfaces'
 
+// function update(array1, array2) {
+//     var findPerson = id => array2.find(person => person.id === id);
+
+//     array1.forEach(person => {
+//       var person2 = findPerson(person.id));
+//       var {eyeColour} = person2;
+//       Object.assign(person, {eyeColour});
+//     });
+//   }
+
+function testFoo(reactedCommitters, committerMap) {
+    var akshay = id => committerMap.notSigned.find(notSignedCommitter => id === notSignedCommitter.id)
+    reactedCommitters.forEach(reactedCommitter => {
+        var becky = akshay(reactedCommitter.id)
+        var { pullRequestNo } = becky
+        Object.assign(reactedCommitter, { pullRequestNo })
+    })
+    return reactedCommitters
+}
+
 
 export default async function reaction(commentId, committerMap: CommitterMap, committers) {
     console.log("In Reaction file")
@@ -21,24 +41,28 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
             createdAt: reactedCommitter.created_at
         })
     })
+
     // checking if the reacted committers are not the signed committers(not in the storage file) and filtering only the unsigned committers
 
     //reactedCommitterMap.newSigned = reactedCommitters.filter(reactedCommitter => committerMap.notSigned!.some(notSignedCommitter => reactedCommitter.id === notSignedCommitter.id))
-    function addPullRequestNo(reactedCommitter, notSignedCommitter) {
-        if (reactedCommitter.id === notSignedCommitter.id) {
-            reactedCommitter = {
-                ...reactedCommitter,
-                pullRequestNo: notSignedCommitter.pullRequestNo
+    // function addPullRequestNo(reactedCommitter, notSignedCommitter) {
+    //     if (reactedCommitter.id === notSignedCommitter.id) {
+    //         reactedCommitter = {
+    //             ...reactedCommitter,
+    //             pullRequestNo: notSignedCommitter.pullRequestNo
 
-            }
-            console.log("tictic" + JSON.stringify(reactedCommitter))
-        }
-        console.log("blabla" + JSON.stringify(reactedCommitter))
-        return reactedCommitter
+    //         }
+    //         console.log("tictic" + JSON.stringify(reactedCommitter))
+    //     }
+    //     console.log("blabla" + JSON.stringify(reactedCommitter))
+    //     return reactedCommitter
 
 
-    }
-    reactedCommitterMap.newSigned = reactedCommitters.filter(reactedCommitter => committerMap.notSigned!.filter(notSignedCommitter => addPullRequestNo(reactedCommitter, notSignedCommitter)))
+    // }
+
+    // reactedCommitterMap.newSigned = committerMap.notSigned!.filter(notSignedCommitter => reactedCommitters.filter(reactedCommitter => addPullRequestNo(reactedCommitter, notSignedCommitter)))
+    //reactedCommitterMap.newSigned = reactedCommitters.filter(reactedCommitter => committerMap.notSigned!.filter(notSignedCommitter => addPullRequestNo(reactedCommitter, notSignedCommitter)))
+    testFoo(reactedCommitters, committerMap)
     console.log("the first  reacted Committers are " + JSON.stringify(reactedCommitterMap, null, 2))
     //reactedCommitterMap2 = reactedCommitterMap
 
