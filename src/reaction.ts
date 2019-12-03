@@ -1,4 +1,5 @@
 import octokit from './octokit'
+import _ from 'lodash'
 import * as core from '@actions/core';
 import { context } from '@actions/github'
 import { CommitterMap, CommittersDetails, ReactedCommitterMap, ReactedCommitterMap2 } from './interfaces'
@@ -27,7 +28,7 @@ function testFoo(reactedCommitters, committerMap) {
 export default async function reaction(commentId, committerMap: CommitterMap, committers) {
     console.log("In Reaction file")
     let reactedCommitterMap = {} as ReactedCommitterMap
-    let bufferCommitter = [] as CommittersDetails[]
+    let bufferCommitters = [] as CommittersDetails[]
     const response = await octokit.reactions.listForIssueComment({
         owner: context.repo.owner,
         repo: context.repo.repo,
@@ -61,10 +62,16 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
 
     // reactedCommitterMap.newSigned = committerMap.notSigned!.filter(notSignedCommitter => reactedCommitters.filter(reactedCommitter => addPullRequestNo(reactedCommitter, notSignedCommitter)))
     //reactedCommitterMap.newSigned = reactedCommitters.filter(reactedCommitter => committerMap.notSigned!.filter(notSignedCommitter => addPullRequestNo(reactedCommitter, notSignedCommitter)))
-    bufferCommitter = committerMap.notSigned!.filter(committer => reactedCommitters.some(cla => committer.id === cla.id))
-    testFoo(reactedCommitters, bufferCommitter)
-    console.log("the first  reacted Committers are " + JSON.stringify(reactedCommitters, null, 2))
-    reactedCommitterMap.newSigned = reactedCommitters.filter(reactedCommitter => committerMap.notSigned!.some(notSignedCommitter => reactedCommitter.id === notSignedCommitter.id))
+    reactedCommitterMap.newSigned = committerMap.notSigned!.filter(committer => reactedCommitters.some(cla => committer.id === cla.id))
+    //testFoo(reactedCommitters, bufferCommitter)
+    // var result = _.merge( arr1, _.map( arr2, function( obj ) {
+    //     return _.pick( obj, 'id', 'eyeColour' );
+    // }));
+    reactedCommitterMap.newSigned = _.merge(reactedCommitters, _.map(committerMap.notSigned, function (obj) {
+        return _.pick(obj, 'id', 'pullRequestNo')
+    }))
+    //console.log("the first  reacted Committers are " + JSON.stringify(reactedCommitters, null, 2))
+    //reactedCommitterMap.newSigned = reactedCommitters.filter(reactedCommitter => committerMap.notSigned!.some(notSignedCommitter => reactedCommitter.id === notSignedCommitter.id))
     console.log("the first  reacted Committers are " + JSON.stringify(reactedCommitterMap, null, 2))
 
 
