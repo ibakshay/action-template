@@ -60,7 +60,7 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
     bufferCommitters = _.merge(reactedCommitters, _.map(committerMap.notSigned, function (obj) {
         return _.pick(obj, 'id', 'pullRequestNo')
     }))
-    console.log("the first  reacted Committers are " + JSON.stringify(bufferCommitters, null, 2))
+    console.log("the sdadasdas  reacted Committers are " + JSON.stringify(bufferCommitters, null, 2))
 
     // }
 
