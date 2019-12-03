@@ -30,6 +30,7 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
                 ...reactedCommitter,
                 pullRequestNo: notSignedCommitter.pullRequestNo
             }
+            console.log(reactedCommitter)
         }
         return reactedCommitter.id === notSignedCommitter.id
 
