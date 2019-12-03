@@ -27,8 +27,10 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
     reactedCommitters.forEach(reactedCommitter => {
         committerMap.notSigned!.forEach(notSignedCommitter => {
             if (reactedCommitter.id === notSignedCommitter.id) {
-
-                console.log("dfdsfsdf" + reactedCommitter)
+                reactedCommitter = {
+                    ...reactedCommitter,
+                    pullRequestNo: notSignedCommitter.pullRequestNo
+                }
             }
 
         })
