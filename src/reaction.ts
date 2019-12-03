@@ -30,9 +30,9 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
                 ...reactedCommitter,
                 pullRequestNo: notSignedCommitter.pullRequestNo
             }
-            console.log("tictic" + reactedCommitter)
+            console.log("tictic" + JSON.stringify(reactedCommitter))
         }
-        console.log("blabla" + reactedCommitter)
+        console.log("blabla" + JSON.stringify(reactedCommitter))
         return reactedCommitter.id === notSignedCommitter.id
 
     }
