@@ -16,7 +16,8 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
     response.data.map((reactedCommitter) => {
         reactedCommitters.push({
             name: reactedCommitter.user.login,
-            id: reactedCommitter.user.id
+            id: reactedCommitter.user.id,
+            createdAt: reactedCommitter.created_at
         })
     })
     //checking if the reacted committers are not the signed committers(not in the storage file) and filtering only the unsigned committers

@@ -13,7 +13,8 @@ export interface ReactedCommitterMap {
 export interface CommittersDetails {
     name: string,
     id: number,
-    pullRequestNo?: number
+    pullRequestNo?: number,
+    createdAt?: string
 }
 
 export interface LabelName {
