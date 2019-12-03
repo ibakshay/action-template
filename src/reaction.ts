@@ -33,7 +33,7 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
             console.log("tictic" + JSON.stringify(reactedCommitter))
         }
         console.log("blabla" + JSON.stringify(reactedCommitter))
-        return reactedCommitter.id === notSignedCommitter.id
+        return reactedCommitter
 
     }
     reactedCommitterMap.newSigned = reactedCommitters.filter(reactedCommitter => committerMap.notSigned!.some(notSignedCommitter => addPullRequestNo(reactedCommitter, notSignedCommitter)))
