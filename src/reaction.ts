@@ -20,8 +20,10 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
             createdAt: reactedCommitter.created_at
         })
     })
+    console.log("I am in reacted file")
     //checking if the reacted committers are not the signed committers(not in the storage file) and filtering only the unsigned committers
     reactedCommitters.filter(reactedCommitter => committerMap.notSigned!.some(notSignedCommitter => reactedCommitter.id === notSignedCommitter.id))
+    console.log("I am in reacted file2 ")
     //bufferCommitters = reactedCommitterMap.newSigned
 
     reactedCommitters.forEach(reactedCommitter => {
