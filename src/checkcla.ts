@@ -111,10 +111,14 @@ export async function getclas() {
                 await updateFile(pathToClaSignatures, sha, contentBinary, branch)
 
             }
+            if (reactedCommitters.allSignedFlag) {
+                console.log("All committers have signed the CLA")
+                return
+            }
         }
 
         /* return when there are no unsigned committers */
-        if ((committerMap.notSigned === undefined || committerMap.notSigned.length === 0) || reactedCommitters.allSignedFlag) {
+        if ((committerMap.notSigned === undefined || committerMap.notSigned.length === 0)) {
             console.log("All committers have signed the CLA")
             return
         }
