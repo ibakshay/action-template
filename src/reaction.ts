@@ -26,13 +26,18 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
 
     reactedCommitters.forEach(reactedCommitter => {
         committerMap.notSigned!.forEach(notSignedCommitter => {
-            if (reactedCommitter.id === notSignedCommitter.id) {
-                reactedCommitter = {
-                    ...reactedCommitter,
-                    pullRequestNo: notSignedCommitter.pullRequestNo
+            if (notSignedCommitter && reactedCommitter) {
+                if (reactedCommitter.id === notSignedCommitter.id) {
+                    if (notSignedCommitter.pullRequestNo) {
+                        reactedCommitter = {
+                            ...reactedCommitter,
+                            pullRequestNo: notSignedCommitter.pullRequestNo
+                        }
+                        bufferCommitters.push(reactedCommitter)
+                        console.log('Becky  map is ' + JSON.stringify(reactedCommitter, null, 2))
+
+                    }
                 }
-                bufferCommitters.push(reactedCommitter)
-                console.log('Becky  map is ' + JSON.stringify(reactedCommitter, null, 2))
 
             }
 
