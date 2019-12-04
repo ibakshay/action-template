@@ -101,13 +101,16 @@ export async function getclas() {
         const reactedCommitters: ReactedCommitterMap = await prComment(signed, committerMap, committers) as ReactedCommitterMap
         /* pushing the unsigned contributors to the CLA Json File */
         if (signed) { return }
-        if (reactedCommitters.newSigned) {
-            clas.signedContributors.push(...reactedCommitters.newSigned)
-            let contentString = JSON.stringify(clas, null, 2)
-            let contentBinary = Buffer.from(contentString).toString('base64')
-            //TODO: dont update the file if the committer DATA is already in the file
-            await updateFile(pathToClaSignatures, sha, contentBinary, branch)
 
+        if (reactedCommitters) {
+            if (reactedCommitters.newSigned) {
+                clas.signedContributors.push(...reactedCommitters.newSigned)
+                let contentString = JSON.stringify(clas, null, 2)
+                let contentBinary = Buffer.from(contentString).toString('base64')
+                //TODO: dont update the file if the committer DATA is already in the file
+                await updateFile(pathToClaSignatures, sha, contentBinary, branch)
+
+            }
         }
 
         /* return when there are no unsigned committers */
