@@ -17,14 +17,14 @@ function prepareCommiterMap(committers: CommittersDetails[], clas): CommitterMap
 
 }
 
-async function updateFile(pathToClaSignatures, sha, contentBinary, branch) {
+async function updateFile(pathToClaSignatures, sha, contentBinary, branch, pullRequestNo) {
     /* TODO: add dynamic  Message content  */
     await octokit.repos.createOrUpdateFile({
         owner: context.repo.owner,
         repo: context.repo.repo,
         path: pathToClaSignatures,
         sha: sha,
-        message: 'test commit',
+        message: `**CLA ASSISTANT ACTION** Updating file for storing contributors signatures from Pull Request ${pullRequestNo}`,
         content: contentBinary,
         branch: branch
     })
@@ -46,6 +46,7 @@ async function createFile(pathToClaSignatures, contentBinary, branch): Promise<o
 }
 export async function getclas() {
     let committerMap = {} as CommitterMap
+    const pullRequestNo = context.issue.number
 
     let signed: boolean = false
     //getting the path of the cla from the user
@@ -108,7 +109,7 @@ export async function getclas() {
                 let contentString = JSON.stringify(clas, null, 2)
                 let contentBinary = Buffer.from(contentString).toString('base64')
                 //TODO: dont update the file if the committer DATA is already in the file
-                await updateFile(pathToClaSignatures, sha, contentBinary, branch)
+                await updateFile(pathToClaSignatures, sha, contentBinary, branch, context.issue.number)
 
             }
             if (reactedCommitters.allSignedFlag) {
