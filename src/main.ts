@@ -20,7 +20,7 @@ async function run() {
       return lockPullRequest(pullRequestNo)
     }
     else {
-      await getclas()
+      await getclas(pullRequestNo)
       // const rateLimit = await octokit.rateLimit.get()
       // console.log(JSON.stringify(rateLimit.data.resources, null, 4))
     }

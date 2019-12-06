@@ -20,27 +20,27 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
             createdAt: reactedCommitter.created_at
         })
     })
-    //checking if the reacted committers are not the signed committers(not in the storage file) and filtering only the unsigned committers
-    reactedCommitters.filter(reactedCommitter => committerMap.notSigned!.some(notSignedCommitter => reactedCommitter.id === notSignedCommitter.id))
+    // //checking if the reacted committers are not the signed committers(not in the storage file) and filtering only the unsigned committers
+    // reactedCommitters.filter(reactedCommitter => committerMap.notSigned!.some(notSignedCommitter => reactedCommitter.id === notSignedCommitter.id))
 
-    reactedCommitters.forEach(reactedCommitter => {
-        committerMap.notSigned!.forEach(notSignedCommitter => {
-            if (notSignedCommitter && reactedCommitter) {
-                if (reactedCommitter.id === notSignedCommitter.id) {
-                    if (notSignedCommitter.pullRequestNo) {
-                        reactedCommitter = {
-                            ...reactedCommitter,
-                            pullRequestNo: notSignedCommitter.pullRequestNo
-                        }
-                        bufferCommitters.push(reactedCommitter)
-                    }
-                }
+    // reactedCommitters.forEach(reactedCommitter => {
+    //     committerMap.notSigned!.forEach(notSignedCommitter => {
+    //         if (notSignedCommitter && reactedCommitter) {
+    //             if (reactedCommitter.id === notSignedCommitter.id) {
+    //                 if (notSignedCommitter.pullRequestNo) {
+    //                     reactedCommitter = {
+    //                         ...reactedCommitter,
+    //                         pullRequestNo: notSignedCommitter.pullRequestNo
+    //                     }
+    //                     bufferCommitters.push(reactedCommitter)
+    //                 }
+    //             }
 
-            }
+    //         }
 
-        })
-    })
-    reactedCommitterMap.newSigned = bufferCommitters
+    //     })
+    // })
+    //reactedCommitterMap.newSigned = bufferCommitters
     core.debug('reactedCommitterMap.newSigned------>' + JSON.stringify(reactedCommitterMap.newSigned, null, 2))
     // reactedCommitterMap.newSigned = bufferCommitters
     //checking if the reacted users are only the contributors who has committed in the same PR (This is needed for the PR Comment and changing the status to success when all the contributors has reacted to the PR)

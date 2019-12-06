@@ -44,9 +44,8 @@ async function createFile(pathToClaSignatures, contentBinary, branch): Promise<o
 
 
 }
-export async function getclas() {
+export async function getclas(pullRequestNo: number) {
     let committerMap = {} as CommitterMap
-    const pullRequestNo = context.issue.number
 
     let signed: boolean = false
     //getting the path of the cla from the user
