@@ -109,7 +109,8 @@ function commentContent(signed: boolean, committerMap: CommitterMap): string {
 
 
 export default async function prComment(signed: boolean, committerMap: CommitterMap, committers) {
-    core.debug("the signed is --->" + JSON.stringify(signed.toString()))
+    var test = signed.toString()
+    core.debug("the signed is --->" + JSON.stringify(test))
     try {
         const prComment = await getComment()
         if (!prComment) {
