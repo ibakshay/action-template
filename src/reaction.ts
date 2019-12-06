@@ -20,11 +20,8 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
             createdAt: reactedCommitter.created_at
         })
     })
-    console.log("I am in reacted file")
     //checking if the reacted committers are not the signed committers(not in the storage file) and filtering only the unsigned committers
     reactedCommitters.filter(reactedCommitter => committerMap.notSigned!.some(notSignedCommitter => reactedCommitter.id === notSignedCommitter.id))
-    console.log("I am in reacted file2 ")
-    //bufferCommitters = reactedCommitterMap.newSigned
 
     reactedCommitters.forEach(reactedCommitter => {
         committerMap.notSigned!.forEach(notSignedCommitter => {
@@ -35,9 +32,7 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
                             ...reactedCommitter,
                             pullRequestNo: notSignedCommitter.pullRequestNo
                         }
-                        bufferCommitters.push(reactedCommitter)
-                        console.log('Becky  map is ' + JSON.stringify(reactedCommitter, null, 2))
-
+                        reactedCommitterMap.newSigned.push(reactedCommitter)
                     }
                 }
 
@@ -45,11 +40,11 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
 
         })
     })
-    console.log('Akshay  map is ' + JSON.stringify(bufferCommitters, null, 2))
-    reactedCommitterMap.newSigned = bufferCommitters
+    core.debug('reactedCommitterMap.newSigned------>' + JSON.stringify(reactedCommitterMap.newSigned, null, 2))
+    // reactedCommitterMap.newSigned = bufferCommitters
     //checking if the reacted users are only the contributors who has committed in the same PR (This is needed for the PR Comment and changing the status to success when all the contributors has reacted to the PR)
     reactedCommitterMap.onlyCommitters = committers.filter(committer => reactedCommitters.some(reactedCommitter => committer.id == reactedCommitter.id))
-    console.log('reacted committers map is ' + JSON.stringify(reactedCommitterMap, null, 2))
+    core.debug('reacted committers map is ' + JSON.stringify(reactedCommitterMap, null, 2))
     return reactedCommitterMap
 
 }

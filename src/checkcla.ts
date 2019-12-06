@@ -92,10 +92,10 @@ export async function getclas() {
     clas = JSON.parse(clas)
     committerMap = prepareCommiterMap(committers, clas) as CommitterMap
     //const test = document.write(committerMap.notSigned!.join(", "))
-    console.log('unsigned contributors are: ' + JSON.stringify(committerMap.notSigned, null, 2))
-    console.log('signed contributors are: ' + JSON.stringify(committerMap.signed, null, 2))
+    core.debug('unsigned contributors are: ' + JSON.stringify(committerMap.notSigned, null, 2))
+    core.debug('signed contributors are: ' + JSON.stringify(committerMap.signed, null, 2))
     if (committerMap.notSigned!.length === 0) {
-        console.log("null check")
+        core.debug("null check")
         signed = true
     }
     try {
@@ -113,14 +113,14 @@ export async function getclas() {
 
             }
             if (reactedCommitters.allSignedFlag) {
-                console.log("All committers have signed the CLA")
+                core.debug("All committers have signed the CLA")
                 return
             }
         }
 
         /* return when there are no unsigned committers */
         if ((committerMap.notSigned === undefined || committerMap.notSigned.length === 0)) {
-            console.log("All committers have signed the CLA")
+            core.debug("All committers have signed the CLA")
             return
         }
         else {

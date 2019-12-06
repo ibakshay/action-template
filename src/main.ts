@@ -11,8 +11,7 @@ import { GitHub } from '@actions/github'
 async function run() {
   try {
     core.debug('CLA Assistant GitHub Action has started')
-    core.warning('the PR No is ' + JSON.stringify(context.issue.number))
-    core.error('Akshay is great')
+    core.debug('the PR No is ' + JSON.stringify(context.issue.number))
     //const myInput = core.getInput('myInput')
     const clas = await getclas()
     // const rateLimit = await octokit.rateLimit.get()
