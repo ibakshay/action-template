@@ -2,6 +2,7 @@ import octokit from './octokit'
 import * as core from '@actions/core';
 import { context } from '@actions/github'
 import { CommitterMap, CommittersDetails, ReactedCommitterMap, CommittersCommentDetails } from './interfaces'
+import prComment from './pullRequestComment';
 
 
 export default async function reaction(commentId, committerMap: CommitterMap, committers) {
@@ -11,10 +12,10 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
         repo: context.repo.repo,
         issue_number: context.issue.number
     })
-    let listOfPRComments = [] as CommittersCommentDetails[]
+    let listOfPRCommentsDetails = [] as CommittersCommentDetails[]
 
     prResponse.data.map((prComment) => {
-        listOfPRComments.push({
+        listOfPRCommentsDetails.push({
             name: prComment.user.login,
             id: prComment.user.id,
             comment_id: prComment.id,
@@ -24,7 +25,9 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
         })
     })
 
-    console.log("the list of PR comments are " + JSON.stringify(listOfPRComments, null, 3))
+    listOfPRCommentsDetails.filter(prComment => prComment.body.match(/.*I have read the CLA Document and I hereby sign the CLA*/))
+
+    console.log("the list of PR comments are " + JSON.stringify(listOfPRCommentsDetails, null, 3))
 
 
     const response = await octokit.reactions.listForIssueComment({
