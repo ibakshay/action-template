@@ -13,6 +13,7 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
         issue_number: context.issue.number
     })
     let listOfPRCommentsDetails = [] as CommittersCommentDetails[]
+    let filteredListOfPRCommentsDetails = [] as CommittersCommentDetails[]
 
     prResponse.data.map((prComment) => {
         listOfPRCommentsDetails.push({
@@ -27,9 +28,14 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
 
     //let regex = new RegExp()
 
-    listOfPRCommentsDetails.find(comment => comment.body.match(/.*CLA Assistant Lite.*/))
+    //response.data.find(comment => comment.body.match(/.*CLA Assistant Lite.*/))
+    listOfPRCommentsDetails.map((comment) => {
+        if (comment.body.match(/.*CLA Assistant Lite.*/)) {
+            filteredListOfPRCommentsDetails.push(comment)
+        }
+    })
 
-    console.log("the list of PR comments are " + JSON.stringify(listOfPRCommentsDetails, null, 3))
+    console.log("the list of PR comments are " + JSON.stringify(filteredListOfPRCommentsDetails, null, 3))
 
 
     const response = await octokit.reactions.listForIssueComment({
