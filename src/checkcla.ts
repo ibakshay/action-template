@@ -24,7 +24,7 @@ async function updateFile(pathToClaSignatures, sha, contentBinary, branch, pullR
         repo: context.repo.repo,
         path: pathToClaSignatures,
         sha: sha,
-        message: `**CLA ASSISTANT ACTION** Updating file for storing contributors signatures from Pull Request ${pullRequestNo}`,
+        message: `**CLA ASSISTANT ACTION** Updating file for storing signatures from Pull Request ${pullRequestNo}`,
         content: contentBinary,
         branch: branch
     })
@@ -109,7 +109,7 @@ export async function getclas() {
                 let contentString = JSON.stringify(clas, null, 2)
                 let contentBinary = Buffer.from(contentString).toString('base64')
                 //TODO: dont update the file if the committer DATA is already in the file
-                await updateFile(pathToClaSignatures, sha, contentBinary, branch, context.issue.number)
+                await updateFile(pathToClaSignatures, sha, contentBinary, branch, pullRequestNo)
 
             }
             if (reactedCommitters.allSignedFlag) {
