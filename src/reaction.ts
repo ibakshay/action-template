@@ -26,17 +26,17 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
         })
     })
 
-    // listOfPRCommentsDetails.map((comment) => {
-    //     if (comment.body.match(/.*i \s*have \s*read \s*the \s*cla \s*document \s*and \s*i \s*hereby \s*sign \s*the \s*cla.*/) && comment.name !== 'github-actions[bot]') {
-    //         filteredListOfPRCommentsDetails.push(comment)
-    //     }
-    // })
-    listOfPRCommentsDetails.filter((comment) => {
+    listOfPRCommentsDetails.map((comment) => {
         if (comment.body.match(/.*i \s*have \s*read \s*the \s*cla \s*document \s*and \s*i \s*hereby \s*sign \s*the \s*cla.*/) && comment.name !== 'github-actions[bot]') {
-            return comment
+            filteredListOfPRCommentsDetails.push(comment)
         }
     })
-    console.log("the list of PR comments are " + JSON.stringify(listOfPRCommentsDetails, null, 3))
+    // listOfPRCommentsDetails.filter((comment) => {
+    //     if (comment.body.match(/.*i \s*have \s*read \s*the \s*cla \s*document \s*and \s*i \s*hereby \s*sign \s*the \s*cla.*/) && comment.name !== 'github-actions[bot]') {
+    //         return comment
+    //     }
+    // })
+    console.log("the list of PR comments are " + JSON.stringify(filteredListOfPRCommentsDetails, null, 3))
 
 
     const response = await octokit.reactions.listForIssueComment({
