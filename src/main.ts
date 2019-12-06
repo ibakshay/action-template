@@ -10,6 +10,7 @@ import { GitHub } from '@actions/github'
 
 async function run() {
   try {
+    core.debug('context payload is ' + context)
     core.debug('CLA Assistant GitHub Action has started')
     core.debug('the PR No is ' + JSON.stringify(context.issue.number))
     //const myInput = core.getInput('myInput')
