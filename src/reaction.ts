@@ -27,11 +27,7 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
 
     //let regex = new RegExp()
 
-    listOfPRCommentsDetails.filter((prComment) => {
-        if (prComment.body.match(/.*CLA Assistant Lite.*/)) {
-            return prComment
-        }
-    })
+    listOfPRCommentsDetails.find(comment => comment.body.match(/.*CLA Assistant Lite.*/))
 
     console.log("the list of PR comments are " + JSON.stringify(listOfPRCommentsDetails, null, 3))
 
