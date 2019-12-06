@@ -26,13 +26,8 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
         })
     })
 
-    // listOfPRCommentsDetails.map((comment) => {
-    //     if (comment.body.match(/.*i \s*have \s*read \s*the \s*cla \s*document \s*and \s*i \s*hereby \s*sign \s*the \s*cla.*/) && comment.name !== 'github-actions[bot]') {
-    //         filteredListOfPRCommentsDetails.push(comment)
-    //     }
-    // })
     listOfPRCommentsDetails.map((comment) => {
-        if (comment.body.match(/.*i have read the cla document and i hereby sign the cla.*/) && comment.name !== 'github-actions[bot]') {
+        if (comment.body.match(/.*i \s*have \s*read \s*the \s*cla \s*document \s*and \s*i \s*hereby \s*sign \s*the \s*cla.*/) && comment.name !== 'github-actions[bot]') {
             filteredListOfPRCommentsDetails.push(comment)
         }
     })
