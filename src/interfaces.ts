@@ -21,3 +21,12 @@ export interface LabelName {
     current_name: string,
     name: string
 }
+
+export interface CommittersCommentDetails {
+    name: string,
+    id: number,
+    comment_id: number,
+    body: string,
+    created_at: string,
+    updated_at: string
+}

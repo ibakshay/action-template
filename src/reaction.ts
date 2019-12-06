@@ -1,18 +1,30 @@
 import octokit from './octokit'
 import * as core from '@actions/core';
 import { context } from '@actions/github'
-import { CommitterMap, CommittersDetails, ReactedCommitterMap } from './interfaces'
+import { CommitterMap, CommittersDetails, ReactedCommitterMap, CommittersCommentDetails } from './interfaces'
 
 
 export default async function reaction(commentId, committerMap: CommitterMap, committers) {
     let reactedCommitterMap = {} as ReactedCommitterMap
-    const prResponse = await octokit.issues.listComments({
+    let prResponse = await octokit.issues.listComments({
         owner: context.repo.owner,
         repo: context.repo.repo,
         issue_number: context.issue.number
     })
+    let listOfPRComments = [] as CommittersCommentDetails[]
 
-    console.log("the list of PR comments are " + JSON.stringify(prResponse.data, null, 2))
+    prResponse.data.map((prComment) => {
+        listOfPRComments.push({
+            name: prComment.user.login,
+            id: prComment.user.id,
+            comment_id: prComment.id,
+            body: prComment.body,
+            created_at: prComment.created_at,
+            updated_at: prComment.updated_at
+        })
+    })
+
+    console.log("the list of PR comments are " + JSON.stringify(listOfPRComments, null, 3))
 
 
     const response = await octokit.reactions.listForIssueComment({
