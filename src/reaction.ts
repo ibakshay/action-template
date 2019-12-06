@@ -25,7 +25,7 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
         })
     })
 
-    listOfPRCommentsDetails.filter(prComment => prComment.body.match(/.*I have read the CLA Document and I hereby sign the CLA*/))
+    listOfPRCommentsDetails.filter(prComment => prComment.body.match(/.I have read the CLA Document and I hereby sign the CLA/))
 
     console.log("the list of PR comments are " + JSON.stringify(listOfPRCommentsDetails, null, 3))
 
