@@ -21,7 +21,7 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
         })
     })
     // //checking if the reacted committers are not the signed committers(not in the storage file) and filtering only the unsigned committers
-    // reactedCommitters.filter(reactedCommitter => committerMap.notSigned!.some(notSignedCommitter => reactedCommitter.id === notSignedCommitter.id))
+    reactedCommitters.filter(reactedCommitter => committerMap.notSigned!.some(notSignedCommitter => reactedCommitter.id === notSignedCommitter.id))
 
     // reactedCommitters.forEach(reactedCommitter => {
     //     committerMap.notSigned!.forEach(notSignedCommitter => {

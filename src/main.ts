@@ -13,7 +13,6 @@ async function run() {
   try {
     //const lock = core.getInput('lock')
     const pullRequestNo: number = context.issue.number
-    core.debug('context payload is ' + JSON.stringify(context, null, 2))
     core.debug('CLA Assistant GitHub Action has started')
     core.debug('the PR No is ' + JSON.stringify(pullRequestNo))
     if (context.payload.action === 'closed') {
