@@ -12,8 +12,8 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
         repo: context.repo.repo,
         issue_number: context.issue.number
     })
-    let listOfPRCommentsDetails = [] as CommittersCommentDetails[]
-    let filteredListOfPRCommentsDetails = [] as CommittersCommentDetails[]
+    let listOfPRCommentsDetails = [] as CommittersDetails[]
+    let filteredListOfPRCommentsDetails = [] as CommittersDetails[]
 
     prResponse.data.map((prComment) => {
         listOfPRCommentsDetails.push({
@@ -27,15 +27,11 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
     })
 
     listOfPRCommentsDetails.map((comment) => {
-        if (comment.body.match(/.*i \s*have \s*read \s*the \s*cla \s*document \s*and \s*i \s*hereby \s*sign \s*the \s*cla.*/) && comment.name !== 'github-actions[bot]') {
+        if (comment.body!.match(/.*i \s*have \s*read \s*the \s*cla \s*document \s*and \s*i \s*hereby \s*sign \s*the \s*cla.*/) && comment.name !== 'github-actions[bot]') {
             filteredListOfPRCommentsDetails.push(comment)
         }
     })
-    // listOfPRCommentsDetails.filter((comment) => {
-    //     if (comment.body.match(/.*i \s*have \s*read \s*the \s*cla \s*document \s*and \s*i \s*hereby \s*sign \s*the \s*cla.*/) && comment.name !== 'github-actions[bot]') {
-    //         return comment
-    //     }
-    // })
+
     console.log("the list of PR comments are " + JSON.stringify(filteredListOfPRCommentsDetails, null, 3))
 
 
@@ -49,7 +45,7 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
         reactedCommitters.push({
             name: reactedCommitter.user.login,
             id: reactedCommitter.user.id,
-            createdAt: reactedCommitter.created_at
+            created_at: reactedCommitter.created_at
         })
     })
     // //checking if the reacted committers are not the signed committers(not in the storage file) and filtering only the unsigned committers

@@ -10,11 +10,20 @@ export interface ReactedCommitterMap {
     allSignedFlag: boolean
 }
 
+export interface CommentedCommitterMap {
+    newSigned: CommittersDetails[],
+    onlyCommitters?: CommittersDetails[],
+    allSignedFlag: boolean
+}
+
 export interface CommittersDetails {
     name: string,
     id: number,
     pullRequestNo?: number,
-    createdAt?: string
+    created_at?: string,
+    updated_at?: string
+    comment_id?: number,
+    body?: string
 }
 
 export interface LabelName {
