@@ -32,7 +32,7 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
                             ...reactedCommitter,
                             pullRequestNo: notSignedCommitter.pullRequestNo
                         }
-                        reactedCommitterMap.newSigned.push(reactedCommitter)
+                        bufferCommitters.push(reactedCommitter)
                     }
                 }
 
@@ -40,6 +40,7 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
 
         })
     })
+    reactedCommitterMap.newSigned = bufferCommitters
     core.debug('reactedCommitterMap.newSigned------>' + JSON.stringify(reactedCommitterMap.newSigned, null, 2))
     // reactedCommitterMap.newSigned = bufferCommitters
     //checking if the reacted users are only the contributors who has committed in the same PR (This is needed for the PR Comment and changing the status to success when all the contributors has reacted to the PR)
