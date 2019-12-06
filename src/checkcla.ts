@@ -105,6 +105,7 @@ export async function getclas(pullRequestNo: number) {
         if (reactedCommitters) {
             if (reactedCommitters.newSigned) {
                 reactedCommitters.newSigned.forEach((reactedCommitter) => reactedCommitter.pullRequestNo = pullRequestNo)
+                core.debug('reacted committers map is ' + JSON.stringify(reactedCommitters.newSigned, null, 2))
                 clas.signedContributors.push(...reactedCommitters.newSigned)
                 let contentString = JSON.stringify(clas, null, 2)
                 let contentBinary = Buffer.from(contentString).toString('base64')
