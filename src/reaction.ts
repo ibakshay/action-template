@@ -30,7 +30,7 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
 
     //response.data.find(comment => comment.body.match(/.*CLA Assistant Lite.*/))
     listOfPRCommentsDetails.map((comment) => {
-        if (comment.body.match(/.*CLA Assistant Lite.*/)) {
+        if (comment.body.match(/.*I have read the CLA Document and I hereby sign the CLA.*/)) {
             filteredListOfPRCommentsDetails.push(comment)
         }
     })
