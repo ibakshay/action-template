@@ -20,7 +20,7 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
             name: prComment.user.login,
             id: prComment.user.id,
             comment_id: prComment.id,
-            body: prComment.body,
+            body: prComment.body.toLowerCase(),
             created_at: prComment.created_at,
             updated_at: prComment.updated_at
         })
@@ -30,7 +30,7 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
 
     //response.data.find(comment => comment.body.match(/.*CLA Assistant Lite.*/))
     listOfPRCommentsDetails.map((comment) => {
-        if (comment.body.match(/.*I have read the CLA Document and I hereby sign the CLA.*/)) {
+        if (comment.body.match(/.*i have read the cla document and i hereby sign the cla.*/)) {
             filteredListOfPRCommentsDetails.push(comment)
         }
     })
