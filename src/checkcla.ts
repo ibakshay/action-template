@@ -93,11 +93,13 @@ export async function getclas(pullRequestNo: number) {
     //const test = document.write(committerMap.notSigned!.join(", "))
     core.debug('unsigned contributors are: ' + JSON.stringify(committerMap.notSigned, null, 2))
     core.debug('signed contributors are: ' + JSON.stringify(committerMap.signed, null, 2))
+    //DO NULL CHECK FOR below
     if (committerMap.notSigned!.length === 0) {
         core.debug("null check")
         signed = true
     }
     try {
+        console.log("the check cla signed is --->" + signed)
         const reactedCommitters: ReactedCommitterMap = await prComment(signed, committerMap, committers) as ReactedCommitterMap
         /* pushing the unsigned contributors to the CLA Json File */
         if (signed) { return }
