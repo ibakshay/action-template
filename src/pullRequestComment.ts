@@ -111,7 +111,6 @@ function commentContent(signed: boolean, committerMap: CommitterMap): string {
 export default async function prComment(signed: boolean, committerMap: CommitterMap, committers) {
     try {
         const prComment = await getComment()
-        console.log("the PR comment is ---> " + JSON.stringify(prComment, null, 2))
         if (!prComment) {
             await octokit.issues.createComment({
                 owner: context.repo.owner,
