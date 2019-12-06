@@ -1,12 +1,13 @@
 import octokit from './octokit'
 import * as core from '@actions/core';
 import { context } from '@actions/github'
-import { CommitterMap, CommittersDetails, ReactedCommitterMap, CommittersCommentDetails } from './interfaces'
+import { CommitterMap, CommittersDetails, ReactedCommitterMap, CommentedCommitterMap } from './interfaces'
 import prComment from './pullRequestComment';
 
 
 export default async function reaction(commentId, committerMap: CommitterMap, committers) {
     let reactedCommitterMap = {} as ReactedCommitterMap
+    let commentedCommitterMap = {} as CommentedCommitterMap
     let prResponse = await octokit.issues.listComments({
         owner: context.repo.owner,
         repo: context.repo.repo,
@@ -33,6 +34,10 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
     })
 
     console.log("the list of PR comments are " + JSON.stringify(filteredListOfPRCommentsDetails, null, 3))
+
+    // //checking if the reacted committers are not the signed committers(not in the storage file) and filtering only the unsigned committers
+    commentedCommitterMap.newSigned = filteredListOfPRCommentsDetails.filter(commentedCommitter => committerMap.notSigned!.some(notSignedCommitter => commentedCommitter.id === notSignedCommitter.id))
+    console.log("the commented committers are :" + JSON.stringify(commentedCommitterMap, null, 3))
 
 
     const response = await octokit.reactions.listForIssueComment({
