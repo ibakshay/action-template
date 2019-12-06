@@ -6,7 +6,15 @@ import { CommitterMap, CommittersDetails, ReactedCommitterMap } from './interfac
 
 export default async function reaction(commentId, committerMap: CommitterMap, committers) {
     let reactedCommitterMap = {} as ReactedCommitterMap
-    let bufferCommitters = [] as CommittersDetails[]
+    const prResponse = await octokit.issues.listComments({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        issue_number: context.issue.number
+    })
+
+    console.log("the list of PR comments are " + JSON.stringify(prResponse.data, null, 2))
+
+
     const response = await octokit.reactions.listForIssueComment({
         owner: context.repo.owner,
         repo: context.repo.repo,
