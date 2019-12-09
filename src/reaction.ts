@@ -45,7 +45,7 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
     //checking if the commented users are only the contributors who has committed in the same PR (This is needed for the PR Comment and changing the status to success when all the contributors has reacted to the PR)
     commentedCommitterMap.onlyCommitters = committers.filter(committer => filteredListOfPRCommentsDetails.some(commentedCommitter => committer.id == commentedCommitter.id))
 
-    console.log("the list of PR contributor's comments are " + JSON.stringify(filteredListOfPRCommentsDetails, null, 3))
+    console.log("the list of PR contributor's comments are " + JSON.stringify(commentedCommitterMap.onlyCommitters, null, 3))
 
     // const response = await octokit.reactions.listForIssueComment({
     //     owner: context.repo.owner,
