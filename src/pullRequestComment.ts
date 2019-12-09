@@ -109,8 +109,10 @@ function commentContent(signed: boolean, committerMap: CommitterMap): string {
 
 function prepareAllSignedCommitters(committerMap: CommitterMap, signedInPrCommitters: CommittersDetails[], committers: CommittersDetails[]): boolean {
     let allSignedCommitters = [] as CommittersDetails[]
-
-    //merging two arrays if not duplicate. 1) already signed committers in the file 2) signed committers in the PR comment
+    /*
+    Reference: https://stackoverflow.com/questions/54134156/javascript-merge-two-arrays-of-objects-only-if-not-duplicate-based-on-specifi
+    merging two arrays if not duplicate. 1) already signed committers in the file 2) signed committers in the PR comment
+    */
     let ids = new Set(signedInPrCommitters.map(committer => committer.id))
     allSignedCommitters = [...signedInPrCommitters, ...committerMap.signed!.filter(signedCommitter => !ids.has(signedCommitter.id))]
     console.log("all signed committers after merging  are -------> " + JSON.stringify(allSignedCommitters, null, 2))
