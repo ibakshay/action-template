@@ -102,7 +102,10 @@ export async function getclas(pullRequestNo: number) {
 
         const reactedCommitters: ReactedCommitterMap = await prComment(signed, committerMap, committers) as ReactedCommitterMap
         /* pushing the unsigned contributors to the CLA Json File */
-        if (signed) { return }
+        if (signed) {
+            console.log("All committers have signed the CLA")
+            return
+        }
 
         if (reactedCommitters) {
             if (reactedCommitters.newSigned) {
