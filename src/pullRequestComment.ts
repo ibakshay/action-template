@@ -138,7 +138,7 @@ export default async function prComment(signed: boolean, committerMap: Committer
                     //merging two arrays if not duplicate. 1) already signed committers in the file 2) signed committers in the PR comment
                     let ids = new Set(reactedCommitters.onlyCommitters!.map(committer => committer.id))
                     allSignedCommitters = [...reactedCommitters.onlyCommitters, ...committerMap.signed!.filter(signedCommitter => !ids.has(signedCommitter.id))]
-                    console.log("all signed committers akshay are -------> " + allSignedCommitters)
+                    console.log("all signed committers akshay are -------> " + JSON.stringify(allSignedCommitters, null, 2))
                 }
             }
 
