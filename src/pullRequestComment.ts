@@ -3,7 +3,7 @@ import * as core from '@actions/core'
 import { context } from '@actions/github'
 import { pathToCLADocument } from './url'
 import reaction from './reaction'
-import { CommitterMap, ReactedCommitterMap, LabelName } from './interfaces'
+import { CommitterMap, ReactedCommitterMap, LabelName, CommittersDetails } from './interfaces'
 
 function addLabel() {
     return octokit.issues.addLabels({
@@ -109,9 +109,9 @@ function commentContent(signed: boolean, committerMap: CommitterMap): string {
 
 
 export default async function prComment(signed: boolean, committerMap: CommitterMap, committers) {
-    var test = signed.toString()
-    console.log("the signed is --->" + test)
     try {
+        // All the signed committers 1. committers who have signed in the Pull Request. 2. committers who have already signed the CLA
+        let allSignedCommitters = [] as CommittersDetails[]
         const prComment = await getComment()
         if (!prComment) {
             await octokit.issues.createComment({
@@ -133,6 +133,15 @@ export default async function prComment(signed: boolean, committerMap: Committer
 
             }
             const reactedCommitters: ReactedCommitterMap = await reaction(prComment.id, committerMap, committers) as ReactedCommitterMap
+            if (reactedCommitters) {
+                if (reactedCommitters.onlyCommitters) {
+                    //merging two arrays if not duplicate. 1) already signed committers in the file 2) signed committers in the PR comment
+                    let ids = new Set(reactedCommitters.onlyCommitters!.map(committer => committer.id))
+                    allSignedCommitters = [...reactedCommitters.onlyCommitters, ...committerMap.signed!.filter(signedCommitter => !ids.has(signedCommitter.id))]
+                    console.log("all signed committers akshay are -------> " + allSignedCommitters)
+                }
+            }
+
             //checking if all the unsigned committers have reacted to the PR comment (this is needed for changing the content of the PR comment to "All committers have signed the CLA")
             reactedCommitters.allSignedFlag = committers.every(committer => reactedCommitters.onlyCommitters!.some(reactedCommitter => committer.id === reactedCommitter.id))
             console.log("reactedCommitters.allSignedFlag->>>>>>" + reactedCommitters.allSignedFlag)
