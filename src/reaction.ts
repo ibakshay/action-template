@@ -36,16 +36,16 @@ export default async function reaction(commentId, committerMap: CommitterMap, co
     for (var i = 0; i < filteredListOfPRCommentsDetails.length; i++) {
         delete filteredListOfPRCommentsDetails[i].body
     }
-    console.log("the list of PR comments are " + JSON.stringify(filteredListOfPRCommentsDetails, null, 3))
 
     // //checking if the reacted committers are not the signed committers(not in the storage file) and filtering only the unsigned committers
     commentedCommitterMap.newSigned = filteredListOfPRCommentsDetails.filter(commentedCommitter => committerMap.notSigned!.some(notSignedCommitter => commentedCommitter.id === notSignedCommitter.id))
 
-    console.log("the commented committers are :" + JSON.stringify(commentedCommitterMap, null, 3))
+    console.log("the new commented committers(signed) are :" + JSON.stringify(commentedCommitterMap, null, 3))
 
     //checking if the commented users are only the contributors who has committed in the same PR (This is needed for the PR Comment and changing the status to success when all the contributors has reacted to the PR)
     commentedCommitterMap.onlyCommitters = committers.filter(committer => filteredListOfPRCommentsDetails.some(commentedCommitter => committer.id == commentedCommitter.id))
 
+    console.log("the list of PR contributor's comments are " + JSON.stringify(filteredListOfPRCommentsDetails, null, 3))
 
     // const response = await octokit.reactions.listForIssueComment({
     //     owner: context.repo.owner,
