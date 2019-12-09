@@ -99,8 +99,7 @@ export async function getclas(pullRequestNo: number) {
         signed = true
     }
     try {
-        var test = signed.toString()
-        console.log("the check cla signed is --->" + test)
+
         const reactedCommitters: ReactedCommitterMap = await prComment(signed, committerMap, committers) as ReactedCommitterMap
         /* pushing the unsigned contributors to the CLA Json File */
         if (signed) { return }
@@ -115,8 +114,9 @@ export async function getclas(pullRequestNo: number) {
                 //TODO: dont update the file if the committer DATA is already in the file
                 await updateFile(pathToClaSignatures, sha, contentBinary, branch, pullRequestNo)
             }
+            console.log("hello worlddd")
             if (reactedCommitters.allSignedFlag) {
-                core.debug("All committers have signed the CLA")
+                console.log("All committers have signed the CLA")
                 return
             }
         }
