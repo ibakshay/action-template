@@ -2,7 +2,7 @@ import octokit from './octokit'
 import * as core from '@actions/core'
 import { context } from '@actions/github'
 import { pathToCLADocument } from './url'
-import reaction from './reaction'
+import signatureWithPRComment from './signatureComment'
 import { CommitterMap, ReactedCommitterMap, LabelName, CommittersDetails } from './interfaces'
 
 function addLabel() {
@@ -145,7 +145,7 @@ export default async function prComment(signed: boolean, committerMap: Committer
                 })
 
             }
-            const reactedCommitters: ReactedCommitterMap = await reaction(prComment.id, committerMap, committers) as ReactedCommitterMap
+            const reactedCommitters: ReactedCommitterMap = await signatureWithPRComment(prComment.id, committerMap, committers) as ReactedCommitterMap
             if (reactedCommitters) {
                 if (reactedCommitters.onlyCommitters) {
                     reactedCommitters.allSignedFlag = prepareAllSignedCommitters(committerMap, reactedCommitters.onlyCommitters, committers)
