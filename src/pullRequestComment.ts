@@ -113,7 +113,7 @@ function prepareAllSignedCommitters(committerMap: CommitterMap, signedInPrCommit
     //merging two arrays if not duplicate. 1) already signed committers in the file 2) signed committers in the PR comment
     let ids = new Set(signedInPrCommitters.map(committer => committer.id))
     allSignedCommitters = [...signedInPrCommitters, ...committerMap.signed!.filter(signedCommitter => !ids.has(signedCommitter.id))]
-    console.log("all signed committers akshay are -------> " + JSON.stringify(allSignedCommitters, null, 2))
+    console.log("all signed committers after merging  are -------> " + JSON.stringify(allSignedCommitters, null, 2))
 
     //checking if all the unsigned committers have reacted to the PR comment (this is needed for changing the content of the PR comment to "All committers have signed the CLA")
     let allSignedFlag: boolean = committers.every(committer => allSignedCommitters.some(reactedCommitter => committer.id === reactedCommitter.id))
@@ -123,9 +123,6 @@ function prepareAllSignedCommitters(committerMap: CommitterMap, signedInPrCommit
 
 export default async function prComment(signed: boolean, committerMap: CommitterMap, committers: CommittersDetails[]) {
     try {
-        // All the signed committers 1. committers who have signed in the Pull Request. 2. committers who have already signed the CLA
-        let allSignedCommitters = [] as CommittersDetails[]
-        let allSignedFlag: boolean = false
         const prComment = await getComment()
         if (!prComment) {
             await octokit.issues.createComment({
@@ -149,27 +146,20 @@ export default async function prComment(signed: boolean, committerMap: Committer
             const reactedCommitters: ReactedCommitterMap = await reaction(prComment.id, committerMap, committers) as ReactedCommitterMap
             if (reactedCommitters) {
                 if (reactedCommitters.onlyCommitters) {
-                    allSignedFlag = prepareAllSignedCommitters(committerMap, reactedCommitters.onlyCommitters, committers)
-                    // //merging two arrays if not duplicate. 1) already signed committers in the file 2) signed committers in the PR comment
-                    // let ids = new Set(reactedCommitters.onlyCommitters!.map(committer => committer.id))
-                    // allSignedCommitters = [...reactedCommitters.onlyCommitters, ...committerMap.signed!.filter(signedCommitter => !ids.has(signedCommitter.id))]
-                    // console.log("all signed committers akshay are -------> " + JSON.stringify(allSignedCommitters, null, 2))
-                    // //checking if all the unsigned committers have reacted to the PR comment (this is needed for changing the content of the PR comment to "All committers have signed the CLA")
-                    // allSignedFlag = committers.every(committer => allSignedCommitters.some(reactedCommitter => committer.id === reactedCommitter.id))
+                    reactedCommitters.allSignedFlag = prepareAllSignedCommitters(committerMap, reactedCommitters.onlyCommitters, committers)
                 }
             }
 
-            console.log("allSignedFlag->>>>>>" + allSignedFlag)
+            console.log("allSignedFlag->>>>>>" + reactedCommitters.allSignedFlag)
 
             committerMap.signed!.push(...reactedCommitters.newSigned)
             committerMap.notSigned = committerMap.notSigned!.filter(committer => !reactedCommitters.newSigned.some(reactedCommitter => committer.id === reactedCommitter.id))
-            core.debug("test--------------------->" + JSON.stringify(committerMap.notSigned))
 
             await octokit.issues.updateComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 comment_id: prComment.id,
-                body: commentContent(allSignedFlag, committerMap)
+                body: commentContent(reactedCommitters.allSignedFlag, committerMap)
             })
             return reactedCommitters
         }
