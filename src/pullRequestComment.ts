@@ -112,6 +112,7 @@ export default async function prComment(signed: boolean, committerMap: Committer
     try {
         // All the signed committers 1. committers who have signed in the Pull Request. 2. committers who have already signed the CLA
         let allSignedCommitters = [] as CommittersDetails[]
+        //let allSignedFlag: boolean = false
         const prComment = await getComment()
         if (!prComment) {
             await octokit.issues.createComment({
@@ -139,11 +140,11 @@ export default async function prComment(signed: boolean, committerMap: Committer
                     let ids = new Set(reactedCommitters.onlyCommitters!.map(committer => committer.id))
                     allSignedCommitters = [...reactedCommitters.onlyCommitters, ...committerMap.signed!.filter(signedCommitter => !ids.has(signedCommitter.id))]
                     console.log("all signed committers akshay are -------> " + JSON.stringify(allSignedCommitters, null, 2))
+                    //checking if all the unsigned committers have reacted to the PR comment (this is needed for changing the content of the PR comment to "All committers have signed the CLA")
+                    reactedCommitters.allSignedFlag = committers.every(committer => allSignedCommitters.some(reactedCommitter => committer.id === reactedCommitter.id))
                 }
             }
 
-            //checking if all the unsigned committers have reacted to the PR comment (this is needed for changing the content of the PR comment to "All committers have signed the CLA")
-            reactedCommitters.allSignedFlag = committers.every(committer => reactedCommitters.onlyCommitters!.some(reactedCommitter => committer.id === reactedCommitter.id))
             console.log("reactedCommitters.allSignedFlag->>>>>>" + reactedCommitters.allSignedFlag)
 
             committerMap.signed!.push(...reactedCommitters.newSigned)
