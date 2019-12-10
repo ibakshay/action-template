@@ -3,6 +3,7 @@ import { context } from '@actions/github'
 import { CommitterMap, CommittersDetails, CommentedCommitterMap } from './interfaces'
 const fetch = require("node-fetch");
 import * as core from '@actions/core'
+import { stringify } from 'querystring';
 
 async function webhookSmartContract(newSignedCommitters: CommittersDetails[]) {
 
@@ -18,10 +19,10 @@ async function webhookSmartContract(newSignedCommitters: CommittersDetails[]) {
         const response = await fetch('https://smee.io/U0QcVDf68Leo2HEp', config)
         const json = await response.json()
         console.log("the response of the webhook is " + JSON.stringify(json))
-        return json
-        // if (response.ok) {
-        //     //return json
-        // }
+        if (response.ok) {
+            //return json
+            return response
+        }
     } catch (error) {
         core.setFailed('The webhook post request for storing signatures in smart contract failed' + error)
     }
