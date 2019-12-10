@@ -1,6 +1,7 @@
 import octokit from './octokit'
 import { context } from '@actions/github'
 import { CommitterMap, CommittersDetails, CommentedCommitterMap } from './interfaces'
+const fetch = require("node-fetch");
 import * as core from '@actions/core'
 
 async function webhookSmartContract(newSignedCommitters: CommittersDetails[]) {
