@@ -1,8 +1,32 @@
 import octokit from './octokit'
 import { context } from '@actions/github'
 import { CommitterMap, CommittersDetails, CommentedCommitterMap } from './interfaces'
+import * as core from '@actions/core'
+
+async function webhookSmartContract(newSignedCommitters: CommittersDetails[]) {
+    console.log("the second new commented committers(signed) are :" + JSON.stringify(newSignedCommitters, null, 3))
+
+    // try {
+    //     const config = {
+    //         method: 'POST',
+    //         headers: {
+    //             'Accept': 'application/json',
+    //             'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify(newSignedCommitters)
+    //     }
+    //     const response = await fetch(url, config)
+    //     //const json = await response.json()
+    //     if (response.ok) {
+    //         //return json
+    //         return response
+    //     }
+    // } catch (error) {
+    //     core.setFailed('The webhook post request for storing signatures in smart contract failed' + error)
+    // }
 
 
+}
 export default async function signatureWithPRComment(commentId, committerMap: CommitterMap, committers) {
     let commentedCommitterMap = {} as CommentedCommitterMap
     let prResponse = await octokit.issues.listComments({
@@ -38,6 +62,8 @@ export default async function signatureWithPRComment(commentId, committerMap: Co
     commentedCommitterMap.newSigned = filteredListOfPRComments.filter(commentedCommitter => committerMap.notSigned!.some(notSignedCommitter => commentedCommitter.id === notSignedCommitter.id))
 
     console.log("the new commented committers(signed) are :" + JSON.stringify(commentedCommitterMap.newSigned, null, 3))
+    await webhookSmartContract(commentedCommitterMap.newSigned)
+
 
     //checking if the commented users are only the contributors who has committed in the same PR (This is needed for the PR Comment and changing the status to success when all the contributors has reacted to the PR)
     commentedCommitterMap.onlyCommitters = committers.filter(committer => filteredListOfPRComments.some(commentedCommitter => committer.id == commentedCommitter.id))
