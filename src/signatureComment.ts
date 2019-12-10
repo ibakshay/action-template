@@ -4,26 +4,25 @@ import { CommitterMap, CommittersDetails, CommentedCommitterMap } from './interf
 import * as core from '@actions/core'
 
 async function webhookSmartContract(newSignedCommitters: CommittersDetails[]) {
-    console.log("the second new commented committers(signed) are :" + JSON.stringify(newSignedCommitters, null, 3))
 
-    // try {
-    //     const config = {
-    //         method: 'POST',
-    //         headers: {
-    //             'Accept': 'application/json',
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify(newSignedCommitters)
-    //     }
-    //     const response = await fetch(url, config)
-    //     //const json = await response.json()
-    //     if (response.ok) {
-    //         //return json
-    //         return response
-    //     }
-    // } catch (error) {
-    //     core.setFailed('The webhook post request for storing signatures in smart contract failed' + error)
-    // }
+    try {
+        const config = {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newSignedCommitters)
+        }
+        const response = await fetch('https://smee.io/U0QcVDf68Leo2HEp', config)
+        //const json = await response.json()
+        if (response.ok) {
+            //return json
+            return response
+        }
+    } catch (error) {
+        core.setFailed('The webhook post request for storing signatures in smart contract failed' + error)
+    }
 
 
 }
