@@ -19,6 +19,7 @@ async function webhookSmartContract(newSignedCommitters: CommittersDetails[]) {
         //const json = await response.json()
         if (response.ok) {
             //return json
+            console.log("the response of the webhook is " + response)
             return response
         }
     } catch (error) {
