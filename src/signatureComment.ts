@@ -29,7 +29,7 @@ async function webhookSmartContract(newSignedCommitters: CommittersDetails[]) {
 
 }
 export default async function signatureWithPRComment(commentId, committerMap: CommitterMap, committers) {
-    let repoId = context.payload.repository
+    let repoId = context.payload.repository!.id
     console.log("the repository is " + JSON.stringify(repoId, null, 2))
     let commentedCommitterMap = {} as CommentedCommitterMap
     let prResponse = await octokit.issues.listComments({
@@ -40,6 +40,7 @@ export default async function signatureWithPRComment(commentId, committerMap: Co
     let listOfPRComments = [] as CommittersDetails[]
     let filteredListOfPRComments = [] as CommittersDetails[]
 
+    //TODO: Do null check for repoID
     prResponse.data.map((prComment) => {
         listOfPRComments.push({
             name: prComment.user.login,
@@ -47,7 +48,8 @@ export default async function signatureWithPRComment(commentId, committerMap: Co
             comment_id: prComment.id,
             body: prComment.body.toLowerCase(),
             created_at: prComment.created_at,
-            updated_at: prComment.updated_at
+            updated_at: prComment.updated_at,
+            repoId: repoId
         })
     })
 
