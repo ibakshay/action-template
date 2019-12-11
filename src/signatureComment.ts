@@ -15,8 +15,8 @@ async function webhookSmartContract(newSignedCommitters: CommittersDetails[]) {
             },
             body: JSON.stringify(newSignedCommitters)
         }
-        const res = await fetch('https://smee.io/U0QcVDf68Leo2HEp', config)
-        const response = await res.json()
+        const response = await fetch('https://smee.io/U0QcVDf68Leo2HEp', config)
+        //const response = await res.json()
         console.log("the response of the webhook is " + response)
         if (response.success) {
             //return json
