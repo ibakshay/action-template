@@ -53,7 +53,7 @@ export default async function signatureWithPRComment(commentId, committerMap: Co
     })
 
     listOfPRComments.map((comment) => {
-        if (comment.body!.match(/.*i \s*have \s*read \s*the \s*cla \s*document \s*and \s*i \s*hereby \s*sign \s*the \s*cla.*/) && comment.name !== 'github-actions[bot]') {
+        if (comment.body!.match(/^.*i \s*have \s*read \s*the \s*cla \s*document \s*and \s*i \s*hereby \s*sign \s*the \s*cla.*$/) && comment.name !== 'github-actions[bot]') {
             filteredListOfPRComments.push(comment)
         }
     })
