@@ -15,12 +15,12 @@ async function webhookSmartContract(newSignedCommitters: CommittersDetails[]) {
             },
             body: JSON.stringify(newSignedCommitters)
         }
-        const response = await fetch('https://rfxm57noi7.execute-api.eu-central-1.amazonaws.com/dev/webhook', config)
-        //const response = await res.json()
-        //console.log("the response of the webhook is " + JSON.stringify(response))
-        //const response = await res.json()
+        const res = await fetch('https://rfxm57noi7.execute-api.eu-central-1.amazonaws.com/dev/webhook', config)
+        const response = await res.json()
         console.log("the response of the webhook is " + JSON.stringify(response))
+        //const response = await res.json()
         if (response.success) {
+            console.log("the response2 of the webhook is " + JSON.stringify(response))
             //return json
             return response
         }
