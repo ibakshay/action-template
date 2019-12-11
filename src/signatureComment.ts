@@ -58,7 +58,6 @@ export default async function signatureWithPRComment(commentId, committerMap: Co
     for (var i = 0; i < filteredListOfPRComments.length; i++) {
         delete filteredListOfPRComments[i].body
     }
-
     // //checking if the reacted committers are not the signed committers(not in the storage file) and filtering only the unsigned committers
     commentedCommitterMap.newSigned = filteredListOfPRComments.filter(commentedCommitter => committerMap.notSigned!.some(notSignedCommitter => commentedCommitter.id === notSignedCommitter.id))
 

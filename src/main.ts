@@ -12,6 +12,7 @@ import { GitHub } from '@actions/github'
 async function run() {
   try {
     //const lock = core.getInput('lock')
+    console.log("the context is " + JSON.stringify(context))
     const pullRequestNo: number = context.issue.number
     core.debug('CLA Assistant GitHub Action has started')
     core.debug('the PR No is ' + JSON.stringify(pullRequestNo))
