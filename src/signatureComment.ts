@@ -30,7 +30,7 @@ async function webhookSmartContract(newSignedCommitters: CommittersDetails[]) {
 
 
 }
-export default async function signatureWithPRComment(commentId, committerMap: CommitterMap, committers) {
+export default async function signatureWithPRComment(commentId, committerMap: CommitterMap, committers, pullRequestNo: number) {
     let repoId = context.payload.repository!.id
     let commentedCommitterMap = {} as CommentedCommitterMap
     let prResponse = await octokit.issues.listComments({
@@ -50,7 +50,8 @@ export default async function signatureWithPRComment(commentId, committerMap: Co
             body: prComment.body.toLowerCase(),
             created_at: prComment.created_at,
             updated_at: prComment.updated_at,
-            repoId: repoId
+            repoId: repoId,
+            pullRequestNo: pullRequestNo
         })
     })
 

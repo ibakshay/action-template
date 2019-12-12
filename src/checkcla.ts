@@ -74,7 +74,7 @@ export async function getclas(pullRequestNo: number) {
             const initialContent = { signedContributors: [] }
             const initalContentString = JSON.stringify(initialContent, null, 2)
             const initalContentBinary = Buffer.from(initalContentString).toString('base64')
-            const promise = Promise.all([createFile(pathToClaSignatures, initalContentBinary, branch), prComment(signed, committerMap, committers)])
+            const promise = Promise.all([createFile(pathToClaSignatures, initalContentBinary, branch), prComment(signed, committerMap, committers, pullRequestNo)])
             if (promise) {
                 core.setFailed(`committers of pull request ${context.issue.number}  has to sign the CLA`)
                 return
@@ -100,7 +100,7 @@ export async function getclas(pullRequestNo: number) {
     }
     try {
 
-        const reactedCommitters: ReactedCommitterMap = await prComment(signed, committerMap, committers) as ReactedCommitterMap
+        const reactedCommitters: ReactedCommitterMap = await prComment(signed, committerMap, committers, pullRequestNo) as ReactedCommitterMap
         /* pushing the unsigned contributors to the CLA Json File */
         if (signed) {
             console.log("All committers have signed the CLA")
@@ -109,7 +109,7 @@ export async function getclas(pullRequestNo: number) {
 
         if (reactedCommitters) {
             if (reactedCommitters.newSigned) {
-                reactedCommitters.newSigned.forEach((reactedCommitter) => reactedCommitter.pullRequestNo = pullRequestNo)
+                //reactedCommitters.newSigned.forEach((reactedCommitter) => reactedCommitter.pullRequestNo = pullRequestNo)
                 clas.signedContributors.push(...reactedCommitters.newSigned)
                 let contentString = JSON.stringify(clas, null, 2)
                 let contentBinary = Buffer.from(contentString).toString('base64')

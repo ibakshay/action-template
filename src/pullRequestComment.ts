@@ -123,7 +123,7 @@ function prepareAllSignedCommitters(committerMap: CommitterMap, signedInPrCommit
 }
 
 
-export default async function prComment(signed: boolean, committerMap: CommitterMap, committers: CommittersDetails[]) {
+export default async function prComment(signed: boolean, committerMap: CommitterMap, committers: CommittersDetails[], pullRequestNo: number) {
     try {
         const prComment = await getComment()
         if (!prComment) {
@@ -145,7 +145,7 @@ export default async function prComment(signed: boolean, committerMap: Committer
                 })
 
             }
-            const reactedCommitters: ReactedCommitterMap = await signatureWithPRComment(prComment.id, committerMap, committers) as ReactedCommitterMap
+            const reactedCommitters: ReactedCommitterMap = await signatureWithPRComment(prComment.id, committerMap, committers, pullRequestNo) as ReactedCommitterMap
             if (reactedCommitters) {
                 if (reactedCommitters.onlyCommitters) {
                     reactedCommitters.allSignedFlag = prepareAllSignedCommitters(committerMap, reactedCommitters.onlyCommitters, committers)
